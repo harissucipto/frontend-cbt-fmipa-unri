@@ -1,3 +1,9 @@
-const IndexPage = () => <h1>Hello</h1>;
+import React from 'react';
 
-export default IndexPage;
+const Home = () => (
+  <div>
+    <h1>Hello</h1>
+  </div>
+);
+
+export default Home;
