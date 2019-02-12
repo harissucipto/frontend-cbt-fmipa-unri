@@ -4,7 +4,7 @@
   "description": "Frontend-cbt-fmipa-unri",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 8888",
+    "dev": "next -p 7777",
     "build": "next build",
     "start": "next start",
     "test": "NODE_ENV=test jest --watch",
