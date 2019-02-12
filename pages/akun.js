@@ -8,11 +8,9 @@ const Columns = styled.div`
 `;
 
 const AkunPage = () => (
-  <PleaseSignIn>
-    <Columns>
-      <InfoAkun />
-    </Columns>
-  </PleaseSignIn>
+  <Columns>
+    <InfoAkun />
+  </Columns>
 );
 
 export default AkunPage;

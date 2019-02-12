@@ -3,10 +3,23 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Layout, Card, Icon } from 'antd';
+import Router from 'next/router';
+import NProgress from 'nprogress';
 import Meta from './Meta';
 import { CURRENT_USER_QUERY } from './User';
 import Signin from './Signin';
 import Login from './Login';
+
+Router.onRouteChangeStart = () => {
+  NProgress.start();
+};
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const { Footer } = Layout;
 
@@ -49,7 +62,7 @@ const PleaseSignIn = props => (
         return (
           <Layout style={{ flex: 1, alignItems: 'center' }}>
             <Meta />
-            <Card hoverable style={{ width: '400px', marginTop: '80px' }}>
+            <div style={{ width: '400px', marginTop: '80px' }}>
               <Logo>
                 <img src="../static/logo.svg" alt="logo" />
                 <h1>CBT FMIPA UR</h1>
@@ -58,7 +71,7 @@ const PleaseSignIn = props => (
                 <p>Portal Computer Based Test FMIPA UR</p>
               </SubLogo>
               <Login />
-            </Card>
+            </div>
 
             <Footer>
               <SubLogo>

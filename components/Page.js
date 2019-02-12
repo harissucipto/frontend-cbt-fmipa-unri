@@ -27,7 +27,9 @@ const Page = props => (
       <Layout>
         <Header />
         <Content style={{ margin: '0 16px' }}>{props.children}</Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>
+          Aplikasi CBT FMIPA UR ©2018 Created by Haris Sucipto
+        </Footer>
       </Layout>
     </PleaseSignIn>
   </Layout>
