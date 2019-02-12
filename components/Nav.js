@@ -52,7 +52,7 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="1" onClick={() => Router.push('/akun')}>
+            <Menu.Item key="1" onClick={() => Router.push('/')}>
               Info Akun
             </Menu.Item>
             <Menu.Item key="2">Pengaturan Akun</Menu.Item>

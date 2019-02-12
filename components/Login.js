@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Form, Icon, Input, Button, Alert } from 'antd';
+import PesanError from './PesanError';
 import { CURRENT_USER_QUERY } from './User';
 
 const SIGNIN_MUTATION = gql`
@@ -43,13 +44,14 @@ class SigninComponent extends React.Component {
             className="login-form"
             style={{ maxWidth: '100%' }}
           >
-            {error && <Alert message={error} type="error" />}
+            {error && <PesanError error={error} />}
             <Form.Item>
               <Input
                 disabled={loading}
                 prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="email"
                 name="email"
+                required
                 placeholder="email"
                 value={this.state.email}
                 onChange={this.saveToState}
@@ -61,6 +63,7 @@ class SigninComponent extends React.Component {
                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="password"
                 name="password"
+                required
                 placeholder="password"
                 value={this.state.password}
                 onChange={this.saveToState}
