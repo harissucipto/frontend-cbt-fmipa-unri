@@ -99,7 +99,7 @@ const ProfilAdmin = () => (
         </Col>
       </Row>
 
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} />
     </Card>
   </Content>
 );

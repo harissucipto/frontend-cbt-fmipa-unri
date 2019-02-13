@@ -31,7 +31,9 @@ const ProfilAdmin = () => (
         <HeaderAvatar>
           <Avatar size={144} icon="user" />
           <div>
-            <h2>{me.admin.nama}</h2>
+            <h2>
+              {me.admin.nama} {me.id}
+            </h2>
             <p>
               {me.permissions.filter(permission => !['USER'].includes(permission)).join(' ')} CBT
               FMIPA UR
