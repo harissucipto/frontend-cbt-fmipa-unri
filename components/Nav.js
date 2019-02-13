@@ -55,7 +55,9 @@ const Nav = () => (
             <Menu.Item key="1" onClick={() => Router.push('/')}>
               Info Akun
             </Menu.Item>
-            <Menu.Item key="2">Pengaturan Akun</Menu.Item>
+            <Menu.Item key="2" onClick={() => Router.push('/akun-setting')}>
+              Pengaturan Akun
+            </Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -67,8 +69,18 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="3">Info Akun</Menu.Item>
-            <Menu.Item key="4">Pengaturan Akun</Menu.Item>
+            <Menu.Item key="3" onClick={() => Router.push('/kelola-dosen')}>
+              Kelola Dosen
+            </Menu.Item>
+            <Menu.Item key="22" onClick={() => Router.push('/tambah-dosen')}>
+              Tambah Dosen
+            </Menu.Item>
+            <Menu.Item key="23" onClick={() => Router.push('/detail-dosen')}>
+              Detail Dosen
+            </Menu.Item>
+            <Menu.Item key="24" onClick={() => Router.push('/kelola-dosen')}>
+              Edit Dosen
+            </Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -80,8 +92,9 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="5">Info Akun</Menu.Item>
-            <Menu.Item key="6">Pengaturan Akun</Menu.Item>
+            <Menu.Item key="4" onClick={() => Router.push('/kelola-mahasiswa')}>
+              Kelola Mahasiswa
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub4"
@@ -92,8 +105,7 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="7">Info Akun</Menu.Item>
-            <Menu.Item key="8">Pengaturan Akun</Menu.Item>
+            <Menu.Item key="7">Kelola Pengawas</Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub5"
@@ -104,8 +116,7 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="9">Info Akun</Menu.Item>
-            <Menu.Item key="10">Pengaturan Akun</Menu.Item>
+            <Menu.Item key="9">Kelola MataKuliah</Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub6"
@@ -116,7 +127,7 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="11">Info Akun</Menu.Item>
+            <Menu.Item key="11">Kelola Kelas</Menu.Item>
             <Menu.Item key="12">Pengaturan Akun</Menu.Item>
           </SubMenu>
           <SubMenu

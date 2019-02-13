@@ -26,7 +26,7 @@ const Page = props => (
       <Nav />
       <Layout>
         <Header />
-        <Content style={{ margin: '0 16px' }}>{props.children}</Content>
+        <Content>{props.children}</Content>
         <Footer style={{ textAlign: 'center' }}>
           Aplikasi CBT FMIPA UR ©2018 Created by Haris Sucipto
         </Footer>
