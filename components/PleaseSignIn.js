@@ -2,12 +2,11 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Layout, Card, Icon } from 'antd';
+import { Layout, Icon } from 'antd';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import Meta from './Meta';
 import { CURRENT_USER_QUERY } from './User';
-import Signin from './Signin';
 import Login from './Login';
 
 Router.onRouteChangeStart = () => {
@@ -58,6 +57,7 @@ const PleaseSignIn = props => (
   <Query query={CURRENT_USER_QUERY}>
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
+      if (!data) return <p>Server Error..</p>;
       if (!data.me) {
         return (
           <Layout style={{ flex: 1, alignItems: 'center' }}>
