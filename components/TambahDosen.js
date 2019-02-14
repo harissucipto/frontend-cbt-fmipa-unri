@@ -104,6 +104,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="email"
             value={this.state.email}
+            placeholder="Email dosen"
             type="email"
             required
             onChange={this.saveToState}
@@ -116,6 +117,7 @@ class TambahDosen extends React.Component {
             name="password"
             value={this.state.password}
             type="password"
+            placeholder="Password untuk login akun dosen"
             required
             onChange={this.saveToState}
           />
@@ -126,6 +128,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="nama"
             value={this.state.nama}
+            placeholder="Nama Lengkap Dosen"
             type="string"
             required
             onChange={this.saveToState}
@@ -137,6 +140,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="nip"
             value={this.state.nip}
+            placeholder="NIP"
             type="string"
             required
             onChange={this.saveToState}

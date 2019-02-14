@@ -5,12 +5,14 @@ import flat from 'flat';
 import { Table, Divider, Tag } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import DeleteDosen from './DeleteDosen';
 
 const ALL_DOSEN_QUERY = gql`
   query ALL_DOSEN_QUERY($skip: Int = 0, $first: Int = 5) {
     dosens(first: $first, skip: $skip, orderBy: createdAt_DESC) {
       nama
       nip
+      id
       user {
         email
         passwordKasih
@@ -50,9 +52,9 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <span>
-        <a>Invite {record.name}</a>
+        <a>Edit {record.name}</a>
         <Divider type="vertical" />
-        <a>Delete</a>
+        <DeleteDosen id={record.id} />
       </span>
     ),
   },
