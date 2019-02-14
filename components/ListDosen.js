@@ -1,42 +1,49 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Layout, Input, Table, Divider, Tag } from 'antd';
+import Link from 'next/link';
+import flat from 'flat';
+import { Table, Divider, Tag } from 'antd';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const ALL_DOSEN_QUERY = gql`
+  query ALL_DOSEN_QUERY($skip: Int = 0, $first: Int = 5) {
+    dosens(first: $first, skip: $skip, orderBy: createdAt_DESC) {
+      nama
+      nip
+      user {
+        email
+        passwordKasih
+      }
+    }
+  }
+`;
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
-      <span>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
+    title: 'Nama',
+    dataIndex: 'nama',
+    key: 'nama',
+    render: text => (
+      <Link href="/detail-dosen/?id">
+        <a>{text}</a>
+      </Link>
     ),
+  },
+  {
+    title: 'NIP',
+    dataIndex: 'nip',
+    key: 'nip',
+  },
+  {
+    title: 'Email',
+    dataIndex: 'user.email',
+    key: 'email',
+  },
+  {
+    title: 'Password Awal',
+    dataIndex: 'user.passwordKasih',
+    key: 'passwordKasih',
   },
   {
     title: 'Action',
@@ -51,30 +58,22 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+const ListDosen = () => (
+  <Query query={ALL_DOSEN_QUERY}>
+    {({ data, error, loading }) => {
+      if (error) return <p>Error</p>;
+      return (
+        <Table
+          columns={columns}
+          loading={loading}
+          dataSource={data.dosens.map(flat)}
+          rowKey={record => record.nip}
+        />
+      );
+    }}
+  </Query>
+);
 
-const ListDosen = () => <Table columns={columns} />;
+export { ALL_DOSEN_QUERY };
 
 export default ListDosen;

@@ -4,6 +4,7 @@ import { Layout, Card, Form, Input, Button, Avatar, Alert } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PesanError from './PesanError';
+import { ALL_DOSEN_QUERY } from './ListDosen';
 const { Content } = Layout;
 
 const ADD_DOSEN_MUTATION = gql`
@@ -53,6 +54,7 @@ class TambahDosen extends React.Component {
     return (
       <Mutation
         mutation={ADD_DOSEN_MUTATION}
+        refetchQueries={[{ query: ALL_DOSEN_QUERY }]}
         variables={{
           user: {
             email: this.state.email,
