@@ -78,7 +78,7 @@ const Nav = () => (
             <Menu.Item key="23" onClick={() => Router.push('/dosen/profil')}>
               Detail Dosen
             </Menu.Item>
-            <Menu.Item key="24" onClick={() => Router.push('/kelola-dosen')}>
+            <Menu.Item key="24" onClick={() => Router.push('/dosen/edit')}>
               Edit Dosen
             </Menu.Item>
           </SubMenu>

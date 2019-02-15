@@ -22,7 +22,6 @@ class DeleteDosen extends Component {
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the items we want
     const data = cache.readQuery({ query: ALL_DOSEN_QUERY });
-    console.log(data, payload);
     // // 2. Filter the deleted itemout of the page
     data.dosens = data.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
     // 3. Put the items back!

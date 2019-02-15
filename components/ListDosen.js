@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import flat from 'flat';
-import { Table, Divider } from 'antd';
+import { Table, Divider, Button } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import PesanError from './PesanError';
@@ -58,7 +59,13 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <span>
-        <a>Edit {record.name}</a>
+        <Button
+          onClick={() => Router.push({ pathname: '/dosen/edit', query: { id: record.id } })}
+          type="ghost"
+        >
+          Edit
+        </Button>
+
         <Divider type="vertical" />
         <DeleteDosen id={record.id} />
       </span>
