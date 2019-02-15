@@ -75,12 +75,6 @@ const Nav = () => (
             <Menu.Item key="22" onClick={() => Router.push('/dosen/tambah')}>
               Tambah Dosen
             </Menu.Item>
-            <Menu.Item key="23" onClick={() => Router.push('/dosen/profil')}>
-              Detail Dosen
-            </Menu.Item>
-            <Menu.Item key="24" onClick={() => Router.push('/dosen/edit')}>
-              Edit Dosen
-            </Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -92,8 +86,11 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="4" onClick={() => Router.push('/kelola-mahasiswa')}>
+            <Menu.Item key="31" onClick={() => Router.push('/mahasiswa/kelola')}>
               Kelola Mahasiswa
+            </Menu.Item>
+            <Menu.Item key="32" onClick={() => Router.push('/mahasiswa/tambah')}>
+              Tambah Mahasiswa
             </Menu.Item>
           </SubMenu>
           <SubMenu
