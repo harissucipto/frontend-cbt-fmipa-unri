@@ -93,6 +93,7 @@ const Nav = () => (
               Tambah Mahasiswa
             </Menu.Item>
           </SubMenu>
+
           <SubMenu
             key="sub4"
             title={
@@ -102,7 +103,12 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="7">Kelola Pengawas</Menu.Item>
+            <Menu.Item key="41" onClick={() => Router.push('/pengawas/kelola')}>
+              Kelola Pengawas
+            </Menu.Item>
+            <Menu.Item key="42" onClick={() => Router.push('/pengawas/tambah')}>
+              Tambah Pengawas
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub5"
@@ -113,8 +119,14 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="9">Kelola MataKuliah</Menu.Item>
+            <Menu.Item key="51" onClick={() => Router.push('/matakuliah/kelola')}>
+              Kelola MataKuliah
+            </Menu.Item>
+            <Menu.Item key="52" onClick={() => Router.push('/matakuliah/tambah')}>
+              Tambah MataKuliah
+            </Menu.Item>
           </SubMenu>
+
           <SubMenu
             key="sub6"
             title={
