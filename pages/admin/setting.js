@@ -1,5 +1,5 @@
 import React from 'react';
-import SettingProfilAdmin from '../components/SettingProfilAdmin';
+import SettingProfilAdmin from '../../components/SettingProfilAdmin';
 
 const AkunSettings = () => <SettingProfilAdmin />;
 

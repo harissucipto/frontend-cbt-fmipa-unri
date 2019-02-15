@@ -52,10 +52,10 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="1" onClick={() => Router.push('/')}>
+            <Menu.Item key="1" onClick={() => Router.push('/admin/profil')}>
               Info Akun
             </Menu.Item>
-            <Menu.Item key="2" onClick={() => Router.push('/akun-setting')}>
+            <Menu.Item key="2" onClick={() => Router.push('/admin/setting')}>
               Pengaturan Akun
             </Menu.Item>
           </SubMenu>
@@ -69,13 +69,13 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="3" onClick={() => Router.push('/kelola-dosen')}>
+            <Menu.Item key="3" onClick={() => Router.push('/dosen/kelola')}>
               Kelola Dosen
             </Menu.Item>
-            <Menu.Item key="22" onClick={() => Router.push('/tambah-dosen')}>
+            <Menu.Item key="22" onClick={() => Router.push('/dosen/tambah')}>
               Tambah Dosen
             </Menu.Item>
-            <Menu.Item key="23" onClick={() => Router.push('/detail-dosen')}>
+            <Menu.Item key="23" onClick={() => Router.push('/dosen/profil')}>
               Detail Dosen
             </Menu.Item>
             <Menu.Item key="24" onClick={() => Router.push('/kelola-dosen')}>

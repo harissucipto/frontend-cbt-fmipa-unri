@@ -2,9 +2,10 @@
 import React from 'react';
 import Link from 'next/link';
 import flat from 'flat';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import PesanError from './PesanError';
 import DeleteDosen from './DeleteDosen';
 
 const ALL_DOSEN_QUERY = gql`
@@ -26,8 +27,13 @@ const columns = [
     title: 'Nama',
     dataIndex: 'nama',
     key: 'nama',
-    render: text => (
-      <Link href="/detail-dosen/?id">
+    render: (text, record) => (
+      <Link
+        href={{
+          pathname: '/dosen/profil',
+          query: { id: record.id },
+        }}
+      >
         <a>{text}</a>
       </Link>
     ),
@@ -63,7 +69,7 @@ const columns = [
 const ListDosen = () => (
   <Query query={ALL_DOSEN_QUERY}>
     {({ data, error, loading }) => {
-      if (error) return <p>Error</p>;
+      if (error) return <PesanError error={error} />;
       return (
         <Table
           columns={columns}
