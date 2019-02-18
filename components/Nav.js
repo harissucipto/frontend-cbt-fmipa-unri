@@ -136,7 +136,9 @@ const Nav = () => (
               </span>
             }
           >
-            <Menu.Item key="11">Kelola Kelas</Menu.Item>
+            <Menu.Item key="11" onClick={() => Router.push('/kelas/kelola')}>
+              Kelola Kelas
+            </Menu.Item>
             <Menu.Item key="12">Pengaturan Akun</Menu.Item>
           </SubMenu>
           <SubMenu
