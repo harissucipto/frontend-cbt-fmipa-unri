@@ -4,13 +4,12 @@ import Router from 'next/router';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import debounce from 'lodash.debounce';
-import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
+import { DropDown, DropDownItem, SearchStyles } from '../styles/DropDown';
 
-const SEARCH_DOSEN_QUERY = gql`
-  query SEARCH_DOSEN_QUERY($searchTerm: String!) {
-    dosens(where: { OR: [{ nip_contains: $searchTerm }, { nama_contains: $searchTerm }] }) {
+const SEARCH_MAHASISWA_QUERY = gql`
+  query SEARCH_MAHASISWA_QUERY($searchTerm: String!) {
+    pengawass(where: { OR: [{ nama_contains: $searchTerm }] }) {
       id
-      nip
       nama
     }
   }
@@ -18,7 +17,7 @@ const SEARCH_DOSEN_QUERY = gql`
 
 function routeToItem(item) {
   Router.push({
-    pathname: '/dosen/profil',
+    pathname: '/pengawas/profil',
     query: {
       id: item.id,
     },
@@ -27,7 +26,7 @@ function routeToItem(item) {
 
 class AutoComplete extends React.Component {
   state = {
-    dosens: [],
+    pengawass: [],
     loading: false,
   };
   onChange = debounce(async (e, client) => {
@@ -36,11 +35,11 @@ class AutoComplete extends React.Component {
     this.setState({ loading: true });
     // Manually query apollo client
     const res = await client.query({
-      query: SEARCH_DOSEN_QUERY,
+      query: SEARCH_MAHASISWA_QUERY,
       variables: { searchTerm: e.target.value },
     });
     this.setState({
-      dosens: res.data.dosens,
+      pengawass: res.data.pengawass,
       loading: false,
     });
   }, 350);
@@ -48,7 +47,7 @@ class AutoComplete extends React.Component {
     resetIdCounter();
     return (
       <SearchStyles>
-        <Downshift onChange={routeToItem} itemToString={item => (item === null ? '' : item.nip)}>
+        <Downshift onChange={routeToItem} itemToString={item => (item === null ? '' : item.email)}>
           {({
  getInputProps, getItemProps, isOpen, inputValue, highlightedIndex,
 }) => (
@@ -58,7 +57,7 @@ class AutoComplete extends React.Component {
         <input
           {...getInputProps({
                       type: 'search',
-                      placeholder: 'Cari dosen...',
+                      placeholder: 'Cari pengawas...',
                       id: 'search',
                       className: this.state.loading ? 'loading' : '',
                       onChange: (e) => {
@@ -71,17 +70,16 @@ class AutoComplete extends React.Component {
     </ApolloConsumer>
     {isOpen && (
     <DropDown>
-      {this.state.dosens.map((item, index) => (
+      {this.state.pengawass.map((item, index) => (
         <DropDownItem
           {...getItemProps({ item })}
           key={item.id}
-          ss
           highlighted={index === highlightedIndex}
         >
-          {item.nama} ({item.nip} )
+          {item.nama}
         </DropDownItem>
                   ))}
-      {!this.state.dosens.length && !this.state.loading && (
+      {!this.state.pengawass.length && !this.state.loading && (
       <DropDownItem> Nothing Found {inputValue}</DropDownItem>
                   )}
     </DropDown>
