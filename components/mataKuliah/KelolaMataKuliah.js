@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { Layout, Card, Input, Button, Row, Col } from 'antd';
 import ListMataKuliah from './ListMataKuliah';
+import Searach from './Searach';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -17,12 +18,13 @@ const KelolaMataKuliah = () => (
         </Col>
         <Col span={12}>
           {' '}
-          <Search
+          {/* <Search
             placeholder="input search text"
             onSearch={value => console.log(value)}
             width={240}
             enterButton
-          />
+          /> */}
+          <Searach />
         </Col>
       </Row>
 

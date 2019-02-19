@@ -68,7 +68,7 @@ const ProfilMataKuliah = props => (
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon="user" />}
-                    title="Email"
+                    title="Nama Mata Kuliah"
                     description={data.mataKuliah.nama}
                   />
                 </List.Item>
