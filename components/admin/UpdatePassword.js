@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Button, Icon } from 'antd';
+import { Card, Form, Input, Button, Icon, Alert } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -26,7 +26,7 @@ class UpdatePassword extends Component {
   render() {
     return (
       <Mutation mutation={UPDATE_PASSWORD} variables={this.state}>
-        {(updatePassword, { error, loading }) => (
+        {(updatePassword, { error, loading, called }) => (
           <Card
             title="Ganti Password"
             style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
@@ -39,6 +39,14 @@ class UpdatePassword extends Component {
               }}
             >
               {error && <PesanError error={error} />}
+              {!error && !loading && called && (
+                <Alert
+                  message="Rubah Password Berhasil"
+                  type="success"
+                  showIcon
+                  style={{ margin: '10px 0' }}
+                />
+              )}
               <Form.Item>
                 <Input
                   disabled={loading}
