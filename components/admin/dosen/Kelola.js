@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
+import ListDosen from './ListDosen';
 
 const { Option } = Select;
 
@@ -16,6 +17,7 @@ class KelolaDosen extends Component {
     jurusan: '',
     prodi: '',
     prodies: [],
+    dosens: [],
   };
 
   handleJurusanChange = (value) => {
@@ -36,7 +38,12 @@ class KelolaDosen extends Component {
     return (
       <Card title="Kelola Akun Dosen" style={{ margin: '20px', padding: '24px' }}>
         <Form>
-          <Form.Item label="Jurusan" style={{ maxWidth: '480px' }}>
+          <Form.Item
+            label="Jurusan"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          >
             <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
               {jurusans.map(jurusan => (
                 <Option key={jurusan} value={jurusan}>
@@ -45,7 +52,12 @@ class KelolaDosen extends Component {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Program Studi" style={{ maxWidth: '480px' }}>
+          <Form.Item
+            label="Program Studi"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          >
             <Select
               placeholder="Pilih Prodi"
               disabled={!this.state.jurusan.length}
@@ -59,13 +71,20 @@ class KelolaDosen extends Component {
               ))}
             </Select>
           </Form.Item>
+
+          <Form.Item
+            label="Total Akun"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          >
+            <p>60 Akun</p>
+          </Form.Item>
         </Form>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Tampilkan
-          </Button>
-        </Form.Item>
+        <Form.Item />
+
+        <ListDosen />
       </Card>
     );
   }
