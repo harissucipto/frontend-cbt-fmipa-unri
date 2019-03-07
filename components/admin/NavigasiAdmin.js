@@ -16,7 +16,7 @@ const NavigasiAdmin = () => (
           </span>
         }
       >
-        <Menu.Item key="sub1-1" onClick={() => Router.push('/admin/profil')}>
+        <Menu.Item key="sub1-1" onClick={() => Router.push('/admin/')}>
           Info Profil
         </Menu.Item>
         <Menu.Item key="sub-1-2" onClick={() => Router.push('/admin/setting')}>

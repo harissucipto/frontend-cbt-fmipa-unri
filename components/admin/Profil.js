@@ -8,9 +8,11 @@ const CURRENT_ADMIN_QUERY = gql`
   query {
     admin {
       email
+
       admin {
         nama
       }
+      permissions
     }
   }
 `;
@@ -37,31 +39,34 @@ const HeaderAvatar = styled.div`
 
 const ProfilAdmin = () => (
   <Query query={CURRENT_ADMIN_QUERY}>
-    {({ data: { admin }, loading }) => {
-      console.log(admin);
+    {({ data, loading }) => {
+      console.log(data);
       return (
-        <Card style={{ margin: '20px', padding: '24px' }} loading={loading}>
+        <Card style={{ margin: '20px', padding: '24px', maxWidth: '480px' }} loading={loading}>
           <HeaderAvatar>
             <Avatar size={144} icon="user" />
-            {/* <div>
-            <h2>{admin.admin.nama.toUpperCase()}</h2>
-            <p>{admin.permissions.filter(permission => !['USER'].includes(permission)).join(' ')}</p>
-          </div> */}
+            <div>
+              <p>
+                {data.admin.permissions
+                  .filter(permission => !['USER'].includes(permission))
+                  .join(' ')}
+              </p>
+            </div>
           </HeaderAvatar>
 
           <List>
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar icon="mail" />}
-                title={<a href="https://ant.design">Email</a>}
-                description={admin.email}
+                title={<a href="https://ant.design">Nama</a>}
+                description={data.admin.admin.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar icon="mail" />}
-                title={<a href="https://ant.design">Permission</a>}
-                description={admin.permissions.reduce((acc, prev) => `${acc} ${prev},`, '')}
+                title={<a href="https://ant.design">Email</a>}
+                description={data.admin.email}
               />
             </List.Item>
           </List>
