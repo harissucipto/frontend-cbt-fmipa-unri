@@ -21,7 +21,7 @@ const SignOut = () => (
         query: CURRENT_USER_QUERY,
       },
     ]}
-    onCompleted={() => Router.push('/signin')}
+    onCompleted={() => Router.push('/')}
   >
     {signout => (
       <Button

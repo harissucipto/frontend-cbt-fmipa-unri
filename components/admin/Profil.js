@@ -40,7 +40,8 @@ const HeaderAvatar = styled.div`
 const ProfilAdmin = () => (
   <Query query={CURRENT_ADMIN_QUERY}>
     {({ data, loading }) => {
-      console.log(data);
+      if (loading) return <p>Loading...</p>;
+
       return (
         <Card style={{ margin: '20px', padding: '24px', maxWidth: '480px' }} loading={loading}>
           <HeaderAvatar>

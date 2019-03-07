@@ -8,7 +8,6 @@ import NProgress from 'nprogress';
 import Meta from './Meta';
 import { CURRENT_USER_QUERY } from './User';
 import Login from './Login';
-import Signup from './Signup';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -73,7 +72,6 @@ const PleaseSignIn = props => (
                 <p>Portal Computer Based Test FMIPA UR</p>
               </SubLogo>
               <Login />
-              <Signup />
             </div>
 
             <Footer>

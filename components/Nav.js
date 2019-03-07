@@ -36,6 +36,7 @@ const Nav = () => (
   <User>
     {({ data: { me }, loading }) => {
       if (loading) return <p>Loading..</p>;
+      if (!me) return <p>loading..</p>;
       return (
         <Sider breakpoint="lg" width="256" collapsedWidth="0">
           <Logo>
