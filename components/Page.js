@@ -22,15 +22,18 @@ injectGlobal`
 const Page = props => (
   <Layout style={{ minHeight: '100vh' }}>
     <PleaseSignIn>
-      <Meta />
-      <Nav />
-      <Layout>
-        <Header />
-        <Content>{props.children}</Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Aplikasi CBT FMIPA UR ©2018 Created by Haris Sucipto
-        </Footer>
-      </Layout>
+      <>
+        <Meta />
+        <Nav />
+        <Layout>
+          <Header />
+
+          <Content>{props.children}</Content>
+          <Footer style={{ textAlign: 'center' }}>
+            Aplikasi CBT FMIPA UR ©2018 Created by Haris Sucipto
+          </Footer>
+        </Layout>
+      </>
     </PleaseSignIn>
   </Layout>
 );

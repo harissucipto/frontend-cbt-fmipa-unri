@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Layout, Icon } from 'antd';
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 import NProgress from 'nprogress';
 import Meta from './Meta';
 import { CURRENT_USER_QUERY } from './User';
@@ -58,6 +58,7 @@ const PleaseSignIn = props => (
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
       if (!data) return <p>Server Error..</p>;
+
       if (!data.me) {
         return (
           <Layout style={{ flex: 1, alignItems: 'center' }}>
@@ -82,6 +83,19 @@ const PleaseSignIn = props => (
           </Layout>
         );
       }
+      // authrization
+      const alamatAkses = props.router.pathname.split('/')[1];
+      const HAKAKSES = ['admin', 'dosen', 'mahasiswa'];
+      const hakAksesSaya = data.me.permissions;
+
+      // check authriztion
+      // jika hak akses tidadk sama dengan hak akses yang dimiliki maka anda ditendang
+      if (HAKAKSES.filter(akses => akses === alamatAkses).length) {
+        if (!hakAksesSaya.includes(alamatAkses.toUpperCase())) {
+          return <p>Anda Tidak Memiliki Hak Akses ke sini</p>;
+        }
+      }
+
       return props.children;
     }}
   </Query>
@@ -91,4 +105,4 @@ PleaseSignIn.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 };
 
-export default PleaseSignIn;
+export default withRouter(PleaseSignIn);

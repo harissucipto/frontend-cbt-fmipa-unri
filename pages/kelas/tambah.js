@@ -1,6 +1,6 @@
 import React from 'react';
-import TambahMataKuliah from '../../components/mataKuliah/TambahMataKuliah';
+import TambahKelas from '../../components/kelas/TambahKelas';
 
-const PageTambahMataKuliah = () => <TambahMataKuliah />;
+const PageTambahKelas = () => <TambahKelas />;
 
-export default PageTambahMataKuliah;
+export default PageTambahKelas;

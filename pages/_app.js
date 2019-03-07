@@ -12,7 +12,6 @@ class MyApp extends App {
     }
     // this exposes the query to the user
     pageProps.query = ctx.query;
-    console.log(ctx.pathname, 'ini');
     return { pageProps };
   }
   render() {

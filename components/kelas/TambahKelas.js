@@ -5,16 +5,14 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PesanError from '../PesanError';
 import { ALL_KELAS_QUERY } from './ListKelas';
+import CariDosen from '../SearachT';
+import CariMataKuliah from '../mataKuliah/SearachT';
+
 const { Content } = Layout;
 
 const ADD_KELAS_MUTATION = gql`
-  mutation ADD_KELAS_MUTATION(
-    $kelas: KelasBaruInput!
-    $idDosen: ID!
-    $idMahasiswa: ID!
-    $idMataKuliah: ID!
-  ) {
-    addKelas(kelas: $kelas, idDosen: $idDosen, idDosen: $idMahasiswa, idMataKuliah: $idMataKuliah) {
+  mutation ADD_KELAS_MUTATION($kelas: KelasBaruInput!, $idDosen: ID!, $idMataKuliah: ID!) {
+    addKelas(kelas: $kelas, idDosen: $idDosen, idMataKuliah: $idMataKuliah) {
       id
       nama
       mataKuliah {
@@ -43,7 +41,7 @@ const DEFAULTSTATE = {
   tahunAjaran: '',
   kelas: {},
   dosen: {},
-  mahasiswa: [],
+  mataKuliah: {},
 };
 
 class TambahKelas extends React.Component {
@@ -57,6 +55,16 @@ class TambahKelas extends React.Component {
     });
   };
 
+  tambahMataKuliah = (mataKuliah) => {
+    console.log(mataKuliah, 'mataKuliah');
+    this.setState({ mataKuliah });
+  };
+
+  tambahDosen = (dosen) => {
+    console.log(dosen, 'data dosen selected');
+    this.setState({ dosen });
+  };
+
   render() {
     return (
       <Mutation
@@ -65,77 +73,84 @@ class TambahKelas extends React.Component {
         variables={{
           kelas: {
             nama: this.state.nama,
-            kode: `${this.state.kode}`,
+            tahunAjaran: this.state.tahunAjaran,
           },
+          idDosen: this.state.dosen.id,
+          idMataKuliah: this.state.mataKuliah.id,
         }}
       >
         {(addKelas, {
  data, error, loading, called,
-}) => {
-          console.log(data);
-          return (
-            <Content>
-              <Card style={{ margin: '20px', padding: '24px' }}>
-                <h2>Tambah Akun kelas Baru</h2>
-                <HeaderAvatar>
-                  <Avatar size={144} icon="user" />
-                  <div>
-                    <Button icon="upload">Upload photo profil</Button>
-                  </div>
-                </HeaderAvatar>
+}) => (
+  <Content>
+    <Card style={{ margin: '20px', padding: '24px' }}>
+      <h2>Tambah Akun kelas Baru</h2>
+      <HeaderAvatar>
+        <Avatar size={144} icon="user" />
+        <div>
+          <Button icon="upload">Upload photo profil</Button>
+        </div>
+      </HeaderAvatar>
 
-                <Form
-                  method="post"
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    await addKelas();
-                    this.setState({
-                      ...DEFAULTSTATE,
-                    });
-                  }}
-                >
-                  <PesanError error={error} />
-                  {!error && !loading && called && (
-                    <Alert
-                      message={`Tambah Mata Kuliah ${data.addKelas.nama} Berhasil`}
-                      type="success"
-                      showIcon
-                      style={{ margin: '10px 0' }}
-                    />
-                  )}
+      <Form
+        method="post"
+        onSubmit={async (e) => {
+                  e.preventDefault();
+                  await addKelas();
+                  this.setState({
+                    ...DEFAULTSTATE,
+                  });
+                }}
+      >
+        <PesanError error={error} />
+        {!error && !loading && called && (
+        <Alert
+          message={`Tambah Mata Kuliah ${data.addKelas.nama} Berhasil`}
+          type="success"
+          showIcon
+          style={{ margin: '10px 0' }}
+        />
+                )}
 
-                  <Form.Item label="Nama">
-                    <Input
-                      disabled={loading}
-                      name="nama"
-                      value={this.state.nama}
-                      placeholder="Nama kelas"
-                      type="string"
-                      required
-                      onChange={this.saveToState}
-                    />
-                  </Form.Item>
+        <Form.Item label="Nama Kelas">
+          <Input
+            disabled={loading}
+            name="nama"
+            value={this.state.nama}
+            placeholder="Nama kelas"
+            type="string"
+            required
+            onChange={this.saveToState}
+          />
+        </Form.Item>
 
-                  <Form.Item label="Nama">
-                    <Input
-                      disabled={loading}
-                      name="nama"
-                      value={this.state.nama}
-                      placeholder="Tahun Ajaran"
-                      type="string"
-                      required
-                      onChange={this.saveToState}
-                    />
-                  </Form.Item>
+        <Form.Item label="Tahun Ajaran">
+          <Input
+            disabled={loading}
+            name="tahunAjaran"
+            value={this.state.tahunAjaran}
+            placeholder="Tahun Ajaran"
+            type="string"
+            required
+            onChange={this.saveToState}
+          />
+        </Form.Item>
 
-                  <Button type="primary" htmlType="submit">
-                    Tambah
-                  </Button>
-                </Form>
-              </Card>
-            </Content>
-          );
-        }}
+        <Form.Item label="Mata Kuliah">
+          <CariMataKuliah tambahMataKuliah={this.tambahMataKuliah} />
+        </Form.Item>
+
+        <Form.Item label="Dosen">
+          <CariDosen tambahDosen={this.tambahDosen} />
+        </Form.Item>
+
+        <Button type="primary" htmlType="submit">
+                  Tambah
+        </Button>
+      </Form>
+    </Card>
+  </Content>
+        )}
       </Mutation>
     );
   }

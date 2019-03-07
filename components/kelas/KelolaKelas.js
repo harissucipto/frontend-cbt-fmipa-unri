@@ -12,7 +12,7 @@ const KelolaKelas = () => (
     <Card style={{ margin: '20px', padding: '24px' }}>
       <Row style={{ marginBottom: '10px' }}>
         <Col span={12}>
-          <Button type="primary" icon="plus" onClick={() => Router.push('/matakuliah/tambah')}>
+          <Button type="primary" icon="plus" onClick={() => Router.push('/kelas/tambah')}>
             Tambah Kelas
           </Button>
         </Col>

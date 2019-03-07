@@ -18,9 +18,6 @@ const CURRENT_USER_QUERY = gql`
       dosen {
         id
       }
-      pengawas {
-        id
-      }
     }
   }
 `;
