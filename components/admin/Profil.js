@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Layout, Card, List, Avatar } from 'antd';
+import { Card, List, Avatar } from 'antd';
 import styled from 'styled-components';
 
 const CURRENT_ADMIN_QUERY = gql`
@@ -77,3 +77,4 @@ const ProfilAdmin = () => (
 );
 
 export default ProfilAdmin;
+export { CURRENT_ADMIN_QUERY };

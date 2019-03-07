@@ -1,6 +1,6 @@
 import React from 'react';
-import SettingProfilAdmin from '../../components/SettingProfilAdmin';
+import Setting from '../../components/admin/Setting';
 
-const AkunSettings = () => <SettingProfilAdmin />;
+const AkunSettings = () => <Setting />;
 
 export default AkunSettings;
