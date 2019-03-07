@@ -9,15 +9,6 @@ const CURRENT_USER_QUERY = gql`
       id
       email
       permissions
-      admin {
-        nama
-      }
-      mahasiswa {
-        id
-      }
-      dosen {
-        id
-      }
     }
   }
 `;

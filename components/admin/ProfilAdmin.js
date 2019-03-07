@@ -1,5 +1,5 @@
 import React from 'react';
-import User from './User';
+import User from '../User';
 import { Layout, Card, List, Avatar } from 'antd';
 import styled from 'styled-components';
 const { Content } = Layout;
@@ -27,12 +27,14 @@ const HeaderAvatar = styled.div`
 const ProfilAdmin = () => (
   <User>
     {({ data: { me }, loading }) => (
-      <Card style={{ margin: '20px', padding: '24px' }} loading={loading}>
+      <Card style={{ margin: '20px', padding: '24px', maxWidth: '480px' }} loading={loading}>
         <HeaderAvatar>
           <Avatar size={144} icon="user" />
           <div>
-            <h2>{me.admin.nama.toUpperCase()}</h2>
-            <p>{me.permissions.filter(permission => !['USER'].includes(permission)).join(' ')}</p>
+            <p>
+              {me.permissions.filter(permission => !['USER'].includes(permission)).join(' ')} CBT
+              FMIPA UR
+            </p>
           </div>
         </HeaderAvatar>
 
@@ -47,8 +49,8 @@ const ProfilAdmin = () => (
           <List.Item>
             <List.Item.Meta
               avatar={<Avatar icon="mail" />}
-              title={<a href="https://ant.design">Permission</a>}
-              description={me.permissions.reduce((acc, prev) => `${acc} ${prev},`, '')}
+              title={<a href="https://ant.design">Email</a>}
+              description={me.nama}
             />
           </List.Item>
         </List>

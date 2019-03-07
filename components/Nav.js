@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import Router from 'next/router';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout } from 'antd';
 import styled from 'styled-components';
 
 import User from './User';
+import NavigasiAdmin from './admin/NavigasiAdmin';
 
 const { Sider } = Layout;
-const { SubMenu } = Menu;
 
 const Logo = styled.div`
   position: relative;
@@ -35,14 +34,18 @@ const Logo = styled.div`
 
 const Nav = () => (
   <User>
-    {({ data: { me } }) => (
-      <Sider breakpoint="lg" width="256" collapsedWidth="0">
-        <Logo>
-          <img src="../static/logo.svg" alt="logo" />
-          <h1>CBT FMIPA UR</h1>
-        </Logo>
+    {({ data: { me }, loading }) => {
+      if (loading) return <p>Loading..</p>;
+      return (
+        <Sider breakpoint="lg" width="256" collapsedWidth="0">
+          <Logo>
+            <img src="../static/logo.svg" alt="logo" />
+            <h1>CBT FMIPA UR</h1>
+          </Logo>
 
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          {me.permissions.includes('ADMIN') && <NavigasiAdmin />}
+
+          {/* <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <SubMenu
             key="sub1"
             title={
@@ -152,7 +155,7 @@ const Nav = () => (
           >
             <Menu.Item key="13">Info Akun</Menu.Item>
             <Menu.Item key="14">Pengaturan Akun</Menu.Item>
-          </SubMenu>
+          </SubMenu> */}
 
           {/* {me && (
             <>
@@ -189,9 +192,10 @@ const Nav = () => (
               <a>Login</a>
             </Link>
           )} */}
-        </Menu>
-      </Sider>
-    )}
+          {/* </Menu> */}
+        </Sider>
+      );
+    }}
   </User>
 );
 

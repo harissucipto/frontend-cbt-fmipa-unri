@@ -1,6 +1,6 @@
 import React from 'react';
-import ProfilAdmin from '../components/ProfilAdmin';
 import User from '../components/User';
+import Admin from './admin';
 
 const IndexPage = () => (
   <User>
@@ -10,7 +10,7 @@ const IndexPage = () => (
       const hakAksesSaya = data.me.permissions;
 
       if (hakAksesSaya.includes('ADMIN')) {
-        return <p>Anda Admin</p>;
+        return <Admin />;
       } else if (hakAksesSaya.includes('DOSEN')) {
         return <p>Anda Dosen</p>;
       } else if (hakAksesSaya.includes('MAHASISWA')) {
