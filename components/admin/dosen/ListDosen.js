@@ -7,20 +7,6 @@ import { Table, Divider, Button } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const ALL_DOSEN_QUERY = gql`
-  query ALL_DOSEN_QUERY($skip: Int = 0, $first: Int = 5) {
-    dosens(first: $first, skip: $skip, orderBy: createdAt_DESC) {
-      nama
-      nip
-      id
-      user {
-        email
-        passwordKasih
-      }
-    }
-  }
-`;
-
 const columns = [
   {
     title: 'Nama',
@@ -65,14 +51,18 @@ const columns = [
         </Button>
 
         <Divider type="vertical" />
-        <DeleteDosen id={record.id} />
       </span>
     ),
   },
 ];
 
-const ListDosen = () => <Table columns={columns} rowKey={record => record.nip} />;
-
-export { ALL_DOSEN_QUERY };
+const ListDosen = ({ dosens }) => (
+  <Table
+    columns={columns}
+    dataSource={dosens}
+    rowKey={record => record.nip}
+    loading={this.props.loading}
+  />
+);
 
 export default ListDosen;

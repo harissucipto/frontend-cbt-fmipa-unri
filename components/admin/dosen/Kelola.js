@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
+
+import Dosens from './Dosens';
 import ListDosen from './ListDosen';
 
 const { Option } = Select;
@@ -17,7 +19,8 @@ class KelolaDosen extends Component {
     jurusan: '',
     prodi: '',
     prodies: [],
-    dosens: [],
+    loading: false,
+    dosens: this.props.dosens,
   };
 
   handleJurusanChange = (value) => {
@@ -78,16 +81,24 @@ class KelolaDosen extends Component {
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 14 }}
           >
-            <p>60 Akun</p>
+            <p>{this.state.dosens.length} Akun</p>
           </Form.Item>
         </Form>
 
         <Form.Item />
-
-        <ListDosen />
+        <ListDosen dosens={this.state.dosens} loading={this.state.loading} />
       </Card>
     );
   }
 }
 
-export default KelolaDosen;
+const Kelola = () => (
+  <Dosens>
+    {({ data, loading }) => {
+      if (loading) return <p>Loading...</p>;
+      return <KelolaDosen dosens={data.dosens} />;
+    }}
+  </Dosens>
+);
+
+export default Kelola;
