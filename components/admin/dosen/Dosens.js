@@ -5,9 +5,11 @@ import gql from 'graphql-tag';
 const DOSENS_QUERY = gql`
   query {
     dosens {
+      id
       nama
       nip
       user {
+        id
         email
         passwordKasih
       }

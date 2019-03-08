@@ -2,9 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import flat from 'flat';
 import { Table, Divider, Button } from 'antd';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const columns = [
@@ -56,13 +54,8 @@ const columns = [
   },
 ];
 
-const ListDosen = ({ dosens }) => (
-  <Table
-    columns={columns}
-    dataSource={dosens}
-    rowKey={record => record.nip}
-    loading={this.props.loading}
-  />
+const ListDosen = ({ dosens, loading }) => (
+  <Table columns={columns} dataSource={dosens} rowKey={record => record.nip} loading={loading} />
 );
 
 export default ListDosen;
