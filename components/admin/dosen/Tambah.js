@@ -1,38 +1,48 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Layout, Card, Form, Input, Button, Avatar, Alert, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import PesanError from '../../PesanError';
-import { ALL_DOSEN_QUERY } from './ListDosen';
+import { DOSENS_QUERY } from './Dosens';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 
 const { Content } = Layout;
 const { Option } = Select;
 
-const ADD_DOSEN_MUTATION = gql`
-  mutation ADD_DOSEN_MUTATION($user: UserBaruInput, $dosen: DosenBaruInput) {
-    addDosen(user: $user, dosen: $dosen) {
+const CREATE_DOSEN_MUTATION = gql`
+    mutation  CREATE_DOSEN_MUTATION(
+      $email: String!
+      $password: String!
+      $passwordKasih: String!
+      $prodi: String!
+      $nama: String!
+      $nip: String!
+    ) {
+    createUser(
+      data: {
+      email: $email
+      password: $password
+      passwordKasih: $passwordKasih
+        dosen: {
+          create: {
+            nama: $nama
+            nip: $nip
+            prodi: {
+              connect: [{ nama: $prodi }]
+            }
+          }
+        }
+      }
+    )
+    {
       id
-      email
       dosen {
+        id
         nama
+        nip
       }
     }
-  }
-`;
-
-const HeaderAvatar = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-
-  div {
-    margin-top: 20px;
-    text-align: center;
   }
 `;
 
@@ -42,7 +52,7 @@ const DEFAULTSTATE = {
   nama: '',
   nip: '',
   jurusan: '',
-  s: '',
+  prodi: '',
   prodies: [],
 };
 
@@ -74,25 +84,22 @@ class TambahDosen extends React.Component {
   render() {
     return (
       <Mutation
-        mutation={ADD_DOSEN_MUTATION}
-        refetchQueries={[{ query: ALL_DOSEN_QUERY }]}
+        mutation={CREATE_DOSEN_MUTATION}
+        refetchQueries={[{ query: DOSENS_QUERY }]}
         variables={{
-          user: {
-            email: this.state.email,
+            email: this.state.email.toLowerCase(),
             password: this.state.password,
-          },
-          dosen: {
-            nama: this.state.nama,
+            passwordKasih: this.state.password,
+            nama: this.state.nama.toLowerCase(),
             nip: this.state.nip,
-          },
+            prodi: this.state.prodi,
         }}
       >
-        {(addDosen, {
+        {(createDosen, {
  data, error, loading, called,
 }) => (
   <Content>
     <Card
-      style={{ margin: '20px', padding: '24px' }}
       title="Kelola Akun Dosen"
       style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
     >
@@ -101,16 +108,17 @@ class TambahDosen extends React.Component {
         method="post"
         onSubmit={async (e) => {
                   e.preventDefault();
-                  await addDosen();
+                  await createDosen();
                   this.setState({
                     ...DEFAULTSTATE,
                   });
+                  console.log(this.state);
                 }}
       >
         <PesanError error={error} />
         {!error && !loading && called && (
         <Alert
-          message={`Tambah Akun  Dosen ${data.addDosen.dosen.nama} Berhasil`}
+          message={`Buat akun  dosen ${data.createUser.dosen.nama} berhasil`}
           type="success"
           showIcon
           style={{ margin: '10px 0' }}
