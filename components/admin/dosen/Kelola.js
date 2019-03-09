@@ -59,6 +59,12 @@ class KelolaDosen extends Component {
     });
   };
 
+  hapusDosen = (id) => {
+    const { dosens } = this.state;
+    const dosenSisa = dosens.filter(dosen => dosen.id !== id);
+    this.setState({ dosens: dosenSisa });
+  };
+
   handleProdiChange = async (value, client) => {
     this.setState({ loading: true });
     const res = await client.query({
@@ -176,7 +182,11 @@ class KelolaDosen extends Component {
             </Form>
           )}
         </ApolloConsumer>
-        <ListDosen dosens={this.state.dosens} loading={this.state.loading} />
+        <ListDosen
+          dosens={this.state.dosens}
+          loading={this.state.loading}
+          hapusDosen={this.hapusDosen}
+        />
       </Card>
     );
   }
