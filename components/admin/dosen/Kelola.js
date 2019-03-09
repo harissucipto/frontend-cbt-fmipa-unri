@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';
 
 import Dosens from './Dosens';
 import ListDosen from './ListDosen';
@@ -31,15 +32,6 @@ const SEARCH_DOSEN_QUERY1 = gql`
   }
 `;
 
-const jurusans = ['semua', 'fisika', 'matematika', 'kimia', 'ilmu komputer'];
-const prodi = {
-  fisika: ['semua', 'Fisika A'],
-  matematika: ['semua', 'Matematika A'],
-  'ilmu komputer': ['semua', 'sistem informasi', 'manajemen informatika'],
-  kimia: ['semua', 'Kimia A'],
-  semua: [],
-};
-
 class KelolaDosen extends Component {
   state = {
     jurusan: '',
@@ -58,9 +50,9 @@ class KelolaDosen extends Component {
     });
 
     this.setState({
-      prodies: prodi[value],
+      prodies: prodis[value],
       jurusan: value,
-      prodi: prodi[value][0],
+      prodi: prodis[value][0],
       dosens: res.data.dosens,
       loading: false,
       keyword: '',

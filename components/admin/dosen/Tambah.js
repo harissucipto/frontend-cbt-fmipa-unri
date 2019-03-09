@@ -3,19 +3,13 @@ import styled from 'styled-components';
 import { Layout, Card, Form, Input, Button, Avatar, Alert, Select } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+
 import PesanError from '../../PesanError';
 import { ALL_DOSEN_QUERY } from './ListDosen';
+import { jurusans, prodis } from '../../../lib/jurusanProdi';
 
 const { Content } = Layout;
 const { Option } = Select;
-
-const jurusans = ['fisika', 'matematika', 'kimia', 'ilmu komputer'];
-const prodi = {
-  fisika: ['semua', 'Fisika A'],
-  matematika: ['semua', 'Matematika A'],
-  'ilmu komputer': ['semua', 'sistem informasi', 'manajemen informatika'],
-  kimia: ['semua', 'Kimia A'],
-};
 
 const ADD_DOSEN_MUTATION = gql`
   mutation ADD_DOSEN_MUTATION($user: UserBaruInput, $dosen: DosenBaruInput) {
@@ -48,7 +42,7 @@ const DEFAULTSTATE = {
   nama: '',
   nip: '',
   jurusan: '',
-  prodi: '',
+  s: '',
   prodies: [],
 };
 
@@ -60,6 +54,20 @@ class TambahDosen extends React.Component {
   saveToState = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
+    });
+  };
+
+  handleJurusanChange = (value) => {
+    this.setState({
+      prodies: prodis[value],
+      jurusan: value,
+      prodi: prodis[value][0],
+    });
+  };
+
+  handleProdiChange = async (value) => {
+    this.setState({
+      prodi: value,
     });
   };
 
@@ -83,15 +91,12 @@ class TambahDosen extends React.Component {
  data, error, loading, called,
 }) => (
   <Content>
-    <Card style={{ margin: '20px', padding: '24px' }} title="Kelola Akun Dosen">
+    <Card
+      style={{ margin: '20px', padding: '24px' }}
+      title="Kelola Akun Dosen"
+      style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
+    >
       <h2>Tambah Akun Dosen Baru</h2>
-      <HeaderAvatar>
-        <Avatar size={144} icon="user" />
-        <div>
-          <Button icon="upload">Upload photo profil</Button>
-        </div>
-      </HeaderAvatar>
-
       <Form
         method="post"
         onSubmit={async (e) => {
@@ -112,7 +117,7 @@ class TambahDosen extends React.Component {
         />
                 )}
 
-        <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+        <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Input
             disabled={loading}
             name="email"
@@ -124,7 +129,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
+        <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Input
             disabled={loading}
             name="password"
@@ -136,7 +141,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
+        <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Input
             disabled={loading}
             name="nama"
@@ -148,7 +153,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
+        <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Input
             disabled={loading}
             name="nip"
@@ -160,8 +165,8 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
-          <Select defaultValue={jurusans[0]} placeholder="Pilih Jurusan">
+        <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+          <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
             {jurusans.map(jurusan => (
               <Option key={jurusan} value={jurusan}>
                 {jurusan.toUpperCase()}
@@ -169,11 +174,12 @@ class TambahDosen extends React.Component {
                     ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
+        <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Select
             placeholder="Pilih Prodi"
             disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
             value={this.state.prodi}
+            onChange={this.handleProdiChange}
           >
             {this.state.prodies.map(prodiku => (
               <Option key={prodiku} value={prodiku}>
