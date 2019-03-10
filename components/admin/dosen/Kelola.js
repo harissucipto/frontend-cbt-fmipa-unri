@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';
+import Router from 'next/router';
 
+import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';
 import Dosens from './Dosens';
 import ListDosen from './ListDosen';
 
@@ -108,7 +109,11 @@ class KelolaDosen extends Component {
       <Card
         title="Kelola Akun Dosen"
         style={{ margin: '20px', padding: '24px' }}
-        extra={<Button>Tambah Akun</Button>}
+        extra={
+          <Button type="dashed" onClick={() => Router.push('/admin/dosen/tambah')}>
+            Tambah Akun
+          </Button>
+        }
       >
         <ApolloConsumer>
           {client => (
