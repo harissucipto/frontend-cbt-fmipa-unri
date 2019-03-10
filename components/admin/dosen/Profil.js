@@ -5,6 +5,7 @@ import { Card, List, Avatar, Layout, Table } from 'antd';
 import styled from 'styled-components';
 
 import ListKelas from './ListKelas';
+import ListMataKuliah from './ListMataKuliah';
 
 const CURRENT_DOSEN_QUERY = gql`
   query CURRENT_DOSEN_QUERY($id: ID!) {
@@ -84,8 +85,12 @@ const ProfilAdmin = ({ id }) => (
       console.log(data, 'data profil');
 
       return (
-        <Layout>
-          <Card style={{ margin: '20px', padding: '24px', maxWidth: '480px' }} loading={loading}>
+        <Card style={{ margin: '30px' }} title="Kelola Akun Dosen">
+          <Card
+            title="Informasi Akun Dosen"
+            style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
+            loading={loading}
+          >
             {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
             <div>
@@ -143,13 +148,24 @@ const ProfilAdmin = ({ id }) => (
             </List>
           </Card>
 
-          <Card title="Kelas yang diajar">
-            <ListKelas kelases={data.dosen.kelases} loading={loading} />
+          <Card
+            title="Mata Kuliah  yang diajar"
+            style={{ maxWidth: '700px', margin: '20px', padding: '20px' }}
+          >
+            <ListMataKuliah mataKuliahs={data.dosen.mataKuliahs} loading={loading} />
           </Card>
-        </Layout>
+
+          <Card
+            title="Kelas yang diajar"
+            style={{ maxWidth: '700px', margin: '20px', padding: '20px' }}
+          >
+            <ListKelas kelases={data.dosen.kelases} loading={loading} idDosen={data.dosen.id} />
+          </Card>
+        </Card>
       );
     }}
   </Query>
 );
 
 export default ProfilAdmin;
+export { CURRENT_DOSEN_QUERY };

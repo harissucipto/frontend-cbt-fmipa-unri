@@ -38,27 +38,24 @@ class DeleteDosen extends Component {
         variables={{ id: this.props.id }}
         update={this.update}
       >
-        {(deleteItem, { error, loading, called }) => {
-          if (!error && !loading && called) {
-            this.props.hapusDataTampilan();
-          }
+        {(deleteItem, { error, loading, called }) => (
+          <>
+            {error && <Alert message="Error Saat Mengahapus" type="error" closable />}
 
-          return (
-            <>
-              {error && <Alert message="Error Saat Mengahapus" type="error" closable />}
-
-              <Popconfirm
-                title="Are you sure？"
-                icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-                onConfirm={deleteItem}
-              >
-                <Button type="danger" loading={loading}>
+            <Popconfirm
+              title="Are you sure？"
+              icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+              onConfirm={async () => {
+                  await deleteItem();
+                  this.props.hapusDataTampilan();
+                }}
+            >
+              <Button type="danger" loading={loading}>
                   Delete
-                </Button>
-              </Popconfirm>
-            </>
-          );
-        }}
+              </Button>
+            </Popconfirm>
+          </>
+          )}
       </Mutation>
     );
   }
