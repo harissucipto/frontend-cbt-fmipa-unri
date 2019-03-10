@@ -17,7 +17,7 @@ class ListDosen extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/dosen/profil',
+              pathname: '/admin/dosen/profil',
               query: { id: record.id },
             }}
           >
