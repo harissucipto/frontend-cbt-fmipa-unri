@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Card, List, Avatar, Layout, Table } from 'antd';
+import { Card, List, Avatar, Layout, Table, Row, Col } from 'antd';
 import styled from 'styled-components';
 
 import ListKelas from './ListKelas';
@@ -86,12 +86,14 @@ const ProfilAdmin = ({ id }) => (
 
       return (
         <Card style={{ margin: '30px' }} title="Kelola Akun Dosen">
-          <Card
-            title="Informasi Akun Dosen"
-            style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
-            loading={loading}
-          >
-            {/* <HeaderAvatar>
+          <Row>
+            <Col span={12}>
+              <Card
+                title="Informasi Akun Dosen"
+                style={{ margin: '20px', padding: '24px' }}
+                loading={loading}
+              >
+                {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
             <div>
               <p>
@@ -102,65 +104,62 @@ const ProfilAdmin = ({ id }) => (
             </div>
           </HeaderAvatar> */}
 
-            <List>
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
-                  title={<a href="https://ant.design">Email</a>}
-                  description={data.dosen.user.email}
-                />
-              </List.Item>
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
-                  title={<a href="https://ant.design">Nama</a>}
-                  description={data.dosen.nama}
-                />
-              </List.Item>
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
-                  title={<a href="https://ant.design">NIP</a>}
-                  description={data.dosen.nip}
-                />
-              </List.Item>
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
-                  title={<a href="https://ant.design">Jurusan</a>}
-                  description={data.dosen.prodi[0].jurusan.nama}
-                />
-              </List.Item>
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
-                  title={<a href="https://ant.design">Prodi</a>}
-                  description={data.dosen.prodi[0].nama}
-                />
-              </List.Item>
-              {/* <List.Item>
+                <List>
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">Email</a>}
+                      description={data.dosen.user.email}
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">Nama</a>}
+                      description={data.dosen.nama}
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">NIP</a>}
+                      description={data.dosen.nip}
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">Jurusan</a>}
+                      description={data.dosen.prodi[0].jurusan.nama}
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">Prodi</a>}
+                      description={data.dosen.prodi[0].nama}
+                    />
+                  </List.Item>
+                  {/* <List.Item>
               <List.Item.Meta
                 avatar={<Avatar icon="mail" />}
                 title={<a href="https://ant.design">Email</a>}
                 description={data.admin.email}
               />
             </List.Item> */}
-            </List>
-          </Card>
+                </List>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card title="Mata Kuliah  yang diajar" style={{ margin: '20px', padding: '20px' }}>
+                <ListMataKuliah mataKuliahs={data.dosen.mataKuliahs} loading={loading} />
+              </Card>
 
-          <Card
-            title="Mata Kuliah  yang diajar"
-            style={{ maxWidth: '700px', margin: '20px', padding: '20px' }}
-          >
-            <ListMataKuliah mataKuliahs={data.dosen.mataKuliahs} loading={loading} />
-          </Card>
-
-          <Card
-            title="Kelas yang diajar"
-            style={{ maxWidth: '700px', margin: '20px', padding: '20px' }}
-          >
-            <ListKelas kelases={data.dosen.kelases} loading={loading} idDosen={data.dosen.id} />
-          </Card>
+              <Card title="Kelas yang diajar" style={{ margin: '20px', padding: '20px' }}>
+                <ListKelas kelases={data.dosen.kelases} loading={loading} idDosen={data.dosen.id} />
+              </Card>
+            </Col>
+          </Row>
         </Card>
       );
     }}
