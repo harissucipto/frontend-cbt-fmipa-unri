@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Button, Popconfirm, Icon, Alert } from 'antd';
 
-import { DOSENS_QUERY } from './Dosens';
+import { SEARCH_DOSEN_QUERY1 } from './ListDosen';
 
 const DELETE_DOSEN_MUTATION = gql`
   mutation DELETE_DOSEN_MUTATION($id: ID!) {
@@ -22,14 +22,50 @@ class DeleteDosen extends Component {
   update = (cache, payload) => {
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the items we want
-    const data = cache.readQuery({ query: DOSENS_QUERY });
+    const dataALL = cache.readQuery({
+      query: SEARCH_DOSEN_QUERY1,
+      variables: {
+        searchTerm: '',
+        jurusan: '',
+        prodi: '',
+      },
+    });
     // // 2. Filter the deleted itemout of the page
 
-    console.log(data, payload.data.deleteDosen);
-    data.dosens = data.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
-    console.log(data.dosens);
+    dataALL.dosens = dataALL.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
+
     // // 3. Put the items back!
-    cache.writeQuery({ query: DOSENS_QUERY, data });
+    cache.writeQuery({
+      query: SEARCH_DOSEN_QUERY1,
+      variables: {
+        searchTerm: '',
+        jurusan: '',
+        prodi: '',
+      },
+      data: dataALL,
+    });
+
+    const dataK = cache.readQuery({
+      query: SEARCH_DOSEN_QUERY1,
+      variables: {
+        searchTerm: this.props.keyword,
+        jurusan: this.props.jurusan,
+        prodi: this.props.prodi,
+      },
+    });
+    // // 2. Filter the deleted itemout of the page
+
+    dataK.dosens = dataK.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
+
+    cache.writeQuery({
+      query: SEARCH_DOSEN_QUERY1,
+      variables: {
+        searchTerm: this.props.keyword,
+        jurusan: this.props.jurusan,
+        prodi: this.props.prodi,
+      },
+      data: dataK,
+    });
   };
   render() {
     return (

@@ -99,7 +99,12 @@ class ListDosen extends Component {
 
             <Divider type="vertical" />
 
-            <Hapus id={record.id} />
+            <Hapus
+              id={record.id}
+              prodi={this.props.prodi}
+              jurusan={this.props.jurusan}
+              keyword={this.props.keyword}
+            />
           </span>
         ),
       },
