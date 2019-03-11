@@ -130,14 +130,14 @@ const ProfilAdmin = ({ id }) => (
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Jurusan</a>}
-                      description={data.dosen.prodi[0].jurusan.nama}
+                      description={data.dosen.prodi.jurusan.nama}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Prodi</a>}
-                      description={data.dosen.prodi[0].nama}
+                      description={data.dosen.prodi.nama}
                     />
                   </List.Item>
                   {/* <List.Item>

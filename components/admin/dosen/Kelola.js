@@ -17,7 +17,7 @@ const SEARCH_DOSEN_QUERY1 = gql`
       where: {
         AND: [
           { OR: [{ nama_contains: $searchTerm }, { nip_contains: $searchTerm }] }
-          { prodi_some: { nama_contains: $prodi, jurusan: { nama_contains: $jurusan } } }
+          { prodi: { nama_contains: $prodi, jurusan: { nama_contains: $jurusan } } }
         ]
       }
     ) {
@@ -28,6 +28,14 @@ const SEARCH_DOSEN_QUERY1 = gql`
         id
         email
         passwordKasih
+      }
+      prodi {
+        id
+        nama
+        jurusan {
+          id
+          nama
+        }
       }
     }
   }

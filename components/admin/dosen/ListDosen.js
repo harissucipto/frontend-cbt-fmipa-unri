@@ -41,12 +41,24 @@ class ListDosen extends Component {
         key: 'passwordKasih',
       },
       {
+        title: 'Program Studi',
+        dataIndex: 'prodi.nama',
+        key: 'prodi',
+      },
+      {
+        title: 'Jurusan',
+        dataIndex: 'prodi.jurusan.nama',
+        key: 'jurusan',
+      },
+      {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
           <span>
             <Button
-              onClick={() => Router.push({ pathname: '/dosen/edit', query: { id: record.id } })}
+              onClick={() =>
+                Router.replace({ pathname: '/admin/dosen/edit', query: { id: record.id } })
+              }
               type="ghost"
             >
               Edit
@@ -62,6 +74,7 @@ class ListDosen extends Component {
   }
 
   render() {
+    console.log(this.props.dosens);
     return (
       <Table
         columns={this.columns}

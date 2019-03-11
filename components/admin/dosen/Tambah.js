@@ -29,7 +29,7 @@ const CREATE_DOSEN_MUTATION = gql`
             nama: $nama
             nip: $nip
             prodi: {
-              connect: [{ nama: $prodi }]
+              connect: { nama: $prodi }
             }
           }
         }

@@ -13,6 +13,14 @@ const DOSENS_QUERY = gql`
         email
         passwordKasih
       }
+      prodi {
+        id
+        nama
+        jurusan {
+          id
+          nama
+        }
+      }
     }
   }
 `;
