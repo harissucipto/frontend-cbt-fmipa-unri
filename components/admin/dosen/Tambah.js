@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import PesanError from '../../PesanError';
-import { DOSENS_QUERY } from './Dosens';
+import  { SEARCH_DOSEN_QUERY1 } from './ListDosen';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 
 const { Content } = Layout;
@@ -85,7 +85,11 @@ class TambahDosen extends React.Component {
     return (
       <Mutation
         mutation={CREATE_DOSEN_MUTATION}
-        refetchQueries={[{ query: DOSENS_QUERY }]}
+        refetchQueries={[{
+          query: SEARCH_DOSEN_QUERY1, variables: {
+            searchTerm: '',
+            jurusan: '',
+            prodi: '', }}]}
         variables={{
             email: this.state.email.toLowerCase(),
             password: this.state.password,

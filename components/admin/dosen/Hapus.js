@@ -45,17 +45,14 @@ class DeleteDosen extends Component {
             <Popconfirm
               title="Are you sure？"
               icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-              onConfirm={async () => {
-                  await deleteItem();
-                  this.props.hapusDataTampilan();
-                }}
+              onConfirm={deleteItem}
             >
               <Button type="danger" loading={loading}>
-                  Delete
+                Delete
               </Button>
             </Popconfirm>
           </>
-          )}
+        )}
       </Mutation>
     );
   }

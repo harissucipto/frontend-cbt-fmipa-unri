@@ -3,7 +3,40 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Table, Divider, Button } from 'antd';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
 import Hapus from './Hapus';
+
+const SEARCH_DOSEN_QUERY1 = gql`
+  query SEARCH_DOSEN_QUERY($searchTerm: String!, $jurusan: String!, $prodi: String!) {
+    dosens(
+      where: {
+        AND: [
+          { OR: [{ nama_contains: $searchTerm }, { nip_contains: $searchTerm }] }
+          { prodi: { nama_contains: $prodi, jurusan: { nama_contains: $jurusan } } }
+        ]
+      }
+    ) {
+      id
+      nama
+      nip
+      user {
+        id
+        email
+        passwordKasih
+      }
+      prodi {
+        id
+        nama
+        jurusan {
+          id
+          nama
+        }
+      }
+    }
+  }
+`;
 
 class ListDosen extends Component {
   constructor(props) {
@@ -66,7 +99,7 @@ class ListDosen extends Component {
 
             <Divider type="vertical" />
 
-            <Hapus id={record.id} hapusDataTampilan={() => this.props.hapusDosen(record.id)} />
+            <Hapus id={record.id} />
           </span>
         ),
       },
@@ -74,16 +107,28 @@ class ListDosen extends Component {
   }
 
   render() {
-    console.log(this.props.dosens);
+    const { prodi, jurusan, keyword } = this.props;
     return (
-      <Table
-        columns={this.columns}
-        dataSource={this.props.dosens}
-        rowKey={record => record.nip}
-        loading={this.props.loading}
-      />
+      <Query
+        query={SEARCH_DOSEN_QUERY1}
+        variables={{
+          searchTerm: keyword,
+          jurusan,
+          prodi,
+        }}
+      >
+        {({ data, loading, error }) => (
+          <Table
+            columns={this.columns}
+            dataSource={data.dosens}
+            rowKey={record => record.nip}
+            loading={loading}
+          />
+        )}
+      </Query>
     );
   }
 }
 
 export default ListDosen;
+export { SEARCH_DOSEN_QUERY1 };

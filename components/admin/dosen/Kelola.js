@@ -51,19 +51,11 @@ class KelolaDosen extends Component {
     keyword: '',
   };
 
-  handleJurusanChange = async (value, client) => {
-    this.setState({ loading: true });
-    const res = await client.query({
-      query: SEARCH_DOSEN_QUERY1,
-      variables: { searchTerm: '', jurusan: value === 'semua' ? '' : value, prodi: '' },
-    });
-
+  handleJurusanChange = async (value) => {
     this.setState({
       prodies: prodis[value],
       jurusan: value,
       prodi: prodis[value][0],
-      dosens: res.data.dosens,
-      loading: false,
       keyword: '',
     });
   };
@@ -74,41 +66,16 @@ class KelolaDosen extends Component {
     this.setState({ dosens: dosenSisa });
   };
 
-  handleProdiChange = async (value, client) => {
-    this.setState({ loading: true });
-    const res = await client.query({
-      query: SEARCH_DOSEN_QUERY1,
-      variables: {
-        searchTerm: '',
-        jurusan: this.state.jurusan,
-        prodi: value === 'semua' ? '' : value,
-      },
-    });
-
+  handleProdiChange = async (value) => {
     this.setState({
       prodi: value,
-      dosens: res.data.dosens,
-      loading: false,
       keyword: '',
     });
   };
 
-  handleCari = async (value, client) => {
-    this.setState({ loading: true });
-    const { jurusan, prodi } = this.state;
-    console.log(value, jurusan, prodi);
-    const res = await client.query({
-      query: SEARCH_DOSEN_QUERY1,
-      variables: {
-        searchTerm: value,
-        jurusan: jurusan === 'semua' ? '' : jurusan,
-        prodi: prodi === 'semua' ? '' : prodi,
-      },
-    });
-
+  handleCari = async (value) => {
     this.setState({
-      dosens: res.data.dosens,
-      loading: false,
+      keyword: value,
     });
   };
 
@@ -123,95 +90,83 @@ class KelolaDosen extends Component {
           </Button>
         }
       >
-        <ApolloConsumer>
-          {client => (
-            <Form>
-              <Form.Item
-                label="Jurusan"
-                style={{ maxWidth: '480px' }}
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 14 }}
-              >
-                <Select
-                  defaultValue={jurusans[0]}
-                  placeholder="Pilih Jurusan"
-                  onChange={value => this.handleJurusanChange(value, client)}
-                >
-                  {jurusans.map(jurusan => (
-                    <Option key={jurusan} value={jurusan}>
-                      {jurusan.toUpperCase()}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Program Studi"
-                style={{ maxWidth: '480px' }}
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 14 }}
-              >
-                <Select
-                  placeholder="Pilih Prodi"
-                  disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
-                  value={this.state.prodi}
-                  onChange={value => this.handleProdiChange(value, client)}
-                >
-                  {this.state.prodies.map(prodiku => (
-                    <Option key={prodiku} value={prodiku}>
-                      {prodiku.toUpperCase()}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+        <Form>
+          <Form.Item
+            label="Jurusan"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          >
+            <Select
+              defaultValue={jurusans[0]}
+              placeholder="Pilih Jurusan"
+              onChange={value => this.handleJurusanChange(value)}
+            >
+              {jurusans.map(jurusan => (
+                <Option key={jurusan} value={jurusan}>
+                  {jurusan.toUpperCase()}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Program Studi"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          >
+            <Select
+              placeholder="Pilih Prodi"
+              disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
+              value={this.state.prodi}
+              onChange={value => this.handleProdiChange(value)}
+            >
+              {this.state.prodies.map(prodiku => (
+                <Option key={prodiku} value={prodiku}>
+                  {prodiku.toUpperCase()}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-              <Form.Item
-                label="Total Akun"
-                style={{ maxWidth: '480px' }}
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 14 }}
-              >
-                <p>{this.state.dosens.length} Akun</p>
-              </Form.Item>
+          <Form.Item
+            label="Total Akun"
+            style={{ maxWidth: '480px' }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+          />
 
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginBottom: '20px',
-                }}
-              >
-                <Search
-                  onChange={(e) => {
-                    e.persist();
-                    this.setState({ keyword: e.target.value });
-                  }}
-                  value={this.state.keyword}
-                  style={{ maxWidth: '480px' }}
-                  placeholder="Masukan Nama atau NIP"
-                  enterButton="Cari akun"
-                  onSearch={value => this.handleCari(value, client)}
-                />
-              </div>
-            </Form>
-          )}
-        </ApolloConsumer>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginBottom: '20px',
+            }}
+          >
+            <Search
+              onChange={(e) => {
+                e.persist();
+                this.setState({ keyword: e.target.value });
+              }}
+              value={this.state.keyword}
+              style={{ maxWidth: '480px' }}
+              placeholder="Masukan Nama atau NIP"
+              enterButton="Cari akun"
+              onSearch={value => this.handleCari(value)}
+            />
+          </div>
+        </Form>
+
         <ListDosen
-          dosens={this.state.dosens}
-          loading={this.state.loading}
-          hapusDosen={this.hapusDosen}
+          keyword={this.state.keyword || ''}
+          prodi={this.state.prodi === 'semua' ? '' : this.state.prodi}
+          jurusan={this.state.jurusan === 'semua' ? '' : this.state.jurusan}
         />
       </Card>
     );
   }
 }
 
-const Kelola = () => (
-  <Dosens>
-    {({ data, loading }) => {
-      if (loading) return <p>Loading...</p>;
-      return <KelolaDosen dosens={data.dosens} />;
-    }}
-  </Dosens>
-);
+const Kelola = () => <KelolaDosen />;
 
 export default Kelola;
