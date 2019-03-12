@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Layout } from 'antd';
 
-import Edit from '../../../components/admin/dosen/Edit';
+import Edit from '../../../components/admin/mahasiswa/Edit';
 
 const EditPage = props => (
   <Layout>

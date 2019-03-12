@@ -6,7 +6,7 @@ import { Table, Divider, Button } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
-import { CURRENT_DOSEN_QUERY } from './Profil';
+import { CURRENT_QUERY } from './Profil';
 import { th } from 'date-fns/esm/locale';
 
 const MUTATION_DELETE_KELAS_TO_DOSEN = gql`
@@ -63,7 +63,7 @@ class ListKelas extends Component {
               variables={{ idDosen: this.props.idDosen, idKelas: record.id }}
               update={(cache, payload) => {
                 const data = cache.readQuery({
-                  query: CURRENT_DOSEN_QUERY,
+                  query: CURRENT_QUERY,
                   variables: { id: this.props.idDosen },
                 });
 
@@ -71,7 +71,11 @@ class ListKelas extends Component {
                 data.dosen.kelases = data.dosen.kelases.filter(item => item.id !== payload.data.updateDosen.id);
                 console.log(data.dosen.kelases);
 
-                cache.writeQuery({ query: DOSENS_QUERY, data });
+                cache.writeQuery({
+                  query: CURRENT_QUERY,
+                  data,
+                  variables: { id: this.props.idDosen },
+                });
               }}
             >
               {(hapusKelas, { error, loading, called }) => {

@@ -3,8 +3,9 @@ import { Card, Select, Form, Button, Input, Alert } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { CURRENT_DOSEN_QUERY } from './Profil';
-import { SEARCH_DOSEN_QUERY1 } from './ListDosen'
+
+import { SEARCH_LIST } from './List';
+import { CURRENT_QUERY} from './Profil'
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
 
@@ -15,14 +16,14 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
     $email: String!
     $prodi: String!
     $nama: String!
-    $nip: String!
-    $idDosen: ID!
+    $nim: String!
+    $idMahasiswa: ID!
   ) {
-    updateDosen(
-      where: { id: $idDosen }
+    updateMahasiswa(
+      where: { id: $idMahasiswa }
       data: {
         nama: $nama
-        nip: $nip
+        nim: $nim
         prodi: { connect: { nama: $prodi } }
         user: { update: { email: $email } }
       }
@@ -35,13 +36,13 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
 
 class FormEdit extends Component {
   state = {
-    id: this.props.dosen.id,
-    email: this.props.dosen.user.email,
-    nama: this.props.dosen.nama,
-    nip: this.props.dosen.nip,
-    jurusan: this.props.dosen.prodi.jurusan.nama,
-    prodi: this.props.dosen.prodi.nama,
-    prodies: prodis[this.props.dosen.prodi.jurusan.nama],
+    id: this.props.mahasiswa.id,
+    email: this.props.mahasiswa.user.email,
+    nama: this.props.mahasiswa.nama,
+    nim: this.props.mahasiswa.nim,
+    jurusan: this.props.mahasiswa.prodi.jurusan.nama,
+    prodi: this.props.mahasiswa.prodi.nama,
+    prodies: prodis[this.props.mahasiswa.prodi.jurusan.nama],
   };
 
   saveToState = (e) => {
@@ -71,32 +72,32 @@ class FormEdit extends Component {
         variables={{
           email: this.state.email.toLowerCase(),
           nama: this.state.nama.toLowerCase(),
-          nip: this.state.nip,
+          nim: this.state.nim,
           prodi: this.state.prodi,
-          idDosen: this.state.id,
+          idMahasiswa: this.state.id,
         }}
         refetchQueries={[{
-          query: SEARCH_DOSEN_QUERY1, variables: {
+          query: SEARCH_LIST, variables: {
             searchTerm: '',
             jurusan: '',
             prodi: '',
           }
         }]}
       >
-        {(updateDosen, {
+        {(updateMahasiswa, {
  data, error, loading, called,
 }) => (
   <Form
     method="post"
     onSubmit={async (e) => {
               e.preventDefault();
-              await updateDosen();
+              await updateMahasiswa();
             }}
   >
     <PesanError error={error} />
     {!error && !loading && called && (
     <Alert
-      message="Rubah informasi akun  dosen berhasil"
+      message="Rubah informasi akun  mahasiswa berhasil"
       type="success"
       showIcon
       style={{ margin: '10px 0' }}
@@ -108,7 +109,7 @@ class FormEdit extends Component {
         disabled={loading}
         name="email"
         value={this.state.email}
-        placeholder="Email dosen"
+        placeholder="Email mahasiswa"
         type="email"
         required
         onChange={this.saveToState}
@@ -130,8 +131,8 @@ class FormEdit extends Component {
     <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
       <Input
         disabled={loading}
-        name="nip"
-        value={this.state.nip}
+        name="nim"
+        value={this.state.nim}
         placeholder="NIP"
         type="string"
         required
@@ -182,11 +183,11 @@ class FormEdit extends Component {
 class EditDosen extends Component {
   render() {
     return (
-      <Query query={CURRENT_DOSEN_QUERY} variables={{ id: this.props.id }}>
+      <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => {
           return (
             <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
-              <FormEdit dosen={data.dosen} />
+              <FormEdit mahasiswa={data.mahasiswa} />
             </Card>
           );
         }}

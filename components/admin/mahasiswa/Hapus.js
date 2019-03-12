@@ -4,11 +4,11 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Button, Popconfirm, Icon, Alert } from 'antd';
 
-import { SEARCH_DOSEN_QUERY1 } from './List';
+import { SEARCH_LIST } from './List';
 
-const DELETE_DOSEN_MUTATION = gql`
-  mutation DELETE_DOSEN_MUTATION($id: ID!) {
-    deleteDosen(id: $id) {
+const DELETE_MAHASISWA_MUTATION = gql`
+  mutation DELETE_MAHASISWA_MUTATION($id: ID!) {
+    deleteMahasiswa(id: $id) {
       id
     }
   }
@@ -23,7 +23,7 @@ class DeleteDosen extends Component {
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the items we want
     const dataALL = cache.readQuery({
-      query: SEARCH_DOSEN_QUERY1,
+      query: SEARCH_LIST,
       variables: {
         searchTerm: '',
         jurusan: '',
@@ -32,11 +32,11 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataALL.dosens = dataALL.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
+    dataALL.mahasiswas = dataALL.mahasiswas.filter(item => item.id !== payload.data.deleteMahasiswa.id);
 
     // // 3. Put the items back!
     cache.writeQuery({
-      query: SEARCH_DOSEN_QUERY1,
+      query: SEARCH_LIST,
       variables: {
         searchTerm: '',
         jurusan: '',
@@ -46,7 +46,7 @@ class DeleteDosen extends Component {
     });
 
     const dataK = cache.readQuery({
-      query: SEARCH_DOSEN_QUERY1,
+      query: SEARCH_LIST,
       variables: {
         searchTerm: this.props.keyword,
         jurusan: this.props.jurusan,
@@ -55,10 +55,10 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataK.dosens = dataK.dosens.filter(item => item.id !== payload.data.deleteDosen.id);
+    dataK.mahasiswas = dataK.mahasiswas.filter(item => item.id !== payload.data.deleteMahasiswa.id);
 
     cache.writeQuery({
-      query: SEARCH_DOSEN_QUERY1,
+      query: SEARCH_LIST,
       variables: {
         searchTerm: this.props.keyword,
         jurusan: this.props.jurusan,
@@ -70,7 +70,7 @@ class DeleteDosen extends Component {
   render() {
     return (
       <Mutation
-        mutation={DELETE_DOSEN_MUTATION}
+        mutation={DELETE_MAHASISWA_MUTATION}
         variables={{ id: this.props.id }}
         update={this.update}
       >
@@ -95,4 +95,4 @@ class DeleteDosen extends Component {
 }
 
 export default DeleteDosen;
-export { DELETE_DOSEN_MUTATION };
+export { DELETE_MAHASISWA_MUTATION };

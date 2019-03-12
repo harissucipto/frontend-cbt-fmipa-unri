@@ -4,43 +4,35 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import PesanError from '../../PesanError';
-import  { SEARCH_DOSEN_QUERY1 } from './ListDosen';
+import { SEARCH_LIST } from './List';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 
 const { Content } = Layout;
 const { Option } = Select;
 
-const CREATE_DOSEN_MUTATION = gql`
-    mutation  CREATE_DOSEN_MUTATION(
-      $email: String!
-      $password: String!
-      $passwordKasih: String!
-      $prodi: String!
-      $nama: String!
-      $nip: String!
-    ) {
+const CREATE_MAHASISWA_MUTATION = gql`
+  mutation CREATE_MAHASISWA_MUTATION(
+    $email: String!
+    $password: String!
+    $passwordKasih: String!
+    $prodi: String!
+    $nama: String!
+    $nim: String!
+  ) {
     createUser(
       data: {
-      email: $email
-      password: $password
-      passwordKasih: $passwordKasih
-        dosen: {
-          create: {
-            nama: $nama
-            nip: $nip
-            prodi: {
-              connect: { nama: $prodi }
-            }
-          }
-        }
+        email: $email
+        password: $password
+        passwordKasih: $passwordKasih
+        permissions: { set: [USER, MAHASISWA] }
+        mahasiswa: { create: { nama: $nama, nim: $nim, prodi: { connect: { nama: $prodi } } } }
       }
-    )
-    {
+    ) {
       id
-      dosen {
+      mahasiswa {
         id
         nama
-        nip
+        nim
       }
     }
   }
@@ -50,7 +42,7 @@ const DEFAULTSTATE = {
   email: '',
   password: '',
   nama: '',
-  nip: '',
+  nim: '',
   jurusan: '',
   prodi: '',
   prodies: [],
@@ -84,19 +76,24 @@ class TambahDosen extends React.Component {
   render() {
     return (
       <Mutation
-        mutation={CREATE_DOSEN_MUTATION}
-        refetchQueries={[{
-          query: SEARCH_DOSEN_QUERY1, variables: {
-            searchTerm: '',
-            jurusan: '',
-            prodi: '', }}]}
+        mutation={CREATE_MAHASISWA_MUTATION}
+        refetchQueries={[
+          {
+            query: SEARCH_LIST,
+            variables: {
+              searchTerm: '',
+              jurusan: '',
+              prodi: '',
+            },
+          },
+        ]}
         variables={{
-            email: this.state.email.toLowerCase(),
-            password: this.state.password,
-            passwordKasih: this.state.password,
-            nama: this.state.nama.toLowerCase(),
-            nip: this.state.nip,
-            prodi: this.state.prodi,
+          email: this.state.email.toLowerCase(),
+          password: this.state.password,
+          passwordKasih: this.state.password,
+          nama: this.state.nama.toLowerCase(),
+          nim: this.state.nim,
+          prodi: this.state.prodi,
         }}
       >
         {(createDosen, {
@@ -104,10 +101,10 @@ class TambahDosen extends React.Component {
 }) => (
   <Content>
     <Card
-      title="Kelola Akun Dosen"
+      title="Kelola Akun Mahasiswa"
       style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
     >
-      <h2>Tambah Akun Dosen Baru</h2>
+      <h2>Tambah Akun Mahasiswa Baru</h2>
       <Form
         method="post"
         onSubmit={async (e) => {
@@ -122,7 +119,7 @@ class TambahDosen extends React.Component {
         <PesanError error={error} />
         {!error && !loading && called && (
         <Alert
-          message={`Buat akun  dosen ${data.createUser.dosen.nama} berhasil`}
+          message={`Buat akun  mahasiswa ${data.createUser.mahasiswa.nama} berhasil`}
           type="success"
           showIcon
           style={{ margin: '10px 0' }}
@@ -134,7 +131,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="email"
             value={this.state.email}
-            placeholder="Email dosen"
+            placeholder="Email mahasiswa"
             type="email"
             required
             onChange={this.saveToState}
@@ -147,7 +144,7 @@ class TambahDosen extends React.Component {
             name="password"
             value={this.state.password}
             type="password"
-            placeholder="Password untuk login akun dosen"
+            placeholder="Password untuk login akun mahasiswa"
             required
             onChange={this.saveToState}
           />
@@ -165,11 +162,11 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+        <Form.Item label="NIM" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Input
             disabled={loading}
-            name="nip"
-            value={this.state.nip}
+            name="nim"
+            value={this.state.nim}
             placeholder="NIP"
             type="string"
             required

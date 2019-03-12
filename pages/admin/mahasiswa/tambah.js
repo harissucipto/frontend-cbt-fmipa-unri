@@ -1,6 +1,6 @@
 import React from 'react';
-import TambahDosen from '../../../components/admin/dosen/Tambah';
+import Tambah from '../../../components/admin/mahasiswa/Tambah';
 
-const PageTambahDosen = () => <TambahDosen />;
+const PageTambah = () => <Tambah />;
 
-export default PageTambahDosen;
+export default PageTambah;
