@@ -5,12 +5,12 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 
 import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';
-import ListDosen from './ListDosen';
+import List from './List';
 
 const { Option } = Select;
 const { Search } = Input;
 
-class KelolaDosen extends Component {
+class KelolaMahasiwa extends Component {
   state = {
     jurusan: '',
     prodi: '',
@@ -26,12 +26,6 @@ class KelolaDosen extends Component {
       prodi: prodis[value][0],
       keyword: '',
     });
-  };
-
-  hapusDosen = (id) => {
-    const { dosens } = this.state;
-    const dosenSisa = dosens.filter(dosen => dosen.id !== id);
-    this.setState({ dosens: dosenSisa });
   };
 
   handleProdiChange = async (value) => {
@@ -50,7 +44,7 @@ class KelolaDosen extends Component {
   render() {
     return (
       <Card
-        title="Kelola Akun Dosen"
+        title="Kelola Akun Mahasiswa"
         style={{ margin: '20px', padding: '24px' }}
         extra={
           <Button type="dashed" onClick={() => Router.push('/admin/dosen/tambah')}>
@@ -118,14 +112,14 @@ class KelolaDosen extends Component {
               }}
               value={this.state.keyword}
               style={{ maxWidth: '480px' }}
-              placeholder="Masukan Nama atau NIP"
+              placeholder="Masukan Nama atau NIM"
               enterButton="Cari akun"
               onSearch={value => this.handleCari(value)}
             />
           </div>
         </Form>
 
-        <ListDosen
+        <List
           keyword={this.state.keyword || ''}
           prodi={this.state.prodi === 'semua' ? '' : this.state.prodi}
           jurusan={this.state.jurusan === 'semua' ? '' : this.state.jurusan}
@@ -135,6 +129,6 @@ class KelolaDosen extends Component {
   }
 }
 
-const Kelola = () => <KelolaDosen />;
+const Kelola = () => <KelolaMahasiwa />;
 
 export default Kelola;

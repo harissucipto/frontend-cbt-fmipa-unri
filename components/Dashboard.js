@@ -5,8 +5,6 @@ import Router from 'next/router';
 const Dashboard = () => (
   <User>
     {({ data }, loading) => {
-      if (loading) return <p>loading</p>;
-
       const { permissions } = data.me;
       if (permissions.includes('ADMIN')) {
         return <p>ADMIN</p>;
