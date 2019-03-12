@@ -106,6 +106,7 @@ class List extends Component {
           jurusan,
           prodi,
         }}
+        fetchPolicy="network-only"
       >
         {({ data, loading, error }) => {
           console.log(data);

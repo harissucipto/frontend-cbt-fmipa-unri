@@ -121,6 +121,7 @@ class ListDosen extends Component {
           jurusan,
           prodi,
         }}
+        fetchPolicy="network-only"
       >
         {({ data, loading, error }) => (
           <Table

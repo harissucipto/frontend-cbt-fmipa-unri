@@ -24,6 +24,7 @@ class KelolaMahasiwa extends Component {
       jurusan: value,
       prodi: prodis[value][0],
       keyword: '',
+      belumKeyword: '',
     });
   };
 
@@ -107,9 +108,9 @@ class KelolaMahasiwa extends Component {
             <Search
               onChange={(e) => {
                 e.persist();
-                this.setState({ keyword: e.target.value });
+                this.setState({ belumKeyword: e.target.value });
               }}
-              value={this.state.keyword}
+              value={this.state.belumKeyword}
               style={{ maxWidth: '480px' }}
               placeholder="Masukan Nama atau NIM"
               enterButton="Cari akun"
