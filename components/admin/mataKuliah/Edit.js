@@ -3,9 +3,8 @@ import { Card, Select, Form, Button, Input, Alert } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-
 import { SEARCH_LIST } from './List';
-import { CURRENT_QUERY} from './Profil'
+import { CURRENT_QUERY } from './Profil';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
 
@@ -13,19 +12,17 @@ const { Option } = Select;
 
 const MUTATION_UPDATE_DATA_DOSEN = gql`
   mutation MUTATION_UPDATE_DATA_DOSEN(
-    $email: String!
     $prodi: String!
     $nama: String!
-    $nim: String!
-    $idMahasiswa: ID!
+    $kode: String!
+    $id: ID!
   ) {
-    updateMahasiswa(
-      where: { id: $idMahasiswa }
+    updateMataKuliah(
+      where: { id: $id }
       data: {
         nama: $nama
-        nim: $nim
+        kode: $kode
         prodi: { connect: { nama: $prodi } }
-        user: { update: { email: $email } }
       }
     ) {
       id
@@ -36,13 +33,12 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
 
 class FormEdit extends Component {
   state = {
-    id: this.props.mahasiswa.id,
-    email: this.props.mahasiswa.user.email,
-    nama: this.props.mahasiswa.nama,
-    nim: this.props.mahasiswa.nim,
-    jurusan: this.props.mahasiswa.prodi.jurusan.nama,
-    prodi: this.props.mahasiswa.prodi.nama,
-    prodies: prodis[this.props.mahasiswa.prodi.jurusan.nama],
+    id: this.props.mataKuliah.id,
+    nama: this.props.mataKuliah.nama,
+    kode: this.props.mataKuliah.kode,
+    jurusan: this.props.mataKuliah.prodi.jurusan.nama,
+    prodi: this.props.mataKuliah.prodi.nama,
+    prodies: prodis[this.props.mataKuliah.prodi.jurusan.nama],
   };
 
   saveToState = (e) => {
@@ -70,51 +66,41 @@ class FormEdit extends Component {
       <Mutation
         mutation={MUTATION_UPDATE_DATA_DOSEN}
         variables={{
-          email: this.state.email.toLowerCase(),
           nama: this.state.nama.toLowerCase(),
-          nim: this.state.nim,
+          kode: this.state.kode,
           prodi: this.state.prodi,
-          idMahasiswa: this.state.id,
+          id: this.state.id,
         }}
-        refetchQueries={[{
-          query: SEARCH_LIST, variables: {
-            searchTerm: '',
-            jurusan: '',
-            prodi: '',
-          }
-        }]}
+        refetchQueries={[
+          {
+            query: SEARCH_LIST,
+            variables: {
+              searchTerm: '',
+              jurusan: '',
+              prodi: '',
+            },
+          },
+        ]}
       >
-        {(updateMahasiswa, {
+        {(updateMataKuliah, {
  data, error, loading, called,
 }) => (
   <Form
     method="post"
     onSubmit={async (e) => {
               e.preventDefault();
-              await updateMahasiswa();
+              await updateMataKuliah();
             }}
   >
     <PesanError error={error} />
     {!error && !loading && called && (
     <Alert
-      message="Rubah informasi akun  mahasiswa berhasil"
+      message="Rubah informasi akun  mataKuliah berhasil"
       type="success"
       showIcon
       style={{ margin: '10px 0' }}
     />
             )}
-
-    <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="email"
-        value={this.state.email}
-        placeholder="Email mahasiswa"
-        type="email"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
 
     <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
       <Input
@@ -128,11 +114,11 @@ class FormEdit extends Component {
       />
     </Form.Item>
 
-    <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+    <Form.Item label="Kode MK" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
       <Input
         disabled={loading}
-        name="nim"
-        value={this.state.nim}
+        name="kode"
+        value={this.state.kode}
         placeholder="NIP"
         type="string"
         required
@@ -184,13 +170,11 @@ class EditDosen extends Component {
   render() {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
-        {({ data, loading, error }) => {
-          return (
-            <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
-              <FormEdit mahasiswa={data.mahasiswa} />
-            </Card>
-          );
-        }}
+        {({ data, loading, error }) => (
+          <Card style={{ margin: '20px' }} title="Edit Informasi Mata Kuliah" loading={loading}>
+            <FormEdit mataKuliah={data.mataKuliah} />
+          </Card>
+          )}
       </Query>
     );
   }

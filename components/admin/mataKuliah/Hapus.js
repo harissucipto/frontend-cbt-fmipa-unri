@@ -6,9 +6,9 @@ import { Button, Popconfirm, Icon, Alert } from 'antd';
 
 import { SEARCH_LIST } from './List';
 
-const DELETE_MAHASISWA_MUTATION = gql`
-  mutation DELETE_MAHASISWA_MUTATION($id: ID!) {
-    deleteMahasiswa(id: $id) {
+const DELTE_MATAKULIAH_MUTATION = gql`
+  mutation DELTE_MATAKULIAH_MUTATION($id: ID!) {
+    deleteMataKuliah(id: $id) {
       id
     }
   }
@@ -32,7 +32,7 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataALL.mahasiswas = dataALL.mahasiswas.filter(item => item.id !== payload.data.deleteMahasiswa.id);
+    dataALL.mataKuliahs = dataALL.mataKuliahs.filter(item => item.id !== payload.data.deleteMataKuliah.id);
 
     // // 3. Put the items back!
     cache.writeQuery({
@@ -55,7 +55,7 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataK.mahasiswas = dataK.mahasiswas.filter(item => item.id !== payload.data.deleteMahasiswa.id);
+    dataK.mataKuliahs = dataK.mataKuliahs.filter(item => item.id !== payload.data.deleteMataKuliah.id);
 
     cache.writeQuery({
       query: SEARCH_LIST,
@@ -70,7 +70,7 @@ class DeleteDosen extends Component {
   render() {
     return (
       <Mutation
-        mutation={DELETE_MAHASISWA_MUTATION}
+        mutation={DELTE_MATAKULIAH_MUTATION}
         variables={{ id: this.props.id }}
         update={this.update}
       >
@@ -95,4 +95,4 @@ class DeleteDosen extends Component {
 }
 
 export default DeleteDosen;
-export { DELETE_MAHASISWA_MUTATION };
+export { DELTE_MATAKULIAH_MUTATION };
