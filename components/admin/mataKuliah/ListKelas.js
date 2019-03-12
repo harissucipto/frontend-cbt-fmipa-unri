@@ -7,7 +7,6 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
 import { CURRENT_QUERY } from './Profil';
-import { th } from 'date-fns/esm/locale';
 
 const MUTATION_DELETE_KELAS_TO_DOSEN = gql`
   mutation MUTATION_DELETE_KELAS_TO_DOSEN($idDosen: ID!, $idKelas: ID!) {
@@ -30,7 +29,7 @@ class ListKelas extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/admin/dosen/profil',
+              pathname: '/admin/kelas/profil',
               query: { id: record.id },
             }}
           >
@@ -39,9 +38,9 @@ class ListKelas extends Component {
         ),
       },
       {
-        title: 'Mata Kuliah',
-        key: 'mataKuliah',
-        dataIndex: 'mataKuliah.nama',
+        title: 'Dosen',
+        dataIndex: 'prodi.dosen.nama',
+        key: 'dosen',
       },
       {
         title: 'Jurusan',

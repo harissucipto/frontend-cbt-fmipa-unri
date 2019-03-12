@@ -70,7 +70,7 @@ const NavigasiAdmin = () => (
         <Menu.Item key="sub4-1" onClick={() => Router.push('/admin/mata-kuliah/')}>
           Kelola Mata Kuliah
         </Menu.Item>
-        <Menu.Item key="sub4-2" onClick={() => Router.push('/admin/mata-kulia/tambah')}>
+        <Menu.Item key="sub4-2" onClick={() => Router.push('/admin/mata-kuliah/tambah')}>
           Tambah Mata Kuliah
         </Menu.Item>
       </SubMenu>

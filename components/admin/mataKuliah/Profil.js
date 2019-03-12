@@ -2,16 +2,15 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Card, List, Avatar, Row, Col } from 'antd';
-import styled from 'styled-components';
 
 import ListKelas from './ListKelas';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
-    mahasiswa(id: $id) {
+    mataKuliah(id: $id) {
       id
       nama
-      nim
+      kode
       prodi {
         id
         nama
@@ -19,10 +18,6 @@ const CURRENT_QUERY = gql`
           id
           nama
         }
-      }
-      user {
-        id
-        email
       }
       kelases {
         id
@@ -34,6 +29,11 @@ const CURRENT_QUERY = gql`
             id
             nama
           }
+        }
+        dosen {
+          id
+          nama
+          nip
         }
       }
     }
@@ -48,11 +48,11 @@ const ProfilAdmin = ({ id }) => (
       console.log(data, 'data profil');
 
       return (
-        <Card style={{ margin: '30px' }} title="Kelola Akun Dosen">
+        <Card style={{ margin: '30px' }} title="Kelola Mata Kuliah">
           <Row>
-            <Col span={12}>
+            <Col span={8}>
               <Card
-                title="Informasi Akun Mahasiswa"
+                title="Informasi Mata Kuliah"
                 style={{ margin: '20px', padding: '24px' }}
                 loading={loading}
               >
@@ -71,36 +71,29 @@ const ProfilAdmin = ({ id }) => (
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Email</a>}
-                      description={data.mahasiswa.user.email}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Nama</a>}
-                      description={data.mahasiswa.nama}
+                      description={data.mataKuliah.nama}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">NIP</a>}
-                      description={data.mahasiswa.nim}
+                      title={<a href="https://ant.design">Kode Mata Kuliah</a>}
+                      description={data.mataKuliah.kode}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Jurusan</a>}
-                      description={data.mahasiswa.prodi.jurusan.nama}
+                      description={data.mataKuliah.prodi.jurusan.nama}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Prodi</a>}
-                      description={data.mahasiswa.prodi.nama}
+                      description={data.mataKuliah.prodi.nama}
                     />
                   </List.Item>
                   {/* <List.Item>
@@ -113,12 +106,15 @@ const ProfilAdmin = ({ id }) => (
                 </List>
               </Card>
             </Col>
-            <Col span={12}>
-              <Card title="Kelas yang diikuti" style={{ margin: '20px', padding: '20px' }}>
+            <Col span={16}>
+              <Card
+                title="Kelas yang berkaitan dengan mata kuliah"
+                style={{ margin: '20px', padding: '20px' }}
+              >
                 <ListKelas
-                  kelases={data.mahasiswa.kelases}
+                  kelases={data.mataKuliah.kelases}
                   loading={loading}
-                  idDosen={data.mahasiswa.id}
+                  idDosen={data.mataKuliah.id}
                 />
               </Card>
             </Col>
