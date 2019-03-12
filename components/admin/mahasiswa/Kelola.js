@@ -15,7 +15,6 @@ class KelolaMahasiwa extends Component {
     jurusan: '',
     prodi: '',
     prodies: [],
-    dosens: this.props.dosens,
     keyword: '',
   };
 
