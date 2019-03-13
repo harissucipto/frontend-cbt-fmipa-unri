@@ -12,12 +12,18 @@ import PilihMataKuliah from './PilihMataKuliah';
 const { Content } = Layout;
 const { Option } = Select;
 
-const CREATE_MATAKULIAH_MUTATION = gql`
-  mutation CREATE_MATAKULIAH_MUTATION($prodi: String!, $nama: String!, $kode: String!) {
-    createMataKuliah(data: { nama: $nama, kode: $kode, prodi: { connect: { nama: $prodi } } }) {
+const CREATE_KELAS_MUTATION = gql`
+  mutation CREATE_KELAS_MUTATION($prodi: String!, $nama: String!, $dosen: ID!, $mataKuliah: ID!) {
+    createKelas(
+      data: {
+        nama: $nama
+        mataKuliah: { connect: { id: $mataKuliah } }
+        prodi: { connect: { nama: $prodi } }
+        dosen: { connect: { id: $dosen } }
+      }
+    ) {
       id
       nama
-      kode
     }
   }
 `;
@@ -68,7 +74,7 @@ class TambahDosen extends React.Component {
   render() {
     return (
       <Mutation
-        mutation={CREATE_MATAKULIAH_MUTATION}
+        mutation={CREATE_KELAS_MUTATION}
         refetchQueries={[
           {
             query: SEARCH_LIST,
@@ -81,8 +87,9 @@ class TambahDosen extends React.Component {
         ]}
         variables={{
           nama: this.state.nama.toLowerCase(),
-          kode: this.state.kode,
           prodi: this.state.prodi,
+          dosen: this.state.dosen,
+          mataKuliah: this.state.mataKuliah,
         }}
       >
         {(createMataKuliah, {
@@ -110,7 +117,7 @@ class TambahDosen extends React.Component {
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message={`Buat  mataKuliah  ${data.createMataKuliah.nama} berhasil`}
+                      message={`Buat  kelas  ${data.createKelas.nama} berhasil`}
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}

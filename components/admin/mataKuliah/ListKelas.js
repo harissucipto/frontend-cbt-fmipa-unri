@@ -39,7 +39,7 @@ class ListKelas extends Component {
       },
       {
         title: 'Dosen',
-        dataIndex: 'prodi.dosen.nama',
+        dataIndex: 'dosen.nama',
         key: 'dosen',
       },
       {

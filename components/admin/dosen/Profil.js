@@ -37,6 +37,7 @@ const CURRENT_DOSEN_QUERY = gql`
           }
         }
         mataKuliah {
+          id
           nama
         }
       }
@@ -87,7 +88,7 @@ const ProfilAdmin = ({ id }) => (
       return (
         <Card style={{ margin: '30px' }} title="Kelola Akun Dosen">
           <Row>
-            <Col span={12}>
+            <Col span={8}>
               <Card
                 title="Informasi Akun Dosen"
                 style={{ margin: '20px', padding: '24px' }}
@@ -150,11 +151,7 @@ const ProfilAdmin = ({ id }) => (
                 </List>
               </Card>
             </Col>
-            <Col span={12}>
-              <Card title="Mata Kuliah  yang diajar" style={{ margin: '20px', padding: '20px' }}>
-                <ListMataKuliah mataKuliahs={data.dosen.mataKuliahs} loading={loading} />
-              </Card>
-
+            <Col span={16}>
               <Card title="Kelas yang diajar" style={{ margin: '20px', padding: '20px' }}>
                 <ListKelas kelases={data.dosen.kelases} loading={loading} idDosen={data.dosen.id} />
               </Card>
