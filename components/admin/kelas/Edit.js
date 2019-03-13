@@ -7,22 +7,26 @@ import { SEARCH_LIST } from './List';
 import { CURRENT_QUERY } from './Profil';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
+import PIlihDosen from './PIlihDosen';
+import PilihMataKuliah from './PilihMataKuliah';
 
 const { Option } = Select;
 
-const MUTATION_UPDATE_DATA_DOSEN = gql`
-  mutation MUTATION_UPDATE_DATA_DOSEN(
+const MUTATION_UPDATE_KELAS = gql`
+  mutation MUTATION_UPDATE_KELAS(
     $prodi: String!
     $nama: String!
-    $kode: String!
+    $dosen: ID!
+    $mataKuliah: ID!
     $id: ID!
   ) {
-    updateMataKuliah(
+    updateKelas(
       where: { id: $id }
       data: {
         nama: $nama
-        kode: $kode
+        mataKuliah: { connect: { id: $mataKuliah } }
         prodi: { connect: { nama: $prodi } }
+        dosen: { connect: { id: $dosen } }
       }
     ) {
       id
@@ -38,6 +42,8 @@ class FormEdit extends Component {
     jurusan: this.props.kelas.prodi.jurusan.nama,
     prodi: this.props.kelas.prodi.nama,
     prodies: prodis[this.props.kelas.prodi.jurusan.nama],
+    dosen: this.props.kelas.dosen ? this.props.kelas.dosen.id : undefined,
+    mataKuliah: this.props.kelas.mataKuliah ? this.props.kelas.mataKuliah.id : undefined,
   };
 
   saveToState = (e) => {
@@ -51,23 +57,35 @@ class FormEdit extends Component {
       prodies: prodis[value],
       jurusan: value,
       prodi: prodis[value][0],
+      mataKuliah: undefined,
     });
   };
 
-  handleProdiChange = async (value) => {
+  handleProdiChange = (value) => {
     this.setState({
       prodi: value,
+      mataKuliah: undefined,
     });
+  };
+
+  handeMataKuliahChange = (value) => {
+    this.setState({ mataKuliah: value });
+  };
+
+  handleDosenChange = (value) => {
+    console.log(value, 'ini');
+    this.setState({ dosen: value });
   };
 
   render() {
     return (
       <Mutation
-        mutation={MUTATION_UPDATE_DATA_DOSEN}
+        mutation={MUTATION_UPDATE_KELAS}
         variables={{
           nama: this.state.nama.toLowerCase(),
-          kode: this.state.kode,
           prodi: this.state.prodi,
+          dosen: this.state.dosen,
+          mataKuliah: this.state.mataKuliah,
           id: this.state.id,
         }}
         refetchQueries={[
@@ -81,20 +99,20 @@ class FormEdit extends Component {
           },
         ]}
       >
-        {(updateMataKuliah, {
+        {(updateKelas, {
  data, error, loading, called,
 }) => (
   <Form
     method="post"
     onSubmit={async (e) => {
               e.preventDefault();
-              await updateMataKuliah();
+              await updateKelas();
             }}
   >
     <PesanError error={error} />
     {!error && !loading && called && (
     <Alert
-      message="Rubah informasi akun  kelas berhasil"
+      message="Rubah informasi matakuliah  berhasil"
       type="success"
       showIcon
       style={{ margin: '10px 0' }}
@@ -141,6 +159,19 @@ class FormEdit extends Component {
       </Select>
     </Form.Item>
 
+    <Form.Item label="MataKuliah" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+      <PilihMataKuliah
+        jurusan={this.state.jurusan}
+        prodi={this.state.prodi}
+        mataKuliahIni={this.state.mataKuliah}
+        rubahState={this.handeMataKuliahChange}
+      />
+    </Form.Item>
+
+    <Form.Item label="Dosen" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+      <PIlihDosen dosenIni={this.state.dosen} rubahState={this.handleDosenChange} />
+    </Form.Item>
+
     <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
       <Button type="primary" htmlType="submit">
                 Simpan
@@ -161,7 +192,7 @@ class EditDosen extends Component {
           <Card style={{ margin: '20px' }} title="Edit Informasi Mata Kuliah" loading={loading}>
             <FormEdit kelas={data.kelas} />
           </Card>
-          )}
+        )}
       </Query>
     );
   }

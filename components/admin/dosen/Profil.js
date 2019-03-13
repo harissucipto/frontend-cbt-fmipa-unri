@@ -79,7 +79,7 @@ const HeaderAvatar = styled.div`
 `;
 
 const ProfilAdmin = ({ id }) => (
-  <Query query={CURRENT_DOSEN_QUERY} variables={{ id }}>
+  <Query query={CURRENT_DOSEN_QUERY} variables={{ id }} fetchPolicy="network-only">
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
       if (!data) return <p>Loading..</p>;

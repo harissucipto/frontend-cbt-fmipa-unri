@@ -41,7 +41,7 @@ const CURRENT_QUERY = gql`
 `;
 
 const ProfilAdmin = ({ id }) => (
-  <Query query={CURRENT_QUERY} variables={{ id }}>
+  <Query query={CURRENT_QUERY} variables={{ id }} fetchPolicy="network-only">
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
       if (!data) return <p>Loading..</p>;
