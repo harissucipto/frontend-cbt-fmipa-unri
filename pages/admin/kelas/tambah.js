@@ -1,5 +1,5 @@
 import React from 'react';
-import Tambah from '../../../components/admin/mataKuliah/Tambah';
+import Tambah from '../../../components/admin/kelas/Tambah';
 
 const PageTambah = () => <Tambah />;
 

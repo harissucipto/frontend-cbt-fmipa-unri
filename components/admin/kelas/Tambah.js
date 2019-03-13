@@ -6,6 +6,8 @@ import gql from 'graphql-tag';
 import PesanError from '../../PesanError';
 import { SEARCH_LIST } from './List';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
+import PIlihDosen from './PIlihDosen';
+import PilihMataKuliah from './PilihMataKuliah';
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -22,7 +24,6 @@ const CREATE_MATAKULIAH_MUTATION = gql`
 
 const DEFAULTSTATE = {
   nama: '',
-  kode: '',
   jurusan: '',
   prodi: '',
   prodies: [],
@@ -44,13 +45,24 @@ class TambahDosen extends React.Component {
       prodies: prodis[value],
       jurusan: value,
       prodi: prodis[value][0],
+      mataKuliah: undefined,
     });
   };
 
-  handleProdiChange = async (value) => {
+  handleProdiChange = (value) => {
     this.setState({
       prodi: value,
+      mataKuliah: undefined,
     });
+  };
+
+  handeMataKuliahChange = (value) => {
+    this.setState({ mataKuliah: value });
+  };
+
+  handleDosenChange = (value) => {
+    console.log(value, 'ini');
+    this.setState({ dosen: value });
   };
 
   render() {
@@ -80,10 +92,10 @@ class TambahDosen extends React.Component {
           return (
             <Content>
               <Card
-                title="Kelola Mata Kuliah"
+                title="Kelola Kelas"
                 style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
               >
-                <h2>Tambah Mata Kuliah Baru</h2>
+                <h2>Tambah Kelas Baru</h2>
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -110,19 +122,7 @@ class TambahDosen extends React.Component {
                       disabled={loading}
                       name="nama"
                       value={this.state.nama}
-                      placeholder="Nama Mata Kuliah"
-                      type="string"
-                      required
-                      onChange={this.saveToState}
-                    />
-                  </Form.Item>
-
-                  <Form.Item label="Kode" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-                    <Input
-                      disabled={loading}
-                      name="kode"
-                      value={this.state.kode}
-                      placeholder="Kode Mata Kuliah"
+                      placeholder="Nama Kelas"
                       type="string"
                       required
                       onChange={this.saveToState}
@@ -151,6 +151,19 @@ class TambahDosen extends React.Component {
                         </Option>
                       ))}
                     </Select>
+                  </Form.Item>
+
+                  <Form.Item label="MataKuliah" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                    <PilihMataKuliah
+                      jurusan={this.state.jurusan}
+                      prodi={this.state.prodi}
+                      mataKuliahIni={this.state.mataKuliah}
+                      rubahState={this.handeMataKuliahChange}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label="Dosen" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                    <PIlihDosen dosenIni={this.state.dosen} rubahState={this.handleDosenChange} />
                   </Form.Item>
 
                   <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
