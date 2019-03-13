@@ -1,16 +1,24 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Card, List, Avatar, Row, Col } from 'antd';
+import Router from 'next/router';
+import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
 import ListKelas from './ListKelas';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
-    mataKuliah(id: $id) {
+    kelas(id: $id) {
       id
       nama
-      kode
+      mataKuliah {
+        id
+        nama
+      }
+      dosen {
+        id
+        nama
+      }
       prodi {
         id
         nama
@@ -19,22 +27,9 @@ const CURRENT_QUERY = gql`
           nama
         }
       }
-      kelases {
-        id
+      mahasiswas {
         nama
-        prodi {
-          id
-          nama
-          jurusan {
-            id
-            nama
-          }
-        }
-        dosen {
-          id
-          nama
-          nip
-        }
+        nim
       }
     }
   }
@@ -55,6 +50,16 @@ const ProfilAdmin = ({ id }) => (
                 title="Informasi Mata Kuliah"
                 style={{ margin: '20px', padding: '24px' }}
                 loading={loading}
+                extra={
+                  <>
+                    <Button type="primary" onClick={() => Router.push('/admin/dosen/tambah')}>
+                      Edit
+                    </Button>
+                    {/* <Button type="primary" onClick={() => Router.push('/admin/dosen/tambah')}>
+                      Hapus
+                    </Button> */}
+                  </>
+                }
               >
                 {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
@@ -72,28 +77,37 @@ const ProfilAdmin = ({ id }) => (
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Nama</a>}
-                      description={data.mataKuliah.nama}
+                      description={data.kelas.nama}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Kode Mata Kuliah</a>}
-                      description={data.mataKuliah.kode}
+                      title={<a href="https://ant.design"> Mata Kuliah</a>}
+                      description={data.kelas.mataKuliah ? data.kelas.mataKuliah.nama : '-'}
                     />
                   </List.Item>
+
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Jurusan</a>}
-                      description={data.mataKuliah.prodi.jurusan.nama}
+                      description={data.kelas.prodi.jurusan.nama}
                     />
                   </List.Item>
                   <List.Item>
                     <List.Item.Meta
                       avatar={<Avatar icon="mail" />}
                       title={<a href="https://ant.design">Prodi</a>}
-                      description={data.mataKuliah.prodi.nama}
+                      description={data.kelas.prodi.nama}
+                    />
+                  </List.Item>
+
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon="mail" />}
+                      title={<a href="https://ant.design">Dosen</a>}
+                      description={data.kelas.dosen ? data.kelas.dosen.nama : '-'}
                     />
                   </List.Item>
                   {/* <List.Item>
@@ -107,14 +121,11 @@ const ProfilAdmin = ({ id }) => (
               </Card>
             </Col>
             <Col span={16}>
-              <Card
-                title="Kelas yang berkaitan dengan mata kuliah"
-                style={{ margin: '20px', padding: '20px' }}
-              >
+              <Card title="Mahasiswa yang mengambil: " style={{ margin: '20px', padding: '20px' }}>
                 <ListKelas
-                  kelases={data.mataKuliah.kelases}
+                  kelases={data.kelas.mahasiswas}
                   loading={loading}
-                  idDosen={data.mataKuliah.id}
+                  idDosen={data.kelas.id}
                 />
               </Card>
             </Col>

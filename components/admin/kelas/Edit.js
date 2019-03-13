@@ -33,12 +33,11 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
 
 class FormEdit extends Component {
   state = {
-    id: this.props.mataKuliah.id,
-    nama: this.props.mataKuliah.nama,
-    kode: this.props.mataKuliah.kode,
-    jurusan: this.props.mataKuliah.prodi.jurusan.nama,
-    prodi: this.props.mataKuliah.prodi.nama,
-    prodies: prodis[this.props.mataKuliah.prodi.jurusan.nama],
+    id: this.props.kelas.id,
+    nama: this.props.kelas.nama,
+    jurusan: this.props.kelas.prodi.jurusan.nama,
+    prodi: this.props.kelas.prodi.nama,
+    prodies: prodis[this.props.kelas.prodi.jurusan.nama],
   };
 
   saveToState = (e) => {
@@ -95,7 +94,7 @@ class FormEdit extends Component {
     <PesanError error={error} />
     {!error && !loading && called && (
     <Alert
-      message="Rubah informasi akun  mataKuliah berhasil"
+      message="Rubah informasi akun  kelas berhasil"
       type="success"
       showIcon
       style={{ margin: '10px 0' }}
@@ -108,18 +107,6 @@ class FormEdit extends Component {
         name="nama"
         value={this.state.nama}
         placeholder="Nama Lengkap Dosen"
-        type="string"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
-
-    <Form.Item label="Kode MK" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="kode"
-        value={this.state.kode}
-        placeholder="NIP"
         type="string"
         required
         onChange={this.saveToState}
@@ -172,7 +159,7 @@ class EditDosen extends Component {
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => (
           <Card style={{ margin: '20px' }} title="Edit Informasi Mata Kuliah" loading={loading}>
-            <FormEdit mataKuliah={data.mataKuliah} />
+            <FormEdit kelas={data.kelas} />
           </Card>
           )}
       </Query>

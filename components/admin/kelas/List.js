@@ -126,7 +126,7 @@ class List extends Component {
             <Table
               dataSource={data.kelases}
               columns={this.columns}
-              rowKey={record => record.kode}
+              rowKey={record => record.id}
               loading={loading}
             />
           );

@@ -29,7 +29,7 @@ class ListKelas extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/admin/kelas/profil',
+              pathname: '/admin/mahasiswa/profil',
               query: { id: record.id },
             }}
           >
@@ -38,19 +38,9 @@ class ListKelas extends Component {
         ),
       },
       {
-        title: 'Dosen',
-        dataIndex: 'prodi.dosen.nama',
+        title: 'NIM',
+        dataIndex: 'nim',
         key: 'dosen',
-      },
-      {
-        title: 'Jurusan',
-        dataIndex: 'prodi.jurusan.nama',
-        key: 'jurusan',
-      },
-      {
-        title: 'Program Studi',
-        dataIndex: 'prodi.nama',
-        key: 'prodi.nama',
       },
       {
         title: 'Action',

@@ -8,7 +8,7 @@ import { SEARCH_LIST } from './List';
 
 const DELTE_MATAKULIAH_MUTATION = gql`
   mutation DELTE_MATAKULIAH_MUTATION($id: ID!) {
-    deleteMataKuliah(id: $id) {
+    deleteKelas(id: $id) {
       id
     }
   }
@@ -32,7 +32,7 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataALL.mataKuliahs = dataALL.mataKuliahs.filter(item => item.id !== payload.data.deleteMataKuliah.id);
+    dataALL.kelases = dataALL.kelases.filter(item => item.id !== payload.data.deleteKelas.id);
 
     // // 3. Put the items back!
     cache.writeQuery({
@@ -55,7 +55,7 @@ class DeleteDosen extends Component {
     });
     // // 2. Filter the deleted itemout of the page
 
-    dataK.mataKuliahs = dataK.mataKuliahs.filter(item => item.id !== payload.data.deleteMataKuliah.id);
+    dataK.kelases = dataK.kelases.filter(item => item.id !== payload.data.deleteKelas.id);
 
     cache.writeQuery({
       query: SEARCH_LIST,
