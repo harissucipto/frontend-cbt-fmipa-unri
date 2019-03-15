@@ -34,6 +34,10 @@ const SEARCH_LIST = gql`
           nama
         }
       }
+      kelases {
+        id
+        nama
+      }
     }
   }
 `;

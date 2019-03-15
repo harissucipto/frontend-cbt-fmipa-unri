@@ -85,7 +85,7 @@ class ListKelas extends Component {
       <Table
         columns={this.columns}
         dataSource={this.props.kelases}
-        rowKey={record => record.id}
+        rowKey={record => record.nim}
         loading={this.props.loading}
       />
     );
