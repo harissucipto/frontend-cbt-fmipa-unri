@@ -47,7 +47,7 @@ class KelolaMahasiwa extends Component {
         title="Kelola Akun Mahasiswa"
         style={{ margin: '20px', padding: '24px' }}
         extra={
-          <Button type="dashed" onClick={() => Router.push('/admin/dosen/tambah')}>
+          <Button type="dashed" onClick={() => Router.push('/admin/mahasiswa/tambah')}>
             Tambah Akun
           </Button>
         }
