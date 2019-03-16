@@ -6,34 +6,22 @@ import { Table, Divider, Button, Input, Checkbox } from 'antd';
 import gql from 'graphql-tag';
 import { Query, ApolloConsumer } from 'react-apollo';
 
-import Hapus from './Hapus';
 import { SEARCH_LIST } from '../mahasiswa/List';
 
-const MAHASISWA_BELUM_DI_KELAS = gql`
-  query MAHASISWA_BELUM_DI_KELAS($searchTerm: String!, $jurusan: String!, $prodi: String!) {
-    mahasiswas(
-      where: {
-        AND: [
-          { OR: [{ nama_contains: $searchTerm }, { nim_contains: $searchTerm }] }
-          { prodi: { nama_contains: $prodi, jurusan: { nama_contains: $jurusan } } }
-        ]
-      }
-    ) {
+const MUTATAION_TAMBAH_KELAS_MAHASISWA = gql`
+  mutation MUTATAION_UPDATE_MAHASISWA($mahasiswa: ID!, $kelas: ID!) {
+    updateMahasiswa(where: { id: $mahasiswa }, data: { kelases: { connect: { id: $kelas } } }) {
       id
       nama
-      nim
-      prodi {
-        id
-        nama
-        jurusan {
-          id
-          nama
-        }
-      }
-      kelases {
-        id
-        nama
-      }
+    }
+  }
+`;
+
+const MUTATAION_DELETE_KELAS_MAHASISWA = gql`
+  mutation MUTATAION_UPDATE_MAHASISWA($mahasiswa: ID!, $kelas: ID!) {
+    updateMahasiswa(where: { id: $mahasiswa }, data: { kelases: { disconnect: { id: $kelas } } }) {
+      id
+      nama
     }
   }
 `;
@@ -78,7 +66,14 @@ class EditMahasiswa extends Component {
         dataIndex: 'ditambahkan',
         key: 'ditambahkan',
         render: (text, record) => (
-          <Checkbox checked={record.kelases} onChange={() => this.toggleCheckbox(record.id)} />
+          <ApolloConsumer>
+            {client => (
+              <Checkbox
+                checked={record.kelases}
+                onChange={() => this.toggleCheckbox(record.id, client)}
+              />
+            )}
+          </ApolloConsumer>
         ),
       },
     ];
@@ -89,30 +84,65 @@ class EditMahasiswa extends Component {
     const dataMahasiswa = this.props.mahasiswas ? this.props.mahasiswas : [];
 
     // map mahasiswa yang ada di kelas
-    const mahasiswas = !dataMahasiswa.length
-      ? []
-      : this.props.mahasiswas.map(mahasiswa => ({
-        ...mahasiswa,
-        kelases: mahasiswa.kelases.length
-          ? !!mahasiswa.kelases.filter(kelas => kelas.id === kelasIni).map(kelas => kelas.id)[0]
-          : false,
-      }));
+    const mahasiswas = this.mappingDataMahasiswa(dataMahasiswa, kelasIni);
 
     console.log(mahasiswas, 'ini data mahasiswas yang telah di map');
 
     this.state = {
       mahasiswas,
+      kelas: kelasIni,
     };
   }
 
-  toggleCheckbox = (id) => {
-    const newMahasiswa = this.state.mahasiswas.map(mahasiswa =>
-      (mahasiswa.id === id
-        ? {
+  mappingDataMahasiswa = (mahasiswas = [], bandingkanKelas) =>
+    (!mahasiswas.length
+      ? []
+      : mahasiswas.map(mahasiswa => ({
+        ...mahasiswa,
+        kelases: mahasiswa.kelases.length
+          ? !!mahasiswa.kelases
+            .filter(kelas => kelas.id === bandingkanKelas)
+            .map(kelas => kelas.id)[0]
+          : false,
+      })));
+
+  toggleCheckbox = async (id, client) => {
+    const sudah = false;
+    let kondisiMahasiswa = false;
+    const newMahasiswa = this.state.mahasiswas.map((mahasiswa) => {
+      if (mahasiswa.id === id) {
+        const rubahMahasiswa = {
           ...mahasiswa,
           kelases: !mahasiswa.kelases,
+        };
+
+        if (rubahMahasiswa.kelases) {
+          kondisiMahasiswa = true;
         }
-        : mahasiswa));
+
+        return rubahMahasiswa;
+      } else {
+        return mahasiswa;
+      }
+    });
+
+    if (kondisiMahasiswa) {
+      await client.mutate({
+        mutation: MUTATAION_TAMBAH_KELAS_MAHASISWA,
+        variables: {
+          mahasiswa: id,
+          kelas: this.state.kelas,
+        },
+      });
+    } else {
+      await client.mutate({
+        mutation: MUTATAION_DELETE_KELAS_MAHASISWA,
+        variables: {
+          mahasiswa: id,
+          kelas: this.state.kelas,
+        },
+      });
+    }
 
     this.setState({ mahasiswas: newMahasiswa });
   };
@@ -149,7 +179,15 @@ class List extends Component {
           if (loading) return <p>oading</p>;
 
           if (!data) return <p>kkkk</p>;
-          return <EditMahasiswa mahasiswas={data.mahasiswas} loading={loading} kelas={kelas} />;
+          return (
+            <EditMahasiswa
+              mahasiswas={data.mahasiswas}
+              loading={loading}
+              kelas={kelas}
+              prodi=""
+              jurusan=""
+            />
+          );
         }}
       </Query>
     );
