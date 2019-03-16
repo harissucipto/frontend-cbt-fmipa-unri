@@ -7,15 +7,7 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
 import { CURRENT_QUERY } from './Profil';
-
-const MUTATION_DELETE_KELAS_TO_DOSEN = gql`
-  mutation MUTATION_DELETE_KELAS_TO_DOSEN($idDosen: ID!, $idKelas: ID!) {
-    updateDosen(where: { id: $idDosen }, data: { kelases: { disconnect: { id: $idKelas } } }) {
-      id
-      nama
-    }
-  }
-`;
+import { MUTATAION_DELETE_KELAS_MAHASISWA } from './ListMahasiswaBelumDiKelas';
 
 class ListKelas extends Component {
   constructor(props) {
@@ -48,23 +40,17 @@ class ListKelas extends Component {
         render: (text, record) => (
           <span>
             <Mutation
-              mutation={MUTATION_DELETE_KELAS_TO_DOSEN}
-              variables={{ idDosen: this.props.idDosen, idKelas: record.id }}
+              mutation={MUTATAION_DELETE_KELAS_MAHASISWA}
+              variables={{ kelas: this.props.kelas, mahasiswa: record.id }}
               update={(cache, payload) => {
                 const data = cache.readQuery({
                   query: CURRENT_QUERY,
-                  variables: { id: this.props.idDosen },
+                  variables: { id: this.props.kelas },
                 });
 
-                console.log(data.dosen.kelases);
-                data.dosen.kelases = data.dosen.kelases.filter(item => item.id !== payload.data.updateDosen.id);
-                console.log(data.dosen.kelases);
-
-                cache.writeQuery({
-                  query: CURRENT_QUERY,
-                  data,
-                  variables: { id: this.props.idDosen },
-                });
+                console.log(data.kelas.mahasiswas);
+                data.kelas.mahasiswas = data.kelas.mahasiswas.filter(item => item.id !== payload.data.updateMahasiswa.id);
+                console.log(data.kelas.mahasiswas);
               }}
             >
               {(hapusKelas, { error, loading, called }) => {
@@ -84,7 +70,7 @@ class ListKelas extends Component {
     return (
       <Table
         columns={this.columns}
-        dataSource={this.props.kelases}
+        dataSource={this.props.mahasiswas}
         rowKey={record => record.nim}
         loading={this.props.loading}
       />

@@ -199,4 +199,4 @@ class List extends Component {
 }
 
 export default List;
-export { MAHASISWA_BELUM_DI_KELAS };
+export { MAHASISWA_BELUM_DI_KELAS, MUTATAION_DELETE_KELAS_MAHASISWA };

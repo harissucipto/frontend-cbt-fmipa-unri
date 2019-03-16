@@ -28,6 +28,7 @@ const CURRENT_QUERY = gql`
         }
       }
       mahasiswas {
+        id
         nama
         nim
       }
@@ -139,9 +140,9 @@ class ProfilAdmin extends React.Component {
                     }
                   >
                     <ListKelas
-                      kelases={data.kelas.mahasiswas}
+                      mahasiswas={data.kelas.mahasiswas}
                       loading={loading}
-                      idDosen={data.kelas.id}
+                      kelas={data.kelas.id}
                     />
                   </Card>
                 </Col>
