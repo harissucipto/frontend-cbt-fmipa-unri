@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import User from './User';
 import NavigasiAdmin from './admin/NavigasiAdmin';
+import NavigasiDosen from './dosen/NavigasiDosen';
 
 const { Sider } = Layout;
 
@@ -45,6 +46,7 @@ const Nav = () => (
           </Logo>
 
           {me.permissions.includes('ADMIN') && <NavigasiAdmin />}
+          {me.permissions.includes('DOSEN') && <NavigasiDosen />}
 
           {/* <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <SubMenu
