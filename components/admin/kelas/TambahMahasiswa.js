@@ -19,6 +19,12 @@ class TambahMahasiswa extends Component {
     belumKeyword: '',
   };
 
+  handleCari = async (value) => {
+    this.setState({
+      keyword: value,
+    });
+  };
+
   render() {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.kelas }} fetchPolicy="network-only">
@@ -64,12 +70,14 @@ class TambahMahasiswa extends Component {
                     style={{ maxWidth: '480px' }}
                     placeholder="Masukan Nama atau NIM"
                     enterButton="Cari akun"
+                    onSearch={value => this.handleCari(value)}
                   />
                 </div>
                 <ListMahasiswaBelumDiKelas
                   prodi={data.kelas.prodi.nama}
                   jurusan={data.kelas.prodi.jurusan.nama}
                   kelas={data.kelas.id}
+                  keyword={this.state.keyword}
                 />
               </Card>
             </Card>

@@ -152,7 +152,6 @@ class EditMahasiswa extends Component {
   render() {
     return (
       <Table
-
         dataSource={this.state.mahasiswas}
         columns={this.columns}
         rowKey={record => record.nim}
@@ -167,11 +166,13 @@ class List extends Component {
     const {
       prodi, jurusan, keyword, kelas,
     } = this.props;
+
+    console.log(keyword, 'ini props keyword');
     return (
       <Query
         query={SEARCH_LIST}
         variables={{
-          searchTerm: '',
+          searchTerm: keyword,
           jurusan,
           prodi,
         }}
