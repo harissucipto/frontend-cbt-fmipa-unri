@@ -27,6 +27,9 @@ const CURRENT_QUERY = gql`
       kelases {
         id
         nama
+        mataKuliah {
+          nama
+        }
         prodi {
           id
           nama
@@ -50,7 +53,7 @@ const ProfilAdmin = ({ id }) => (
       return (
         <Card style={{ margin: '30px' }} title="Kelola Akun Dosen">
           <Row>
-            <Col span={12}>
+            <Col span={8}>
               <Card
                 title="Informasi Akun Mahasiswa"
                 style={{ margin: '20px', padding: '24px' }}
@@ -113,7 +116,7 @@ const ProfilAdmin = ({ id }) => (
                 </List>
               </Card>
             </Col>
-            <Col span={12}>
+            <Col span={16}>
               <Card title="Kelas yang diikuti" style={{ margin: '20px', padding: '20px' }}>
                 <ListKelas
                   kelases={data.mahasiswa.kelases}
