@@ -91,6 +91,7 @@ class EditMahasiswa extends Component {
     this.state = {
       mahasiswas,
       kelas: kelasIni,
+      loading: false,
     };
   }
 
@@ -109,6 +110,7 @@ class EditMahasiswa extends Component {
   toggleCheckbox = async (id, client) => {
     const sudah = false;
     let kondisiMahasiswa = false;
+    this.setState({ loading: true });
     const newMahasiswa = this.state.mahasiswas.map((mahasiswa) => {
       if (mahasiswa.id === id) {
         const rubahMahasiswa = {
@@ -144,16 +146,17 @@ class EditMahasiswa extends Component {
       });
     }
 
-    this.setState({ mahasiswas: newMahasiswa });
+    this.setState({ mahasiswas: newMahasiswa, loading: false });
   };
 
   render() {
     return (
       <Table
+
         dataSource={this.state.mahasiswas}
         columns={this.columns}
         rowKey={record => record.nim}
-        loading={this.props.loading}
+        loading={this.props.loading || this.state.loading}
       />
     );
   }

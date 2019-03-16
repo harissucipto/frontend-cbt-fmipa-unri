@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 import { Query, Mutation } from 'react-apollo';
 
 import ListMahasiswaBelumDiKelas from './ListMahasiswaBelumDiKelas';
@@ -29,7 +30,11 @@ class TambahMahasiswa extends Component {
             <Card
               title="Tambah Mahasiswa ke Kelas"
               extra={
-                <Button size="large" type="primary">
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => Router.push(`/admin/kelas/profil?id=${this.props.kelas}`)}
+                >
                   Lihat Daftar Mahasiswa yang telah terdaftar
                 </Button>
               }
