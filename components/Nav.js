@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import User from './User';
 import NavigasiAdmin from './admin/NavigasiAdmin';
 import NavigasiDosen from './dosen/NavigasiDosen';
+import NavigasiMahasiswa from './mahasiswa/NavigasiMahasiswa';
 
 const { Sider } = Layout;
 
@@ -47,6 +48,7 @@ const Nav = () => (
 
           {me.permissions.includes('ADMIN') && <NavigasiAdmin />}
           {me.permissions.includes('DOSEN') && <NavigasiDosen />}
+          {me.permissions.includes('MAHASISWA') && <NavigasiMahasiswa />}
 
           {/* <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <SubMenu

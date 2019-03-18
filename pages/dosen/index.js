@@ -1,1 +1,3 @@
-export default () => <p>Hello</p>;
+import ProfilDosen from '../../components/dosen/Profil';
+
+export default () => <ProfilDosen />;

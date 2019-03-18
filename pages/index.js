@@ -1,6 +1,7 @@
 import React from 'react';
 import User from '../components/User';
 import Admin from './admin';
+import Dosen from './dosen'
 
 const IndexPage = () => (
   <User>
@@ -12,7 +13,7 @@ const IndexPage = () => (
       if (hakAksesSaya.includes('ADMIN')) {
         return <Admin />;
       } else if (hakAksesSaya.includes('DOSEN')) {
-        return <p>Anda Dosen</p>;
+        return  <Dosen />;
       } else if (hakAksesSaya.includes('MAHASISWA')) {
         return <p>Anda Mahasiswa</p>;
       }
