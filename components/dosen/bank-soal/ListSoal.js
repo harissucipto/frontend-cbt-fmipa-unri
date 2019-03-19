@@ -34,7 +34,7 @@ class ListKelas extends Component {
         key: 'pilihanJawab',
         render: (text, record) =>
           record.jawaban.map(item => (
-            <p key={item.title}>
+            <p key={item.id}>
               {item.title}. {item.content}
             </p>
           )),

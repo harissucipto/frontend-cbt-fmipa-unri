@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Layout } from 'antd';
 
-import Edit from '../../../components/dosen/bank-soal/Edit';
+import Edit from '../../../components/dosen/bank-soal/EditSoal';
 
 const EditPage = props => (
   <Layout>
