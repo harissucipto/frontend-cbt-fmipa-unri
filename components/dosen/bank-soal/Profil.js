@@ -36,6 +36,7 @@ const CURRENT_QUERY = gql`
           content
         }
         kunciJawaban
+        tingkatKesulitan
       }
     }
   }

@@ -6,6 +6,8 @@ import { Table, Divider, Button } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
+import HapusSoal from './HapusSoal';
+
 class ListKelas extends Component {
   constructor(props) {
     super(props);
@@ -30,11 +32,47 @@ class ListKelas extends Component {
         title: 'Jawaban',
         dataIndex: 'pilihanJawab',
         key: 'pilihanJawab',
+        render: (text, record) =>
+          record.jawaban.map(item => (
+            <p key={item.title}>
+              {item.title}. {item.content}
+            </p>
+          )),
       },
       {
         title: 'Kunci Jawaban',
         dataIndex: 'kunciJawaban',
         key: 'kunciJawaban',
+      },
+      {
+        title: 'Tingkat Kesulitan',
+        dataIndex: 'tingkatKesulitan',
+        key: 'tingkatKesulitan',
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            <Button
+              onClick={() =>
+                Router.replace({ pathname: '/dosen/bank-soal/edit-soal', query: { id: record.id } })
+              }
+              type="ghost"
+            >
+              Edit
+            </Button>
+
+            <Divider type="vertical" />
+
+            <HapusSoal
+              id={record.id}
+              prodi={this.props.prodi}
+              jurusan={this.props.jurusan}
+              keyword={this.props.keyword}
+            />
+          </span>
+        ),
       },
     ];
   }

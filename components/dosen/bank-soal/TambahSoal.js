@@ -4,12 +4,36 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import PesanError from '../../PesanError';
-import { SEARCH_LIST } from './List';
+import { CURRENT_QUERY } from './Profil';
 import DetailBankSoal from './DetailBankSoal';
 import PIlihTingkatKesulitan from './PIlihTingkatKesulitan';
 import Pertanyaan from './Pertanyaan';
 import Jawaban from './Jawaban';
 import PilihKunciJawaban from './PilihKunciJawaban';
+
+const CREATE_SOAL = gql`
+  mutation CREATE_SOAL(
+    $pertanyaan: String!
+    $kunciJawaban: String!
+    $jawaban: [JawabanCreateInput!]
+    $tingkatKesulitan: String!
+    $bankSoal: ID!
+  ) {
+    createSoal(
+      data: {
+        pertanyaan: $pertanyaan
+        kunciJawaban: $kunciJawaban
+        bankSoal: { connect: { id: $bankSoal } }
+        tingkatKesulitan: $tingkatKesulitan
+        jawaban: { create: $jawaban }
+      }
+    ) {
+      bankSoal {
+        nama
+      }
+    }
+  }
+`;
 
 class TambahSoal extends React.Component {
   state = {
@@ -70,9 +94,24 @@ class TambahSoal extends React.Component {
 
   valueJawaban = name => this.state.jawaban.filter(jawab => jawab.key === name)[0].value;
 
-  createSoal = (make) => {
+  createSoal = async (mutasi) => {
     console.log('make');
-    make();
+
+    const soalBaru = {
+      pertanyaan: this.state.pertanyaan,
+      kunciJawaban: this.state.kunciJawaban,
+      bankSoal: this.props.id,
+      tingkatKesulitan: this.state.tingkatKesulitan,
+      jawaban: this.state.jawaban.map(item => ({
+        title: item.key,
+        content: item.value,
+      })),
+    };
+
+    console.log(soalBaru);
+    await mutasi({
+      variables: soalBaru,
+    });
   };
 
   render() {
@@ -80,49 +119,95 @@ class TambahSoal extends React.Component {
       <>
         <DetailBankSoal id={this.props.id} />
         <Card title="Buat Soal">
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              this.createSoal(f => f);
-            }}
+          <Mutation
+            mutation={CREATE_SOAL}
+            refetchQueries={[
+              {
+                query: CURRENT_QUERY,
+                variables: {
+                  id: this.props.id,
+                },
+              },
+            ]}
           >
-            <Form.Item label="Tingkat Kesulitan">
-              <PIlihTingkatKesulitan
-                value={this.state.tingkatKesulitan}
-                onChange={this.changeTingkatKesulitan}
-              />
-            </Form.Item>
-            <Form.Item label="Pertanyaan">
-              <Pertanyaan onChange={this.saveToState} value={this.state.pertanyaan} />
-            </Form.Item>
+            {(createSoal, {
+ error, data, loading, called,
+}) => {
+              if (loading) return <p>loading...</p>;
+              console.log(data);
 
-            <Form.Item label="Jawaban">
-              <Form.Item label="A">
-                <Jawaban onChange={this.pushJawaban} value={this.valueJawaban('a')} name="a" />
-              </Form.Item>
-              <Form.Item label="B">
-                <Jawaban onChange={this.pushJawaban} value={this.valueJawaban('b')} name="b" />
-              </Form.Item>
-              <Form.Item label="C">
-                <Jawaban onChange={this.pushJawaban} value={this.valueJawaban('c')} name="c" />
-              </Form.Item>
-              <Form.Item label="D">
-                <Jawaban onChange={this.pushJawaban} value={this.valueJawaban('d')} name="d" />
-              </Form.Item>
-            </Form.Item>
+              return (
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    this.createSoal(createSoal);
+                  }}
+                >
+                  <PesanError error={error} />
+                  {!error && !loading && called && (
+                    <Alert
+                      message="Buat soal berhasil"
+                      type="success"
+                      showIcon
+                      style={{ margin: '10px 0' }}
+                    />
+                  )}
+                  <Form.Item label="Tingkat Kesulitan">
+                    <PIlihTingkatKesulitan
+                      value={this.state.tingkatKesulitan}
+                      onChange={this.changeTingkatKesulitan}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Pertanyaan">
+                    <Pertanyaan onChange={this.saveToState} value={this.state.pertanyaan} />
+                  </Form.Item>
 
-            <Form.Item label="Kunci Jawaban">
-              <PilihKunciJawaban
-                data={this.state.jawaban}
-                value={this.state.kunciJawaban}
-                onChange={this.changeKunciJawaban}
-              />
-            </Form.Item>
+                  <Form.Item label="Jawaban">
+                    <Form.Item label="A">
+                      <Jawaban
+                        onChange={this.pushJawaban}
+                        value={this.valueJawaban('a')}
+                        name="a"
+                      />
+                    </Form.Item>
+                    <Form.Item label="B">
+                      <Jawaban
+                        onChange={this.pushJawaban}
+                        value={this.valueJawaban('b')}
+                        name="b"
+                      />
+                    </Form.Item>
+                    <Form.Item label="C">
+                      <Jawaban
+                        onChange={this.pushJawaban}
+                        value={this.valueJawaban('c')}
+                        name="c"
+                      />
+                    </Form.Item>
+                    <Form.Item label="D">
+                      <Jawaban
+                        onChange={this.pushJawaban}
+                        value={this.valueJawaban('d')}
+                        name="d"
+                      />
+                    </Form.Item>
+                  </Form.Item>
 
-            <Button type="primary" htmlType="submit">
-              Buat Soal
-            </Button>
-          </Form>
+                  <Form.Item label="Kunci Jawaban">
+                    <PilihKunciJawaban
+                      data={this.state.jawaban}
+                      value={this.state.kunciJawaban}
+                      onChange={this.changeKunciJawaban}
+                    />
+                  </Form.Item>
+
+                  <Button type="primary" htmlType="submit">
+                    Buat Soal
+                  </Button>
+                </Form>
+              );
+            }}
+          </Mutation>
         </Card>
       </>
     );
