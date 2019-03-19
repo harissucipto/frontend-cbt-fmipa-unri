@@ -22,6 +22,7 @@
     "babel-plugin-styled-components": "^1.7.1",
     "date-fns": "^2.0.0-alpha.7",
     "downshift": "^2.2.3",
+    "draft-js": "^0.10.5",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "flat": "^4.1.0",
