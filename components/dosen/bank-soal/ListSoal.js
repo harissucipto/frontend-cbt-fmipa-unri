@@ -65,12 +65,7 @@ class ListKelas extends Component {
 
             <Divider type="vertical" />
 
-            <HapusSoal
-              id={record.id}
-              prodi={this.props.prodi}
-              jurusan={this.props.jurusan}
-              keyword={this.props.keyword}
-            />
+            <HapusSoal id={record.id} bankSoal={this.props.bankSoal} />
           </span>
         ),
       },

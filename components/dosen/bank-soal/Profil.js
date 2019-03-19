@@ -124,6 +124,7 @@ const ProfilAdmin = ({ id }) => (
               >
                 <ListSoal
                   soals={data.bankSoal.soals}
+                  bankSoal={data.bankSoal.id}
                   loading={loading}
                   idDosen={data.bankSoal.id}
                 />

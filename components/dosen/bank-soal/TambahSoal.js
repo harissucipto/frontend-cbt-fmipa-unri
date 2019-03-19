@@ -15,7 +15,7 @@ const CREATE_SOAL = gql`
   mutation CREATE_SOAL(
     $pertanyaan: String!
     $kunciJawaban: String!
-    $jawaban: [JawabanCreateInput!]
+    $jawaban: [JawabanCreateWithoutSoalInput!]
     $tingkatKesulitan: String!
     $bankSoal: ID!
   ) {

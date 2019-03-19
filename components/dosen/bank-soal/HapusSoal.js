@@ -4,11 +4,11 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Button, Popconfirm, Icon, Alert } from 'antd';
 
-import { SEARCH_LIST } from './List';
+import { CURRENT_QUERY } from './Profil';
 
 const HAPUS_MUTATION = gql`
   mutation HAPUS_MUTATION($id: ID!) {
-    deleteBankSoal(id: $id) {
+    deleteSoal(where: { id: $id }) {
       id
     }
   }
@@ -26,11 +26,9 @@ class Hapus extends Component {
         variables={{ id: this.props.id }}
         refetchQueries={[
           {
-            query: SEARCH_LIST,
+            query: CURRENT_QUERY,
             variables: {
-              searchTerm: this.props.keyword,
-              jurusan: this.props.jurusan,
-              prodi: this.props.prodi,
+              id: this.props.bankSoal,
             },
           },
         ]}
