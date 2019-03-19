@@ -6,6 +6,8 @@ import { Table, Divider, Button } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
+import Hapus from './Hapus';
+
 const SEARCH_LIST = gql`
   query SEARCH_LIST($searchTerm: String!, $jurusan: String!, $prodi: String!) {
     bankSoals(
@@ -50,7 +52,7 @@ class List extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/dosen/kelas/profil',
+              pathname: '/dosen/bank-soal/profil',
               query: { id: record.id },
             }}
           >
@@ -72,6 +74,31 @@ class List extends Component {
         title: 'Jurusan',
         dataIndex: 'prodi.jurusan.nama',
         key: 'jurusan',
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            <Button
+              onClick={() =>
+                Router.replace({ pathname: '/dosen/bank-soal/edit', query: { id: record.id } })
+              }
+              type="ghost"
+            >
+              Edit
+            </Button>
+
+            <Divider type="vertical" />
+
+            <Hapus
+              id={record.id}
+              prodi={this.props.prodi}
+              jurusan={this.props.jurusan}
+              keyword={this.props.keyword}
+            />
+          </span>
+        ),
       },
     ];
   }
