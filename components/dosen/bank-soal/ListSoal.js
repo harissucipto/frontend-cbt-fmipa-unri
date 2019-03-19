@@ -12,9 +12,9 @@ class ListKelas extends Component {
 
     this.columns = [
       {
-        title: 'Nama',
-        dataIndex: 'nama',
-        key: 'nama',
+        title: 'Pertanyaan',
+        dataIndex: 'pertanyaan',
+        key: 'pertanyaan',
         render: (text, record) => (
           <Link
             href={{
@@ -27,9 +27,14 @@ class ListKelas extends Component {
         ),
       },
       {
-        title: 'NIM',
-        dataIndex: 'nim',
-        key: 'dosen',
+        title: 'Jawaban',
+        dataIndex: 'pilihanJawab',
+        key: 'pilihanJawab',
+      },
+      {
+        title: 'Kunci Jawaban',
+        dataIndex: 'kunciJawaban',
+        key: 'kunciJawaban',
       },
     ];
   }
@@ -38,7 +43,7 @@ class ListKelas extends Component {
     return (
       <Table
         columns={this.columns}
-        dataSource={this.props.mahasiswas}
+        dataSource={this.props.soals}
         rowKey={record => record.nim}
         loading={this.props.loading}
       />

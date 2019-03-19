@@ -1,9 +1,10 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Card, List, Avatar, Row, Col } from 'antd';
+import Router from 'next/router';
+import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
-// import ListKelas from './ListKelas';
+import ListSoal from './ListSoal';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
@@ -25,6 +26,16 @@ const CURRENT_QUERY = gql`
       dosen {
         id
         nama
+      }
+      soals {
+        id
+        pertanyaan
+        jawaban {
+          id
+          title
+          content
+        }
+        kunciJawaban
       }
     }
   }
@@ -98,14 +109,23 @@ const ProfilAdmin = ({ id }) => (
             </Col>
             <Col span={16}>
               <Card
-                title="Kelas yang berkaitan dengan mata kuliah"
+                title="Daftar Soal"
                 style={{ margin: '20px', padding: '20px' }}
+                extra={
+                  <Button
+                    onClick={() =>
+                      Router.push(`/dosen/bank-soal/tambah-soal?id=${data.bankSoal.id}`)
+                    }
+                  >
+                    Tambah Soal
+                  </Button>
+                }
               >
-                {/* <ListKelas
-                  kelases={data.bankSoal.kelases}
+                <ListSoal
+                  soals={data.bankSoal.soals}
                   loading={loading}
                   idDosen={data.bankSoal.id}
-                /> */}
+                />
               </Card>
             </Col>
           </Row>
