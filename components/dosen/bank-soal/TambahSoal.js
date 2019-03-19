@@ -112,6 +112,29 @@ class TambahSoal extends React.Component {
     await mutasi({
       variables: soalBaru,
     });
+    this.setState({
+      pertanyaan: '',
+      jawaban: [
+        {
+          key: 'a',
+          value: '',
+        },
+        {
+          key: 'b',
+          value: '',
+        },
+        {
+          key: 'c',
+          value: '',
+        },
+        {
+          key: 'd',
+          value: '',
+        },
+      ],
+      kunciJawaban: undefined,
+      tingkatKesulitan: undefined,
+    });
   };
 
   render() {

@@ -14,7 +14,7 @@ const EDIT_SOAL = gql`
   mutation EDIT_SOAL(
     $pertanyaan: String!
     $kunciJawaban: String!
-    $jawaban: [JawabanUpdateWithWhereUniqueNestedInput!]
+    $jawaban: [JawabanUpdateWithWhereUniqueWithoutSoalInput!]
     $tingkatKesulitan: String!
     $id: ID!
   ) {
