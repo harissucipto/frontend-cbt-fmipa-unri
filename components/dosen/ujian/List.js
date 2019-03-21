@@ -9,6 +9,8 @@ import { Query } from 'react-apollo';
 import moment from 'moment';
 import 'moment/locale/id';
 
+import Hapus from './Hapus';
+
 const SEARCH_LIST = gql`
   query SEARCH_LIST($searchTerm: String!, $jurusan: String!, $prodi: String!) {
     ujians(
@@ -99,6 +101,21 @@ class List extends Component {
         title: 'Jurusan',
         dataIndex: 'prodi.jurusan.nama',
         key: 'jurusan',
+      },
+      {
+        title: 'Action',
+        key: 'aksi',
+        render: (text, record) => (
+          <>
+            <Button>Edit</Button>
+            <Hapus
+              id={record.id}
+              prodi={this.props.prodi}
+              jurusan={this.props.jurusan}
+              keyword={this.props.keyword}
+            />
+          </>
+        ),
       },
     ];
   }
