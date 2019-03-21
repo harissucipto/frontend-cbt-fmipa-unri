@@ -47,10 +47,10 @@ const NavigasiAdmin = () => (
           </span>
         }
       >
-        <Menu.Item key="sub3-1" onClick={() => Router.push('/mahasiswa/bank-soal/')}>
+        <Menu.Item key="sub3-1" onClick={() => Router.push('/mahasiswa/ujian/')}>
           Jadwal Ujian
         </Menu.Item>
-        <Menu.Item key="sub3-2" onClick={() => Router.push('/mahasiswa/bank-soal/tambah')}>
+        <Menu.Item key="sub3-2" onClick={() => Router.push('/mahasiswa/ujian/hasil')}>
           Hasil Ujian
         </Menu.Item>
       </SubMenu>
