@@ -6,6 +6,9 @@ import { Table, Divider, Button } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
+import moment from 'moment';
+import 'moment/locale/id';
+
 const SEARCH_LIST = gql`
   query SEARCH_LIST($searchTerm: String!, $jurusan: String!, $prodi: String!) {
     ujians(
@@ -56,7 +59,7 @@ class List extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/dosen/kelas/profil',
+              pathname: '/dosen/ujian/profil',
               query: { id: record.id },
             }}
           >
@@ -68,11 +71,19 @@ class List extends Component {
         title: 'Tanggal Ujian',
         dataIndex: 'tanggalPelaksanaan',
         key: 'pelaksanaan',
+        render: (text, record) => (
+          <p>{moment(record.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY, h:mm:ss a')}</p>
+        ),
       },
       {
         title: 'Mata Kuliah',
         dataIndex: 'kelas.mataKuliah.nama',
         key: 'mataKuliah',
+      },
+      {
+        title: 'Kelas',
+        dataIndex: 'kelas.nama',
+        key: 'kelas',
       },
       {
         title: 'Dosen',
