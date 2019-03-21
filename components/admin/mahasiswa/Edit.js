@@ -8,6 +8,7 @@ import { SEARCH_LIST } from './List';
 import { CURRENT_QUERY} from './Profil'
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
+import UpdatePassword from './UpdatePassword'
 
 const { Option } = Select;
 
@@ -186,9 +187,12 @@ class EditDosen extends Component {
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => {
           return (
+
             <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
               <FormEdit mahasiswa={data.mahasiswa} />
+              <UpdatePassword id={this.props.id} />
             </Card>
+
           );
         }}
       </Query>

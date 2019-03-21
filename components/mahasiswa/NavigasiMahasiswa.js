@@ -16,10 +16,10 @@ const NavigasiAdmin = () => (
           </span>
         }
       >
-        <Menu.Item key="sub1-1" onClick={() => Router.push('/dosen/')}>
+        <Menu.Item key="sub1-1" onClick={() => Router.push('/mahasiswa/')}>
           Info Profil
         </Menu.Item>
-        <Menu.Item key="sub-1-2" onClick={() => Router.push('/dosen/setting')}>
+        <Menu.Item key="sub-1-2" onClick={() => Router.push('/mahasiswa/setting')}>
           Setting Profil
         </Menu.Item>
       </SubMenu>
@@ -33,7 +33,7 @@ const NavigasiAdmin = () => (
           </span>
         }
       >
-        <Menu.Item key="sub2-1" onClick={() => Router.push('/dosen/kelas')}>
+        <Menu.Item key="sub2-1" onClick={() => Router.push('/mahasiswa/kelas')}>
           Informasi Kelas
         </Menu.Item>
       </SubMenu>
@@ -47,10 +47,10 @@ const NavigasiAdmin = () => (
           </span>
         }
       >
-        <Menu.Item key="sub3-1" onClick={() => Router.push('/dosen/bank-soal/')}>
+        <Menu.Item key="sub3-1" onClick={() => Router.push('/mahasiswa/bank-soal/')}>
           Jadwal Ujian
         </Menu.Item>
-        <Menu.Item key="sub3-2" onClick={() => Router.push('/dosen/bank-soal/tambah')}>
+        <Menu.Item key="sub3-2" onClick={() => Router.push('/mahasiswa/bank-soal/tambah')}>
           Hasil Ujian
         </Menu.Item>
       </SubMenu>
