@@ -26,24 +26,62 @@ import PilihBankSoal from './PilihBankSoal';
 import moment from 'moment';
 import 'moment/locale/id';
 import { red } from 'ansi-colors';
+import { th } from 'date-fns/esm/locale';
 
 const { Content } = Layout;
 const { Option } = Select;
 
 const CREATE_KELAS_MUTATION = gql`
-  mutation CREATE_KELAS_MUTATION($prodi: String!, $nama: String!, $dosen: ID!, $mataKuliah: ID!) {
-    createKelas(
-      data: {
-        nama: $nama
-        mataKuliah: { connect: { id: $mataKuliah } }
-        prodi: { connect: { nama: $prodi } }
-        dosen: { connect: { id: $dosen } }
-      }
-    ) {
-      id
-      nama
+  mutation CREATE_KELAS_MUTATION(
+    $nama: String!
+    $tanggalPelaksanaan: DateTime!
+    $lokasi: String!
+    $jumlahSoal: Int!
+    $presentasiSusah: Float!
+    $presentasiSedang: Float!
+    $presentasiMudah: Float!
+    $durasiPengerjaan: Int!
+    $prodi: String!
+    $bankSoal: ID!
+    $kelas: ID!
+  ) {
+    createUjian(
+    data: {
+  nama: $nama
+  tanggalPelaksanaan: $tanggalPelaksanaan
+  lokasi: $lokasi
+  JumlahSoal: $jumlahSoal
+  presentasiSusah: $presentasiSusah
+  presentasiSedang: $presentasiSedang
+  presentasiMudah: $presentasiMudah
+  durasiPengerjaan: $durasiPengerjaan
+  status: true
+  prodi: {
+    connect: {
+      nama: $prodi
     }
   }
+       bankSoal: {
+        connect: {
+          id: $bankSoal
+        }
+      }
+
+        kelas: {
+        connect: {
+          id: $kelas
+        }
+      }
+
+
+
+    }
+  ) {
+
+    id
+    nama
+  } }
+
 `;
 
 const DEFAULTSTATE = {
@@ -64,6 +102,10 @@ const DEFAULTSTATE = {
   mudahDibutuhkan: 0,
   susahDibutuhkan: 0,
   sedangDibutuhkan: 0,
+
+  waktuPelaksanaan: null,
+  durasiPengerjaan: undefined,
+  lokasi: undefined,
 };
 
 class TambahDosen extends React.Component {
@@ -99,15 +141,32 @@ class TambahDosen extends React.Component {
       kelas: undefined,
       kelasNama: undefined,
       bankSoal: undefined,
+
+      errorJumlahSoal: '',
+      errorPersentasiSoal: '',
+
+      totalSoalDibutuhkan: 0,
+      mudahDibutuhkan: 0,
+      susahDibutuhkan: 0,
+      sedangDibutuhkan: 0,
     });
   };
 
   handleProdiChange = (value) => {
+    console.log(value, 'prodi');
     this.setState({
       prodi: value,
       kelas: undefined,
       kelasNama: undefined,
       bankSoal: undefined,
+
+      errorJumlahSoal: '',
+      errorPersentasiSoal: '',
+
+      totalSoalDibutuhkan: 0,
+      mudahDibutuhkan: 0,
+      susahDibutuhkan: 0,
+      sedangDibutuhkan: 0,
     });
   };
 
@@ -118,12 +177,28 @@ class TambahDosen extends React.Component {
       mataKuliah: value.mataKuliah,
       kelasNama: value.tampilkanNilai,
       bankSoal: undefined,
+
+      errorJumlahSoal: '',
+      errorPersentasiSoal: '',
+
+      totalSoalDibutuhkan: 0,
+      mudahDibutuhkan: 0,
+      susahDibutuhkan: 0,
+      sedangDibutuhkan: 0,
     });
   };
 
   rubahBankSoal = (value) => {
     this.setState({
       bankSoal: value,
+
+      errorJumlahSoal: '',
+      errorPersentasiSoal: '',
+
+      totalSoalDibutuhkan: 0,
+      mudahDibutuhkan: 0,
+      susahDibutuhkan: 0,
+      sedangDibutuhkan: 0,
     });
   };
 
@@ -196,6 +271,29 @@ class TambahDosen extends React.Component {
     });
   };
 
+  submit = async (mutation) => {
+    console.log(this.state);
+
+    console.log(this.state.waktuPelaksanaan.format());
+
+    await mutation({
+      variables: {
+        nama: this.state.nama,
+        tanggalPelaksanaan: this.state.waktuPelaksanaan.format(),
+        lokasi: this.state.lokasi,
+        jumlahSoal: this.state.totalSoalDibutuhkan,
+        presentasiSusah: this.state.susahDibutuhkan,
+        presentasiMudah: this.state.mudahDibutuhkan,
+        presentasiSedang: this.state.sedangDibutuhkan,
+        durasiPengerjaan: this.state.durasiPengerjaan,
+        prodi: this.state.prodi,
+        bankSoal:  this.state.bankSoal,
+        kelas:  this.state.kelas
+      },
+    });
+    this.setState({...DEFAULTSTATE});
+  };
+
   render() {
     return (
       <Mutation
@@ -232,23 +330,27 @@ class TambahDosen extends React.Component {
                   method="post"
                   onSubmit={async (e) => {
                     e.preventDefault();
-                    await createMataKuliah();
-                    this.setState({
-                      ...DEFAULTSTATE,
-                    });
-                    console.log(this.state);
+                    await this.submit(createMataKuliah);
                   }}
                 >
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message={`Buat  kelas  ${data.createKelas.nama} berhasil`}
+                      message={`Buat  kelas  ${data.createUjian.nama} berhasil`}
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}
                     />
                   )}
-                  <Form.Item label="Nama" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                  <Form.Item
+                    label="Nama"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      this.submit();
+                    }}
+                  >
                     <Input
                       disabled={loading}
                       name="nama"
@@ -310,7 +412,8 @@ class TambahDosen extends React.Component {
                     <DatePicker
                       placeholder="Pilih tanggal"
                       showTime
-                      onChange={value => console.log(value)}
+                      value={this.state.waktuPelaksanaan}
+                      onChange={value => this.setState({ waktuPelaksanaan: value })}
                     />
                   </Form.Item>{' '}
                   <Form.Item
@@ -318,10 +421,22 @@ class TambahDosen extends React.Component {
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
                   >
-                    <Input placeholder="Dalam menit" />
+                    <Input
+                      placeholder="Dalam menit"
+                      requried
+                      value={this.state.durasiPengerjaan}
+                      name="durasiPengerjaan"
+                      onChange={this.saveToState}
+                    />
                   </Form.Item>{' '}
                   <Form.Item label="Lokasi Ujian" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-                    <Input placeholder="Dalam menit" />
+                    <Input
+                      value={this.state.lokasi}
+                      name="lokasi"
+                      onChange={this.saveToState}
+                      required
+                      placeholder="tempat dilaksanakan ujian"
+                    />
                   </Form.Item>{' '}
                   <Form.Item
                     label="Pilih Bank Soal"
