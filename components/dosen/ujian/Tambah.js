@@ -202,8 +202,8 @@ class TambahDosen extends React.Component {
   };
 
   ErrorPersen = (buatSoal, penyimpanan, persen, text) => {
-    const dibutuhkan = Math.floor((buatSoal * persen) / 100);
-    const sisa = Math.floor(penyimpanan - dibutuhkan);
+    const dibutuhkan = Math.round((buatSoal * persen) / 100);
+    const sisa = Math.round(penyimpanan - dibutuhkan);
 
     console.log(sisa, dibutuhkan, 'hhh');
 
@@ -215,6 +215,8 @@ class TambahDosen extends React.Component {
       return '';
     }
   };
+
+  persenKeSoal = persen => Math.round((Number(this.state.totalSoalDibutuhkan) * persen) / 100);
 
   rubahPersenMudahSoal = (value) => {
     const mau = value;
@@ -473,8 +475,8 @@ class TambahDosen extends React.Component {
                         onChange={this.rubahJumlahSoal}
                       />
                     </Form.Item>{' '}
-                    {!Number(this.state.totalSoalDibutuhkan) ||
-                    this.state.errorJumlahSoal ? null : (
+
+                    {!Number(this.state.totalSoalDibutuhkan) || this.state.errorJumlahSoal ? null : (
                       <>
                         <h4>Tingkat Kesulitan </h4>
                         {this.state.errorPersentasiSoal && (
@@ -534,6 +536,32 @@ class TambahDosen extends React.Component {
                             onChange={this.rubahPersenSusahSoal}
                           />
                         </Form.Item>
+
+                        <h4>
+                          Soal berdasarakan Presentasi yang dihasilkan dari{' '}
+                          {this.state.totalSoalDibutuhkan} soal:
+                        </h4>
+                        <ul>
+                          <li>
+                            {this.persenKeSoal(this.state.mudahDibutuhkan)} Soal dengan Tingkat
+                            Kesulitan Mudah
+                          </li>
+                          <li>
+                            {this.persenKeSoal(this.state.sedangDibutuhkan)} Soal dengan Tingkat
+                            Kesulitan Sedang
+                          </li>
+                          <li>
+                            {this.persenKeSoal(this.state.susahDibutuhkan)} Soal dengan Tingkat
+                            Kesulitan Susah
+                          </li>
+                          <li>
+                            {this.state.totalSoalDibutuhkan -
+                              this.persenKeSoal(this.state.mudahDibutuhkan) -
+                              this.persenKeSoal(this.state.sedangDibutuhkan) -
+                              this.persenKeSoal(this.state.susahDibutuhkan)}{' '}
+                            Soal dengan Tingkat Kesulitan Acak
+                          </li>
+                        </ul>
                       </>
                     )}
                   </Card>
