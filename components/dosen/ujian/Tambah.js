@@ -46,42 +46,25 @@ const CREATE_KELAS_MUTATION = gql`
     $kelas: ID!
   ) {
     createUjian(
-    data: {
-  nama: $nama
-  tanggalPelaksanaan: $tanggalPelaksanaan
-  lokasi: $lokasi
-  JumlahSoal: $jumlahSoal
-  presentasiSusah: $presentasiSusah
-  presentasiSedang: $presentasiSedang
-  presentasiMudah: $presentasiMudah
-  durasiPengerjaan: $durasiPengerjaan
-  status: true
-  prodi: {
-    connect: {
-      nama: $prodi
+      data: {
+        nama: $nama
+        tanggalPelaksanaan: $tanggalPelaksanaan
+        lokasi: $lokasi
+        JumlahSoal: $jumlahSoal
+        presentasiSusah: $presentasiSusah
+        presentasiSedang: $presentasiSedang
+        presentasiMudah: $presentasiMudah
+        durasiPengerjaan: $durasiPengerjaan
+        status: true
+        prodi: { connect: { nama: $prodi } }
+        bankSoal: { connect: { id: $bankSoal } }
+        kelas: { connect: { id: $kelas } }
+      }
+    ) {
+      id
+      nama
     }
   }
-       bankSoal: {
-        connect: {
-          id: $bankSoal
-        }
-      }
-
-        kelas: {
-        connect: {
-          id: $kelas
-        }
-      }
-
-
-
-    }
-  ) {
-
-    id
-    nama
-  } }
-
 `;
 
 const DEFAULTSTATE = {
@@ -106,6 +89,9 @@ const DEFAULTSTATE = {
   waktuPelaksanaan: null,
   durasiPengerjaan: undefined,
   lokasi: undefined,
+
+  // persen
+  maxPersen: 100,
 };
 
 class TambahDosen extends React.Component {
@@ -204,6 +190,7 @@ class TambahDosen extends React.Component {
 
   rubahJumlahSoal = (value) => {
     const mau = value.target.value;
+
     this.setState({
       totalSoalDibutuhkan: mau,
       errorJumlahSoal: '',
@@ -287,11 +274,11 @@ class TambahDosen extends React.Component {
         presentasiSedang: this.state.sedangDibutuhkan,
         durasiPengerjaan: this.state.durasiPengerjaan,
         prodi: this.state.prodi,
-        bankSoal:  this.state.bankSoal,
-        kelas:  this.state.kelas
+        bankSoal: this.state.bankSoal,
+        kelas: this.state.kelas,
       },
     });
-    this.setState({...DEFAULTSTATE});
+    this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
   };
 
   render() {
@@ -486,55 +473,79 @@ class TambahDosen extends React.Component {
                         onChange={this.rubahJumlahSoal}
                       />
                     </Form.Item>{' '}
-                    <h4>Tingkat Kesulitan </h4>
-                    {this.state.errorPersentasiSoal && (
-                      <div
-                        style={{
-                          color: 'red',
-                          border: '2px solid pink',
-                          margin: '5px',
-                          padding: '10px',
-                        }}
-                      >
-                        <i>{this.state.errorPersentasiSoal} </i>
-                      </div>
+                    {!Number(this.state.totalSoalDibutuhkan) ||
+                    this.state.errorJumlahSoal ? null : (
+                      <>
+                        <h4>Tingkat Kesulitan </h4>
+                        {this.state.errorPersentasiSoal && (
+                          <div
+                            style={{
+                              color: 'red',
+                              border: '2px solid pink',
+                              margin: '5px',
+                              padding: '10px',
+                            }}
+                          >
+                            <i>{this.state.errorPersentasiSoal} </i>
+                          </div>
+                        )}
+                        <Form.Item
+                          label={`Persentasi Mudah ${this.state.mudahDibutuhkan}%`}
+                          labelCol={{ span: 8 }}
+                          wrapperCol={{ span: 16 }}
+                        >
+                          <Slider
+                            max={
+                              this.state.maxPersen -
+                              this.state.susahDibutuhkan -
+                              this.state.sedangDibutuhkan
+                            }
+                            onChange={this.rubahPersenMudahSoal}
+                            value={this.state.mudahDibutuhkan}
+                          />
+                        </Form.Item>
+                        <Form.Item
+                          label={`Persentasi Sedang ${this.state.sedangDibutuhkan}%`}
+                          labelCol={{ span: 8 }}
+                          wrapperCol={{ span: 16 }}
+                        >
+                          <Slider
+                            max={
+                              this.state.maxPersen -
+                              this.state.mudahDibutuhkan -
+                              this.state.susahDibutuhkan
+                            }
+                            value={this.state.sedangDibutuhkan}
+                            onChange={this.rubahPersenSedangSoal}
+                          />
+                        </Form.Item>
+                        <Form.Item
+                          label={`Persentasi Susah ${this.state.susahDibutuhkan}%`}
+                          labelCol={{ span: 8 }}
+                          wrapperCol={{ span: 16 }}
+                        >
+                          <Slider
+                            max={
+                              this.state.maxPersen -
+                              this.state.mudahDibutuhkan -
+                              this.state.sedangDibutuhkan
+                            }
+                            value={this.state.susahDibutuhkan}
+                            onChange={this.rubahPersenSusahSoal}
+                          />
+                        </Form.Item>
+                      </>
                     )}
-                    <Form.Item
-                      label="Persentasi Mudah %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        onChange={this.rubahPersenMudahSoal}
-                        value={this.state.mudahDibutuhkan}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label="Persentasi Sedang %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        value={this.state.sedangDibutuhkan}
-                        onChange={this.rubahPersenSedangSoal}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label="Persentasi Susah %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        value={this.state.susahDibutuhkan}
-                        onChange={this.rubahPersenSusahSoal}
-                      />
-                    </Form.Item>
                   </Card>
                   <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
                     <Button
                       type="primary"
                       htmlType="submit"
-                      disabled={this.state.errorJumlahSoal || this.state.errorPersentasiSoal}
+                      disabled={
+                        this.state.errorJumlahSoal ||
+                        this.state.errorPersentasiSoal ||
+                        !Number(this.state.totalSoalDibutuhkan)
+                      }
                     >
                       Buat Ujian
                     </Button>
