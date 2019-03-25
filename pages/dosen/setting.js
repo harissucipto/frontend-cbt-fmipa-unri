@@ -1,12 +1,13 @@
 import React from 'react';
 import Setting from '../../components/dosen/Setting';
-import UpdatePassword from '../../components/dosen/UpdatePassword';
+import { Row, Col } from 'antd';
 
 const AkunSettings = () => (
-  <>
-    <Setting />
-    <UpdatePassword />
-  </>
+  <Row type="flex" gutter={16} style={{ margin: '40px' }}>
+    <Col xs={24} lg={10}>
+      <Setting />
+    </Col>
+  </Row>
 );
 
 export default AkunSettings;

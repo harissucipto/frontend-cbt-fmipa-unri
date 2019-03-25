@@ -44,7 +44,12 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'Nama',
+        title: 'Nomor',
+        key: 'nomor',
+        render: (text, record, i) => <p>{i + 1}</p>,
+      },
+      {
+        title: 'Nama Kelas',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
@@ -96,12 +101,17 @@ class List extends Component {
         {({ data, loading, error }) => {
           console.log(data);
           return (
-            <Table
-              dataSource={data.kelasesDosen}
-              columns={this.columns}
-              rowKey={record => record.id}
-              loading={loading}
-            />
+            <>
+              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+                Total Kelas: <b>{data.kelasesDosen.length}</b> Kelas
+              </i>
+              <Table
+                dataSource={data.kelasesDosen}
+                columns={this.columns}
+                rowKey={record => record.id}
+                loading={loading}
+              />
+            </>
           );
         }}
       </Query>
