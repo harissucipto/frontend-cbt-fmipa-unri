@@ -12,19 +12,15 @@ class ListKelas extends Component {
 
     this.columns = [
       {
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
         title: 'Nama',
         dataIndex: 'nama',
         key: 'nama',
-        render: (text, record) => (
-          <Link
-            href={{
-              pathname: '/admin/mahasiswa/profil',
-              query: { id: record.id },
-            }}
-          >
-            <a>{text}</a>
-          </Link>
-        ),
+        render: (text, record) => <span>{text}</span>,
       },
       {
         title: 'NIM',
