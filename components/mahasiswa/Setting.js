@@ -88,20 +88,7 @@ class FormEditPermissions extends React.Component {
 const ProfilDosen = () => (
   <Query query={CURRENT_DOSEN_QUERY}>
     {({ data: { currentMahasiswa }, loading }) => (
-      <Card
-        style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
-        loading={loading}
-        title="Perbarui Informasi "
-      >
-        <HeaderAvatar>
-          <Avatar size={144} icon="user" />
-          <div>
-            <Button icon="upload">Ganti photo profil</Button>
-          </div>
-        </HeaderAvatar>
-        <FormEditPermissions user={currentMahasiswa} />
-        <UpdatePassword id={currentMahasiswa.mahasiswa.id} />
-      </Card>
+      <UpdatePassword id={currentMahasiswa.mahasiswa.id} />
     )}
   </Query>
 );

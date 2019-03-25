@@ -96,12 +96,17 @@ class List extends Component {
         {({ data, loading, error }) => {
           console.log(data);
           return (
-            <Table
-              dataSource={data.kelasesMahasiswa}
-              columns={this.columns}
-              rowKey={record => record.id}
-              loading={loading}
-            />
+            <>
+              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+                Total Kelas: <b>{data.kelasesMahasiswa.length}</b> Kelas
+              </i>
+              <Table
+                dataSource={data.kelasesMahasiswa}
+                columns={this.columns}
+                rowKey={record => record.id}
+                loading={loading}
+              />
+            </>
           );
         }}
       </Query>

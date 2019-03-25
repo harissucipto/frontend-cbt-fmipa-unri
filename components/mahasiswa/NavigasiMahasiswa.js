@@ -28,7 +28,7 @@ const NavigasiAdmin = () => (
         key="sub2"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="bank" />
             Kelas
           </span>
         }
@@ -42,7 +42,7 @@ const NavigasiAdmin = () => (
         key="sub3"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="schedule" />
             Ujian
           </span>
         }

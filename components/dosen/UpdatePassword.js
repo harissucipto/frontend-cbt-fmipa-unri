@@ -38,7 +38,7 @@ class UpdatePassword extends Component {
         }}
       >
         {(updatePassword, { error, loading, called }) => (
-          <Card title="Ganti Password" style={{ paddingTop: '20px' }}>
+          <Card title="Ganti Password">
             <Form
               onSubmit={async (e) => {
                 e.preventDefault();

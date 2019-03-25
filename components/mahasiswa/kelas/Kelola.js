@@ -41,15 +41,7 @@ class KelolaMahasiwa extends Component {
 
   render() {
     return (
-      <Card
-        title="Kelola Kelas"
-        style={{ margin: '20px', padding: '24px' }}
-        extra={
-          <Button type="dashed" onClick={() => Router.push('/admin/dosen/tambah')}>
-            Tambah Akun
-          </Button>
-        }
-      >
+      <Card title="Informasi Kelas yang diambil">
         <Form>
           <Form.Item
             label="Jurusan"
@@ -89,13 +81,6 @@ class KelolaMahasiwa extends Component {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Total Akun"
-            style={{ maxWidth: '480px' }}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 14 }}
-          />
-
           <div
             style={{
               display: 'flex',
@@ -110,8 +95,8 @@ class KelolaMahasiwa extends Component {
               }}
               value={this.state.belumKeyword}
               style={{ maxWidth: '480px' }}
-              placeholder="Masukan Nama atau NIM"
-              enterButton="Cari akun"
+              placeholder="Masukan Nama Kelas"
+              enterButton="Cari"
               onSearch={value => this.handleCari(value)}
             />
           </div>
