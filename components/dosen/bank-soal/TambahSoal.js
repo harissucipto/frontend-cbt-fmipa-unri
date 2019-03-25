@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Row, Col } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -140,7 +140,6 @@ class TambahSoal extends React.Component {
   render() {
     return (
       <>
-        <DetailBankSoal id={this.props.id} />
         <Card title="Buat Soal">
           <Mutation
             mutation={CREATE_SOAL}
