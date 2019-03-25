@@ -9,7 +9,7 @@ export default () => (
       <ProfilDosen />
     </Col>
     <Col order={1} xs={24} md={16} style={{ display: 'flex', marginBottom: '20px' }}>
-      <Card style={{ width: '100%', height: '100%' }}>
+      <Card style={{ width: '100%', height: '100%', paddingBottom: '100px' }}>
         <h1
           style={{
             marginTop: '40px',
@@ -20,7 +20,7 @@ export default () => (
           Selamat Datang
           <br /> di Portal Computer Based Test <br /> FMIPA Universitas Riau
         </h1>
-        <div style={{ padding: '10px', textAlign: 'center' }}>
+        <div style={{ padding: '10px', textAlign: 'center', marginBottom: '40px' }}>
           <p>
             Ini merupakan layanan yang dapat digunakan oleh dosen, untuk melakukan beberapa hal
             terkait sistem Computer Based Test
@@ -35,11 +35,11 @@ export default () => (
             flexWrap: 'wrap',
           }}
         >
-          <div style={{ textAlign: 'center', marginRight: '15px' }}>
+          <div style={{ textAlign: 'center', marginRight: '20px' }}>
             <Avatar shape="square" size={100} style={{ marginBottom: '5px' }} icon="bank" />
             <p>Informasi Kelas</p>
           </div>
-          <div style={{ textAlign: 'center', marginRight: '15px' }}>
+          <div style={{ textAlign: 'center', marginRight: '20px' }}>
             <Avatar shape="square" size={100} icon="file-text" style={{ marginBottom: '5px' }} />
             <p>Kelola Bank Soal</p>
           </div>

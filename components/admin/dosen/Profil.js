@@ -41,19 +41,6 @@ const CURRENT_DOSEN_QUERY = gql`
           nama
         }
       }
-      mataKuliahs {
-        id
-        nama
-        kode
-        prodi {
-          id
-          nama
-          jurusan {
-            id
-            nama
-          }
-        }
-      }
     }
   }
 `;

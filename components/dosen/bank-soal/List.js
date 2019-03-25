@@ -46,7 +46,12 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'Nama bank soal',
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <p>{i + 1}</p>,
+      },
+      {
+        title: 'Nama Bank Soal',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
@@ -105,6 +110,7 @@ class List extends Component {
 
   render() {
     const { prodi, jurusan, keyword } = this.props;
+
     return (
       <Query
         query={SEARCH_LIST}
@@ -118,12 +124,17 @@ class List extends Component {
         {({ data, loading, error }) => {
           console.log(data);
           return (
-            <Table
-              dataSource={data.bankSoals}
-              columns={this.columns}
-              rowKey={record => record.id}
-              loading={loading}
-            />
+            <>
+              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+                Total Bank Soal: <b>{data.bankSoals.length}</b>
+              </i>
+              <Table
+                dataSource={data.bankSoals}
+                columns={this.columns}
+                rowKey={record => record.id}
+                loading={loading}
+              />
+            </>
           );
         }}
       </Query>

@@ -29,7 +29,7 @@ const CREATE_BANK_SOAL = gql`
 const DEFAULTSTATE = {
   nama: '',
   jurusan: '',
-  prodi: '',
+  prodi: undefined,
   prodies: [],
 };
 
@@ -95,11 +95,7 @@ class TambahDosen extends React.Component {
           if (!loading) console.log(data);
           return (
             <Content>
-              <Card
-                title="Kelola Bank Soal"
-                style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
-              >
-                <h2>Tambah Bank Soal</h2>
+              <Card title="Buat Bank Soal">
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -121,7 +117,7 @@ class TambahDosen extends React.Component {
                     />
                   )}
 
-                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
                     <Input
                       disabled={loading}
                       name="nama"
@@ -133,7 +129,11 @@ class TambahDosen extends React.Component {
                     />
                   </Form.Item>
 
-                  <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item
+                    label="Jurusan"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
                     <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
                       {jurusans.map(jurusan => (
                         <Option key={jurusan} value={jurusan}>
@@ -142,7 +142,11 @@ class TambahDosen extends React.Component {
                       ))}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item
+                    label="Program Studi"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
                     <Select
                       placeholder="Pilih Prodi"
                       disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
@@ -157,7 +161,11 @@ class TambahDosen extends React.Component {
                     </Select>
                   </Form.Item>
 
-                  <Form.Item label="MataKuliah" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item
+                    label="MataKuliah"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
                     <PilihMataKuliah
                       jurusan={this.state.jurusan}
                       prodi={this.state.prodi}
@@ -168,7 +176,7 @@ class TambahDosen extends React.Component {
 
                   <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
                     <Button type="primary" htmlType="submit">
-                      Tambah Baru
+                      Buat Bank Soal
                     </Button>
                   </Form.Item>
                 </Form>

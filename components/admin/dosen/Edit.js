@@ -3,12 +3,11 @@ import { Card, Select, Form, Button, Input, Alert } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-
 import { CURRENT_DOSEN_QUERY } from './Profil';
-import { SEARCH_DOSEN_QUERY1 } from './ListDosen'
+import { SEARCH_DOSEN_QUERY1 } from './ListDosen';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
-import UpdatePassword from '../../dosen/UpdatePassword'
+import UpdatePassword from '../../dosen/UpdatePassword';
 
 const { Option } = Select;
 
@@ -77,13 +76,16 @@ class FormEdit extends Component {
           prodi: this.state.prodi,
           idDosen: this.state.id,
         }}
-        refetchQueries={[{
-          query: SEARCH_DOSEN_QUERY1, variables: {
-            searchTerm: '',
-            jurusan: '',
-            prodi: '',
-          }
-        }]}
+        refetchQueries={[
+          {
+            query: SEARCH_DOSEN_QUERY1,
+            variables: {
+              searchTerm: '',
+              jurusan: '',
+              prodi: '',
+            },
+          },
+        ]}
       >
         {(updateDosen, {
  data, error, loading, called,
@@ -185,14 +187,12 @@ class EditDosen extends Component {
   render() {
     return (
       <Query query={CURRENT_DOSEN_QUERY} variables={{ id: this.props.id }}>
-        {({ data, loading, error }) => {
-          return (
-            <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
-              <FormEdit dosen={data.dosen} />
-              <UpdatePassword id={data.dosen.id} />
-            </Card>
-          );
-        }}
+        {({ data, loading, error }) => (
+          <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
+            <FormEdit dosen={data.dosen} />
+            <UpdatePassword id={this.props.id} />
+          </Card>
+          )}
       </Query>
     );
   }

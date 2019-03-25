@@ -106,7 +106,6 @@ class KelolaMahasiwa extends Component {
           keyword={this.state.keyword || ''}
           prodi={this.state.prodi === 'semua' ? '' : this.state.prodi}
           jurusan={this.state.jurusan === 'semua' ? '' : this.state.jurusan}
-          mintaJumlah={this.changeJumlahKelas}
         />
       </Card>
     );

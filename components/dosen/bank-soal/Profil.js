@@ -50,15 +50,10 @@ const ProfilAdmin = ({ id }) => (
       console.log(data, 'data profil');
 
       return (
-        <Card style={{ margin: '30px' }} title="Kelola Bank Soal">
-          <Row>
-            <Col span={8}>
-              <Card
-                title="Informasi Bank Soal"
-                style={{ margin: '20px', padding: '24px' }}
-                loading={loading}
-              >
-                {/* <HeaderAvatar>
+        <Row type="flex" gutter={16} style={{ margin: '40px' }}>
+          <Col xs={24} md={8}>
+            <Card title="Informasi Bank Soal" loading={loading}>
+              {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
             <div>
               <p>
@@ -69,69 +64,73 @@ const ProfilAdmin = ({ id }) => (
             </div>
           </HeaderAvatar> */}
 
-                <List>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Nama Bank Soal</a>}
-                      description={data.bankSoal.nama}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design"> Mata Kuliah</a>}
-                      description={data.bankSoal.mataKuliah.nama}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Jurusan</a>}
-                      description={data.bankSoal.prodi.jurusan.nama}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Prodi</a>}
-                      description={data.bankSoal.prodi.nama}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title={<a href="https://ant.design">Dosen</a>}
-                      description={data.bankSoal.dosen.nama}
-                    />
-                  </List.Item>
-                </List>
-              </Card>
-            </Col>
-            <Col span={16}>
-              <Card
-                title="Daftar Soal"
-                style={{ margin: '20px', padding: '20px' }}
-                extra={
-                  <Button
-                    onClick={() =>
-                      Router.push(`/dosen/bank-soal/tambah-soal?id=${data.bankSoal.id}`)
-                    }
-                  >
-                    Tambah Soal
-                  </Button>
-                }
-              >
-                <ListSoal
-                  soals={data.bankSoal.soals}
-                  bankSoal={data.bankSoal.id}
-                  loading={loading}
-                  idDosen={data.bankSoal.id}
-                />
-              </Card>
-            </Col>
-          </Row>
-        </Card>
+              <List>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="file-text" />}
+                    title={<a>Nama Bank Soal</a>}
+                    description={data.bankSoal.nama}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="info" />}
+                    title={<a>Jumlah Soal</a>}
+                    description={data.bankSoal.soals.length}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="mail" />}
+                    title={<a> Mata Kuliah</a>}
+                    description={data.bankSoal.mataKuliah.nama}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="deployment-unit" />}
+                    title={<a>Jurusan</a>}
+                    description={data.bankSoal.prodi.jurusan.nama}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="cluster" />}
+                    title={<a>Prodi</a>}
+                    description={data.bankSoal.prodi.nama}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="user" />}
+                    title={<a>Dosen</a>}
+                    description={data.bankSoal.dosen.nama}
+                  />
+                </List.Item>
+              </List>
+            </Card>
+          </Col>
+          <Col xs={24} md={16}>
+            <Card
+              title="Daftar Soal"
+              extra={
+                <Button
+                  type="primary"
+                  onClick={() => Router.push(`/dosen/bank-soal/tambah-soal?id=${data.bankSoal.id}`)}
+                >
+                  Tambah Soal
+                </Button>
+              }
+            >
+              <ListSoal
+                soals={data.bankSoal.soals}
+                bankSoal={data.bankSoal.id}
+                loading={loading}
+                idDosen={data.bankSoal.id}
+              />
+            </Card>
+          </Col>
+        </Row>
       );
     }}
   </Query>

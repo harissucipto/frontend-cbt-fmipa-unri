@@ -104,7 +104,7 @@ class FormEdit extends Component {
     />
             )}
 
-    <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+    <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
       <Input
         disabled={loading}
         name="nama"
@@ -116,7 +116,7 @@ class FormEdit extends Component {
       />
     </Form.Item>
 
-    <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+    <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
       <Select
         placeholder="Pilih Jurusan"
         onChange={this.handleJurusanChange}
@@ -129,7 +129,11 @@ class FormEdit extends Component {
                 ))}
       </Select>
     </Form.Item>
-    <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+    <Form.Item
+      label="Program Studi"
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 18, lg: 10 }}
+    >
       <Select
         placeholder="Pilih Prodi"
         disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
@@ -144,7 +148,7 @@ class FormEdit extends Component {
       </Select>
     </Form.Item>
 
-    <Form.Item label="MataKuliah" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+    <Form.Item label="MataKuliah" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
       <PilihMataKuliah
         jurusan={this.state.jurusan}
         prodi={this.state.prodi}
@@ -170,7 +174,7 @@ class EditDosen extends Component {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => (
-          <Card style={{ margin: '20px' }} title="Edit Bank Soal" loading={loading}>
+          <Card title="Edit Bank Soal" loading={loading}>
             <FormEdit bankSoal={data.bankSoal} />
           </Card>
         )}

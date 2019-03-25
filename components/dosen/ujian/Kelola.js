@@ -42,8 +42,7 @@ class KelolaMahasiwa extends Component {
   render() {
     return (
       <Card
-        title="Kelola Ujian yang akan datang"
-        style={{ margin: '20px', padding: '24px' }}
+        title="Kelola Ujian yang Akan Datang"
         extra={
           <Button type="dashed" onClick={() => Router.push('/dosen/ujian/tambah')}>
             Tambah Ujian

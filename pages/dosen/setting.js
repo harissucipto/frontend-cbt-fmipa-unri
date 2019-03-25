@@ -3,7 +3,7 @@ import Setting from '../../components/dosen/Setting';
 import { Row, Col } from 'antd';
 
 const AkunSettings = () => (
-  <Row type="flex" gutter={16} style={{ margin: '40px' }}>
+  <Row type="flex" gutter={16} style={{ margin: '40px', justifyContent: 'center' }}>
     <Col xs={24} lg={10}>
       <Setting />
     </Col>
