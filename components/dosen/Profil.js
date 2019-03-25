@@ -13,6 +13,15 @@ const CURRENT_DOSEN_QUERY = gql`
       dosen {
         id
         nama
+        nip
+        prodi {
+          id
+          nama
+          jurusan {
+            id
+            nama
+          }
+        }
       }
       permissions
     }
@@ -45,30 +54,47 @@ const ProfilAdmin = () => (
       if (loading) return <p>Loading...</p>;
 
       return (
-        <Card style={{ margin: '20px', padding: '24px', maxWidth: '480px' }} loading={loading}>
-          <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.currentDosen.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar>
-
+        <Card loading={loading} title="Informasi Pengguna Login">
           <List>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="mail" />}
-                title={<a href="https://ant.design">Nama</a>}
+                avatar={<Avatar icon="user" />}
+                title="Nama"
                 description={data.currentDosen.dosen.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
+                avatar={<Avatar icon="info" />}
+                title="NIP"
+                description={data.currentDosen.dosen.nip}
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="deployment-unit" />}
+                title="Jurusan"
+                description={
+                  data.currentDosen.dosen.prodi ? data.currentDosen.dosen.prodi.jurusan.nama : ''
+                }
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="cluster" />}
+                title="Program Studi"
+                description={
+                  data.currentDosen.dosen.prodi ? data.currentDosen.dosen.prodi.nama : ''
+                }
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
                 avatar={<Avatar icon="mail" />}
-                title={<a href="https://ant.design">Email</a>}
+                title="Email"
                 description={data.currentDosen.email}
               />
             </List.Item>
