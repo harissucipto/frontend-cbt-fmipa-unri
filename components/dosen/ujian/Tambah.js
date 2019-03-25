@@ -309,12 +309,12 @@ class TambahDosen extends React.Component {
 }) => {
           if (!loading) console.log(data);
           return (
-            <Content>
+
               <Card
-                title="Kelola Ujian"
-                style={{ maxWidth: '800px', margin: '20px auto', paddding: '20px' }}
+                title="Buat Ujian"
+
               >
-                <h2>Buat Ujian Baru</h2>
+
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -580,7 +580,7 @@ class TambahDosen extends React.Component {
                   </Form.Item>
                 </Form>
               </Card>
-            </Content>
+
           );
         }}
       </Mutation>
