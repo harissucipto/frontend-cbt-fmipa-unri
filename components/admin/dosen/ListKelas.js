@@ -23,13 +23,18 @@ class ListKelas extends Component {
 
     this.columns = [
       {
-        title: 'Nama',
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
+        title: 'Nama Kelas',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/admin/dosen/profil',
+              pathname: '/admin/kelas/profil',
               query: { id: record.id },
             }}
           >

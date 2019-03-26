@@ -44,6 +44,11 @@ class List extends Component {
 
     this.columns = [
       {
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
         title: 'Nama',
         dataIndex: 'nama',
         key: 'nama',

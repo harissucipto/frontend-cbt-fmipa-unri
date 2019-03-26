@@ -44,6 +44,11 @@ class ListDosen extends Component {
 
     this.columns = [
       {
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
         title: 'Nama',
         dataIndex: 'nama',
         key: 'nama',
@@ -69,7 +74,7 @@ class ListDosen extends Component {
         key: 'email',
       },
       {
-        title: 'Password Awal',
+        title: 'Password Akun',
         dataIndex: 'user.passwordKasih',
         key: 'passwordKasih',
       },
@@ -124,12 +129,17 @@ class ListDosen extends Component {
         fetchPolicy="network-only"
       >
         {({ data, loading, error }) => (
-          <Table
-            columns={this.columns}
-            dataSource={data.dosens}
-            rowKey={record => record.nip}
-            loading={loading}
-          />
+          <>
+            <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+              Total Akun: <b>{data.dosens.length}</b> Dosen
+            </i>
+            <Table
+              columns={this.columns}
+              dataSource={data.dosens}
+              rowKey={record => record.nip}
+              loading={loading}
+            />
+          </>
         )}
       </Query>
     );

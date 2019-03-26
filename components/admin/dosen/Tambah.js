@@ -110,10 +110,9 @@ class TambahDosen extends React.Component {
 }) => (
   <Content>
     <Card
-      title="Kelola Akun Dosen"
-      style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
+      title="Buat Akun Dosen Baru"
+
     >
-      <h2>Tambah Akun Dosen Baru</h2>
       <Form
         method="post"
         onSubmit={async (e) => {
@@ -135,7 +134,7 @@ class TambahDosen extends React.Component {
         />
                 )}
 
-        <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="email"
@@ -147,7 +146,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="password"
@@ -159,7 +158,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="nama"
@@ -171,7 +170,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="nip"
@@ -183,7 +182,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-        <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10}}>
           <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
             {jurusans.map(jurusan => (
               <Option key={jurusan} value={jurusan}>
@@ -192,7 +191,7 @@ class TambahDosen extends React.Component {
                     ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Select
             placeholder="Pilih Prodi"
             disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
@@ -209,7 +208,7 @@ class TambahDosen extends React.Component {
 
         <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
           <Button type="primary" htmlType="submit">
-                    Tambah
+                    Buat Akun
           </Button>
         </Form.Item>
       </Form>

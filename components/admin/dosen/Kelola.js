@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
-import { ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
 import Router from 'next/router';
 
 import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';
@@ -50,10 +48,9 @@ class KelolaDosen extends Component {
   render() {
     return (
       <Card
-        title="Kelola Akun Dosen"
-        style={{ margin: '20px', padding: '24px' }}
+        title="Informasi Akun Dosen"
         extra={
-          <Button type="dashed" onClick={() => Router.push('/admin/dosen/tambah')}>
+          <Button type="primary" onClick={() => Router.push('/admin/dosen/tambah')}>
             Tambah Akun
           </Button>
         }
@@ -97,13 +94,6 @@ class KelolaDosen extends Component {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Total Akun"
-            style={{ maxWidth: '480px' }}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 14 }}
-          />
-
           <div
             style={{
               display: 'flex',
@@ -119,7 +109,7 @@ class KelolaDosen extends Component {
               value={this.state.belumKeyword}
               style={{ maxWidth: '480px' }}
               placeholder="Masukan Nama atau NIP"
-              enterButton="Cari akun"
+              enterButton="Cari"
               onSearch={value => this.handleCari(value)}
             />
           </div>
