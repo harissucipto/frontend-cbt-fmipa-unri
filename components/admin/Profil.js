@@ -39,26 +39,29 @@ const HeaderAvatar = styled.div`
 
 const ProfilAdmin = () => (
   <Query query={CURRENT_ADMIN_QUERY}>
-    {({ data, loading }) => (
-      <Card title="Informasi Pengguna Login" loading={loading}>
-        <List>
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar icon="user" />}
-              title={<a>Nama</a>}
-              description={data.admin.admin.nama}
-            />
-          </List.Item>
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar icon="mail" />}
-              title={<a>Email</a>}
-              description={data.admin.email}
-            />
-          </List.Item>
-        </List>
-      </Card>
-    )}
+    {({ data, loading }) => {
+      if (loading) return <p>loading...</p>;
+      return (
+        <Card title="Informasi Pengguna Login" loading={loading}>
+          <List>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="user" />}
+                title={<a>Nama</a>}
+                description={data.admin.admin.nama}
+              />
+            </List.Item>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="mail" />}
+                title={<a>Email</a>}
+                description={data.admin.email}
+              />
+            </List.Item>
+          </List>
+        </Card>
+      );
+    }}
   </Query>
 );
 

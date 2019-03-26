@@ -188,9 +188,8 @@ class EditDosen extends Component {
         {({ data, loading, error }) => {
           return (
 
-            <Card style={{ margin: '20px' }} title="Edit Informasi Akun Dosen" loading={loading}>
+            <Card  title="Edit Akun Mahasiswa" loading={loading}>
               <FormEdit mahasiswa={data.mahasiswa} />
-              <UpdatePassword id={this.props.id} />
             </Card>
 
           );

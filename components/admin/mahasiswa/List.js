@@ -48,7 +48,12 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'Nama',
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
+        title: 'Nama ',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
@@ -63,7 +68,7 @@ class List extends Component {
         ),
       },
       {
-        title: 'NIP',
+        title: 'NIM',
         dataIndex: 'nim',
         key: 'nim',
       },
@@ -73,7 +78,7 @@ class List extends Component {
         key: 'email',
       },
       {
-        title: 'Password Awal',
+        title: 'Password',
         dataIndex: 'user.passwordKasih',
         key: 'passwordKasih',
       },
@@ -130,12 +135,17 @@ class List extends Component {
         {({ data, loading, error }) => {
           console.log(data);
           return (
-            <Table
-              dataSource={data.mahasiswas}
-              columns={this.columns}
-              rowKey={record => record.nim}
-              loading={loading}
-            />
+            <>
+              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+                Total Akun: <b>{data.mahasiswas.length}</b> Mahasiswa
+              </i>
+              <Table
+                dataSource={data.mahasiswas}
+                columns={this.columns}
+                rowKey={record => record.nim}
+                loading={loading}
+              />
+            </>
           );
         }}
       </Query>

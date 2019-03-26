@@ -14,6 +14,14 @@ const CURRENT_DOSEN_QUERY = gql`
         id
         nama
         nim
+        prodi {
+          id
+          nama
+          jurusan {
+            id
+            nama
+          }
+        }
       }
       permissions
     }
@@ -42,9 +50,13 @@ const HeaderAvatar = styled.div`
 
 const ProfilAdmin = () => (
   <Query query={CURRENT_DOSEN_QUERY}>
-    {({ data, loading }) => (
-      <Card title="Informasi Pengguna Login" loading={loading}>
-        {/* <HeaderAvatar>
+    {({ data, loading }) => {
+      if (loading) return <p>loading...</p>;
+      if (!data) return <p>loading...s</p>;
+
+      return (
+        <Card title="Informasi Pengguna Login" loading={loading}>
+          {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
             <div>
               <p>
@@ -55,31 +67,48 @@ const ProfilAdmin = () => (
             </div>
           </HeaderAvatar> */}
 
-        <List>
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar icon="user" />}
-              title={<a>Nama</a>}
-              description={data.currentMahasiswa.mahasiswa.nama}
-            />
-          </List.Item>
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar icon="info" />}
-              title={<a>NIM</a>}
-              description={data.currentMahasiswa.mahasiswa.nim}
-            />
-          </List.Item>
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar icon="mail" />}
-              title={<a>Email</a>}
-              description={data.currentMahasiswa.email}
-            />
-          </List.Item>
-        </List>
-      </Card>
-    )}
+          <List>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="user" />}
+                title={<a>Nama</a>}
+                description={data.currentMahasiswa.mahasiswa.nama}
+              />
+            </List.Item>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="info" />}
+                title={<a>NIM</a>}
+                description={data.currentMahasiswa.mahasiswa.nim}
+              />
+            </List.Item>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="mail" />}
+                title={<a>Email</a>}
+                description={data.currentMahasiswa.email}
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="cluster" />}
+                title={<a>Jurusan</a>}
+                description={data.currentMahasiswa.mahasiswa.prodi.jurusan.nama}
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="deployment-unit" />}
+                title={<a>Program Studi</a>}
+                description={data.currentMahasiswa.mahasiswa.prodi.nama}
+              />
+            </List.Item>
+          </List>
+        </Card>
+      );
+    }}
   </Query>
 );
 

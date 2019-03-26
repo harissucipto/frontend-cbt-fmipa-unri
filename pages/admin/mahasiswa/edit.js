@@ -1,21 +1,18 @@
-/* eslint-disable react/prop-types */
-import React, { Component } from 'react';
-import { Row, Col, Card, Layout } from 'antd';
+import React from 'react';
+import { Row, Col } from 'antd';
 
 import Edit from '../../../components/admin/mahasiswa/Edit';
+import UpdatePassword from '../../../components/admin/mahasiswa/UpdatePassword';
 
-const EditPage = props => (
-  <Layout>
-    <Row>
-      <Col span={12}>
-        <Edit id={props.query.id} />
-      </Col>
-      <Col span={12}>
-        <Card style={{ margin: '20px' }}>
-          <p>Halo</p>
-        </Card>
-      </Col>
-    </Row>
-  </Layout>
+const AkunSettings = props => (
+  <Row type="flex" gutter={16} style={{ margin: '40px', justifyContent: 'center' }}>
+    <Col xs={24} lg={14}>
+      <Edit id={props.query.id} />
+    </Col>
+    <Col xs={24} lg={10}>
+      <UpdatePassword id={props.query.id} />
+    </Col>
+  </Row>
 );
-export default EditPage;
+
+export default AkunSettings;
