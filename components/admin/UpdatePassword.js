@@ -27,10 +27,7 @@ class UpdatePassword extends Component {
     return (
       <Mutation mutation={UPDATE_PASSWORD} variables={this.state}>
         {(updatePassword, { error, loading, called }) => (
-          <Card
-            title="Ganti Password"
-            style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
-          >
+          <Card title="Ganti Password">
             <Form
               onSubmit={async (e) => {
                 e.preventDefault();

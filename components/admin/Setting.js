@@ -115,17 +115,7 @@ class FormEditPermissions extends React.Component {
 const ProfilAdmin = () => (
   <Admin>
     {({ data: { admin }, loading }) => (
-      <Card
-        style={{ margin: '20px', padding: '24px', maxWidth: '480px' }}
-        loading={loading}
-        title="Perbarui Informasi "
-      >
-        <HeaderAvatar>
-          <Avatar size={144} icon="user" />
-          <div>
-            <Button icon="upload">Ganti photo profil</Button>
-          </div>
-        </HeaderAvatar>
+      <Card loading={loading} title="Perbarui Informasi ">
         <FormEditPermissions user={admin} />
       </Card>
     )}
