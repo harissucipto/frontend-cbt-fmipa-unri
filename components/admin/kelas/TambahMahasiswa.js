@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
+import { Card, Form, Input, Select, Button, Avatar, Alert, Row, Col, Icon } from 'antd';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import { Query, Mutation } from 'react-apollo';
@@ -33,27 +33,50 @@ class TambahMahasiswa extends Component {
           if (!data) return <p>Anda Kesalahan..</p>;
           console.log(data, 'data profil');
           return (
-            <Card
-              title="Tambah Mahasiswa ke Kelas"
-              extra={
-                <Button
-                  size="large"
-                  type="primary"
-                  onClick={() => Router.push(`/admin/kelas/profil?id=${this.props.kelas}`)}
-                >
-                  Lihat Daftar Mahasiswa yang telah terdaftar
-                </Button>
-              }
-            >
-              <Card>
-                <p>Nama Kelas: {data.kelas.nama}</p>
-                <p>Mata Kuliah: {data.kelas.mataKuliah.nama}</p>
-                <p>Jurusan: {data.kelas.prodi.jurusan.nama}</p>
-                <p>Prodi: {data.kelas.prodi.nama}</p>
-                <p>Dosen: {data.kelas.dosen ? data.kelas.dosen.nama : ''}</p>
+            <>
+              <Card
+                title="Tambah Mahasiswa ke Kelas"
+                style={{ marginBottom: '20px' }}
+                extra={
+                  <Button
+                    size="large"
+                    type="primary"
+                    onClick={() => Router.push(`/admin/kelas/profil?id=${this.props.kelas}`)}
+                  >
+                    Lihat Daftar Mahasiswa yang telah terdaftar
+                  </Button>
+                }
+              >
+                <Row type="flex" gutter="40">
+                  <Col md="8">
+                    <p>
+                      <Icon type="bank" /> Nama Kelas: {data.kelas.nama}
+                    </p>
+                  </Col>
+                  <Col md="8">
+                    <p>
+                      <Icon type="read" /> Mata Kuliah: {data.kelas.mataKuliah.nama}
+                    </p>
+                  </Col>
+                  <Col md="8">
+                    <p>
+                      <Icon type="deployment-unit" /> Jurusan: {data.kelas.prodi.jurusan.nama}
+                    </p>
+                  </Col>
+                  <Col md="8">
+                    <p>
+                      <Icon type="cluster" /> Prodi: {data.kelas.prodi.nama}
+                    </p>
+                  </Col>
+                  <Col md="8">
+                    <p>
+                      <Icon type="user" /> Dosen: {data.kelas.dosen ? data.kelas.dosen.nama : ''}
+                    </p>
+                  </Col>
+                </Row>
               </Card>
 
-              <Card>
+              <Card title="Daftar Mahasiswa">
                 <div
                   style={{
                     display: 'flex',
@@ -69,7 +92,7 @@ class TambahMahasiswa extends Component {
                     value={this.state.belumKeyword}
                     style={{ maxWidth: '480px' }}
                     placeholder="Masukan Nama atau NIM"
-                    enterButton="Cari akun"
+                    enterButton="Cari"
                     onSearch={value => this.handleCari(value)}
                   />
                 </div>
@@ -80,7 +103,7 @@ class TambahMahasiswa extends Component {
                   keyword={this.state.keyword}
                 />
               </Card>
-            </Card>
+            </>
           );
         }}
       </Query>

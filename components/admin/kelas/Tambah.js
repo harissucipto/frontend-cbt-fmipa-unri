@@ -98,11 +98,7 @@ class TambahDosen extends React.Component {
           if (!loading) console.log(data);
           return (
             <Content>
-              <Card
-                title="Kelola Kelas"
-                style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
-              >
-                <h2>Tambah Kelas Baru</h2>
+              <Card title="Buat Kelas Baru">
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -175,7 +171,7 @@ class TambahDosen extends React.Component {
 
                   <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
                     <Button type="primary" htmlType="submit">
-                      Tambah Baru
+                      Buat Kelas
                     </Button>
                   </Form.Item>
                 </Form>

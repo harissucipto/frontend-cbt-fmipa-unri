@@ -23,6 +23,11 @@ class ListKelas extends Component {
 
     this.columns = [
       {
+        title: 'No.',
+        key: 'nomor',
+        render: (text, record, i) => <span>{i + 1}</span>,
+      },
+      {
         title: 'Nama',
         dataIndex: 'nama',
         key: 'nama',
@@ -37,11 +42,7 @@ class ListKelas extends Component {
           </Link>
         ),
       },
-      {
-        title: 'Dosen',
-        dataIndex: 'dosen.nama',
-        key: 'dosen',
-      },
+
       {
         title: 'Jurusan',
         dataIndex: 'prodi.jurusan.nama',
@@ -51,6 +52,11 @@ class ListKelas extends Component {
         title: 'Program Studi',
         dataIndex: 'prodi.nama',
         key: 'prodi.nama',
+      },
+      {
+        title: 'Dosen',
+        dataIndex: 'dosen.nama',
+        key: 'dosen',
       },
       {
         title: 'Action',

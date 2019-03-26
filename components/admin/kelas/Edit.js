@@ -189,7 +189,7 @@ class EditDosen extends Component {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => (
-          <Card style={{ margin: '20px' }} title="Edit Informasi Mata Kuliah" loading={loading}>
+          <Card title="Edit Informasi Kelas" loading={loading}>
             <FormEdit kelas={data.kelas} />
           </Card>
         )}

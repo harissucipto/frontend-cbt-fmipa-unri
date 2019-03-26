@@ -79,11 +79,7 @@ class TambahDosen extends React.Component {
           if (!loading) console.log(data);
           return (
             <Content>
-              <Card
-                title="Kelola Mata Kuliah"
-                style={{ maxWidth: '480px', margin: '20px', paddding: '20px' }}
-              >
-                <h2>Tambah Mata Kuliah Baru</h2>
+              <Card title="Tambah Mata Kuliah">
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -105,7 +101,7 @@ class TambahDosen extends React.Component {
                     />
                   )}
 
-                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
                     <Input
                       disabled={loading}
                       name="nama"
@@ -117,7 +113,7 @@ class TambahDosen extends React.Component {
                     />
                   </Form.Item>
 
-                  <Form.Item label="Kode" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item label="Kode" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
                     <Input
                       disabled={loading}
                       name="kode"
@@ -129,7 +125,11 @@ class TambahDosen extends React.Component {
                     />
                   </Form.Item>
 
-                  <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item
+                    label="Jurusan"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
                     <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
                       {jurusans.map(jurusan => (
                         <Option key={jurusan} value={jurusan}>
@@ -138,7 +138,11 @@ class TambahDosen extends React.Component {
                       ))}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                  <Form.Item
+                    label="Program Studi"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
                     <Select
                       placeholder="Pilih Prodi"
                       disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}

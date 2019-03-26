@@ -28,7 +28,7 @@ const NavigasiAdmin = () => (
         key="sub2"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="team" />
             Dosen
           </span>
         }
@@ -45,7 +45,7 @@ const NavigasiAdmin = () => (
         key="sub3"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="team" />
             Mahasiswa
           </span>
         }
@@ -62,7 +62,7 @@ const NavigasiAdmin = () => (
         key="sub4"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="read" />
             Mata Kuliah
           </span>
         }
@@ -79,7 +79,7 @@ const NavigasiAdmin = () => (
         key="sub5"
         title={
           <span>
-            <Icon type="user" />
+            <Icon type="bank" />
             Kelas
           </span>
         }
