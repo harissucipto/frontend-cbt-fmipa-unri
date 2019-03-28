@@ -10,7 +10,7 @@ const { Option } = Select;
 const TINGKAT_KESULITAN = ['MUDAH', 'SEDANG', 'SUSAH'];
 
 const PILIH_MATA_KULIAH = ({ loading, value, onChange }) => (
-  <Select placeholder="Pilih Mata Kuliah" loading={loading} value={value} onChange={onChange}>
+  <Select placeholder="Tingkat kesulitan soal" loading={loading} value={value} onChange={onChange}>
     {TINGKAT_KESULITAN.map(tingkatKesulitan => (
       <Option key={tingkatKesulitan} value={tingkatKesulitan}>
         {tingkatKesulitan.toLowerCase()}

@@ -81,6 +81,48 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
+                    avatar={<Avatar icon="user" />}
+                    title={<a>Jumlah soal tingkat kesulitan mudah</a>}
+                    description={
+                      !data.bankSoal.soals.length
+                        ? '0 Soal'
+                        : `${
+                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'MUDAH')
+                              .length
+                          } Soal`
+                    }
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="user" />}
+                    title={<a>Jumlah soal tingkat kesulitan sedang</a>}
+                    description={
+                      !data.bankSoal.soals.length
+                        ? 0
+                        : `${
+                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG')
+                              .length
+                          } soal`
+                    }
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="user" />}
+                    title={<a>Jumlah soal tingkat kesulitan susah</a>}
+                    description={
+                      !data.bankSoal.soals.length
+                        ? 0
+                        : `${
+                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH')
+                              .length
+                          } soal`
+                    }
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
                     avatar={<Avatar icon="mail" />}
                     title={<a> Mata Kuliah</a>}
                     description={data.bankSoal.mataKuliah.nama}

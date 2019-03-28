@@ -14,7 +14,7 @@ const DetailBankSoal = props => (
 
       return (
         <Card
-          title="Detail Bank Soal"
+          title="Detail Bank Soal Sekarang"
           loading={loading}
           extra={
             <Button
@@ -28,6 +28,33 @@ const DetailBankSoal = props => (
           <p>Bank Soal: {data.bankSoal.nama}</p>
           <p>Mata Kuliah: {data.bankSoal.mataKuliah.nama}</p>
           <p>Jumlah Soal: {data.bankSoal.soals.length}</p>
+          <p>Jumlah Tingkat Kesulitan Soal:</p>
+          <ul>
+            <li>
+              Mudah :{' '}
+              {!data.bankSoal.soals.length
+                ? '0 Soal'
+                : `${
+                    data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'MUDAH').length
+                  } Soal`}{' '}
+            </li>
+            <li>
+              Sedang :{' '}
+              {!data.bankSoal.soals.length
+                ? '0 Soal'
+                : `${
+                    data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG').length
+                  } Soal`}{' '}
+            </li>
+            <li>
+              Susah :{' '}
+              {!data.bankSoal.soals.length
+                ? '0 Soal'
+                : `${
+                    data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH').length
+                  } Soal`}{' '}
+            </li>
+          </ul>
         </Card>
       );
     }}

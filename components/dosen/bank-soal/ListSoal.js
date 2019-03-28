@@ -2,15 +2,21 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button } from 'antd';
+import { Table, Divider, Button, Input, Select, Form } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
 import HapusSoal from './HapusSoal';
 
+const { Option } = Select;
+
 class ListKelas extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      filterSoal: '',
+    };
 
     this.columns = [
       {
@@ -67,14 +73,52 @@ class ListKelas extends Component {
     ];
   }
 
+  handleTingkatKesulitanSoal = soals =>
+    (this.state.filterSoal === ''
+      ? soals
+      : soals.filter(soal => soal.tingkatKesulitan === this.state.filterSoal));
+
   render() {
     return (
-      <Table
-        columns={this.columns}
-        dataSource={this.props.soals}
-        rowKey={record => record.nim}
-        loading={this.props.loading}
-      />
+      <>
+        <Form.Item
+          label="Filter Tingkat Kesulitan Soal"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 16 }}
+        >
+          <Select
+            placeholder="Pilih Tingkat Kesulitan"
+            disabled={!this.props.soals.length}
+            value={this.state.filterSoal}
+            onChange={value => this.setState({ filterSoal: value })}
+          >
+            <Option key={1} value="">
+              tidak
+            </Option>
+            <Option key={1} value="MUDAH">
+              mudah
+            </Option>
+            <Option key={1} value="SEDANG">
+              sedang
+            </Option>
+            <Option key={1} value="SUSAH">
+              susah
+            </Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Total Soal" labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
+          {this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals).length : 0}
+        </Form.Item>
+
+        <Table
+          columns={this.columns}
+          dataSource={
+            this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals) : []
+          }
+          rowKey={record => record.nim}
+          loading={this.props.loading}
+        />
+      </>
     );
   }
 }

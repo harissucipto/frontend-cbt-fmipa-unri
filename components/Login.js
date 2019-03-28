@@ -70,10 +70,6 @@ class SigninComponent extends React.Component {
               />
             </Form.Item>
             <Form.Item>
-              <Link href="/foregetpassword">
-                <a style={{ float: 'right' }}>Lupa password</a>
-              </Link>
-
               <Button
                 type="primary"
                 htmlType="submit"
