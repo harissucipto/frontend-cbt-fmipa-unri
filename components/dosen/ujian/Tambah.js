@@ -325,7 +325,7 @@ class TambahDosen extends React.Component {
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message={`Buat  kelas  ${data.createUjian.nama} berhasil`}
+                      message={`Buat  Ujian  ${data.createUjian.nama} berhasil`}
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}

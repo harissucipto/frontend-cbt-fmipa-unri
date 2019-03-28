@@ -28,6 +28,7 @@ const CURRENT_QUERY = gql`
         id
         nama
         mataKuliah {
+          id
           nama
         }
         prodi {
