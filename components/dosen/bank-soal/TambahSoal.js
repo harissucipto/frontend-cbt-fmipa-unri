@@ -3,6 +3,10 @@ import { Layout, Card, Form, Input, Button, Alert, Select, Row, Col } from 'antd
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 import PesanError from '../../PesanError';
 import { CURRENT_QUERY } from './Profil';
 import DetailBankSoal from './DetailBankSoal';
@@ -37,28 +41,26 @@ const CREATE_SOAL = gql`
 
 class TambahSoal extends React.Component {
   state = {
-    pertanyaan: '',
-    jawaban: [
-      {
-        key: 'a',
-        value: '',
-      },
-      {
-        key: 'b',
-        value: '',
-      },
-      {
-        key: 'c',
-        value: '',
-      },
-      {
-        key: 'd',
-        value: '',
-      },
-    ],
+    pertanyaan: EditorState.createEmpty(),
+    a: EditorState.createEmpty(),
+    b: EditorState.createEmpty(),
+    c: EditorState.createEmpty(),
+    d: EditorState.createEmpty(),
+
     kunciJawaban: undefined,
     tingkatKesulitan: undefined,
+    renderEditor: false,
   };
+
+  componentDidMount() {
+    this.setState({ renderEditor: true });
+  }
+
+  changePertanyaan = pertanyaan => this.setState({ pertanyaan });
+  changeA = a => this.setState({ a });
+  changeB = b => this.setState({ b });
+  changeC = c => this.setState({ c });
+  changeD = d => this.setState({ d });
 
   saveToState = (e) => {
     this.setState({
@@ -98,14 +100,28 @@ class TambahSoal extends React.Component {
     console.log('make');
 
     const soalBaru = {
-      pertanyaan: this.state.pertanyaan,
+      pertanyaan: JSON.stringify(convertToRaw(this.state.pertanyaan.getCurrentContent())),
       kunciJawaban: this.state.kunciJawaban,
       bankSoal: this.props.id,
       tingkatKesulitan: this.state.tingkatKesulitan,
-      jawaban: this.state.jawaban.map(item => ({
-        title: item.key,
-        content: item.value,
-      })),
+      jawaban: [
+        {
+          title: 'a',
+          content: JSON.stringify(convertToRaw(this.state.a.getCurrentContent())),
+        },
+        {
+          title: 'b',
+          content: JSON.stringify(convertToRaw(this.state.b.getCurrentContent())),
+        },
+        {
+          title: 'c',
+          content: JSON.stringify(convertToRaw(this.state.c.getCurrentContent())),
+        },
+        {
+          title: 'd',
+          content: JSON.stringify(convertToRaw(this.state.d.getCurrentContent())),
+        },
+      ],
     };
 
     console.log(soalBaru);
@@ -156,7 +172,6 @@ class TambahSoal extends React.Component {
  error, data, loading, called,
 }) => {
               if (loading) return <p>loading...</p>;
-              console.log(data);
 
               return (
                 <Form
@@ -181,43 +196,62 @@ class TambahSoal extends React.Component {
                     />
                   </Form.Item>
                   <Form.Item label="Pertanyaan">
-                    <Pertanyaan onChange={this.saveToState} value={this.state.pertanyaan} />
+                    {this.state.renderEditor && (
+                      <Editor
+                        initialEditorState={this.state.pertanyaan}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.changePertanyaan}
+                      />
+                    )}
                   </Form.Item>
 
                   <Form.Item label="Jawaban">
                     <Form.Item label="A">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('a')}
-                        name="a"
-                      />
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialEditorState={this.state.a}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeA}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="B">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('b')}
-                        name="b"
-                      />
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialEditorState={this.state.b}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeB}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="C">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('c')}
-                        name="c"
-                      />
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialEditorState={this.state.c}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeC}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="D">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('d')}
-                        name="d"
-                      />
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialEditorState={this.state.d}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeD}
+                        />
+                      )}
                     </Form.Item>
                   </Form.Item>
 
                   <Form.Item label="Kunci Jawaban">
                     <PilihKunciJawaban
-                      data={this.state.jawaban}
+                      data={[{ key: 'a' }, { key: 'b' }, { key: 'c' }, { key: 'd' }]}
                       value={this.state.kunciJawaban}
                       onChange={this.changeKunciJawaban}
                     />

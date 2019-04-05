@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import locale from 'antd/lib/locale-provider/zh_CN';
+import locale from 'antd/lib/locale-provider/id_ID';
 
 import PesanError from '../../PesanError';
 import { SEARCH_LIST } from './List';

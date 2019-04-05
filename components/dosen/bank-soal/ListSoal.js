@@ -5,10 +5,21 @@ import Router from 'next/router';
 import { Table, Divider, Button, Input, Select, Form } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { ConvertFromRaw, EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
 
 import HapusSoal from './HapusSoal';
 
 const { Option } = Select;
+
+const ReadOnlyEditor = (props) => {
+  const storedState = ConvertFromRaw(JSON.parse(props.storedState));
+  return (
+    <div className="readonly-editor">
+      <Editor editorState={storedState} readOnly />
+    </div>
+  );
+};
 
 class ListKelas extends Component {
   constructor(props) {
@@ -28,16 +39,21 @@ class ListKelas extends Component {
         title: 'Pertanyaan',
         dataIndex: 'pertanyaan',
         key: 'pertanyaan',
+        render: (text, record) => (
+          <div className="readonly-editor">
+            <Editor toolbarHidden readOnly initialContentState={JSON.parse(record.pertanyaan)} />
+          </div>
+        ),
       },
       {
         title: 'Jawaban',
         dataIndex: 'pilihanJawab',
         key: 'pilihanJawab',
-        render: (text, record) =>
+        render: (text, record, i) =>
           record.jawaban.map(item => (
-            <p key={item.id}>
-              {item.title}. {item.content}
-            </p>
+            <div className="readonly-editor" key={item.id}>
+              <Editor toolbarHidden readOnly initialContentState={JSON.parse(item.content)} />
+            </div>
           )),
       },
       {
@@ -115,7 +131,7 @@ class ListKelas extends Component {
           dataSource={
             this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals) : []
           }
-          rowKey={record => record.nim}
+          rowKey={record => record.id}
           loading={this.props.loading}
         />
       </>

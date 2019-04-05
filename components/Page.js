@@ -8,16 +8,6 @@ import Meta from './Meta';
 import Nav from './Nav';
 const { Content, Footer } = Layout;
 // eslint-disable-next-line no-unused-expressions
-injectGlobal`
-  @font-face {
-    font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif,
- "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";';
-    /* src: url('/static/radnikanext-medium-webfont.woff2') format('woff2'); */
-    font-weight: normal;
-    font-style: normal;
-  }
-
-`;
 
 const Page = props => (
   <Layout style={{ minHeight: '100vh' }}>
