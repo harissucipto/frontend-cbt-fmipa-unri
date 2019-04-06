@@ -4,14 +4,26 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
-import ListKelas from './ListKelas';
+import ListKelas from './ListKelasHasil';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
     ujian(where: { id: $id }) {
       id
       nama
-      pin
+      soalMahasiswas {
+        id
+        mahasiswa {
+          id
+          nama
+          nim
+        }
+        skor {
+          id
+          nilai
+        }
+      }
+
       dosen {
         id
         nama
@@ -100,13 +112,6 @@ class ProfilAdmin extends React.Component {
                         avatar={<Avatar icon="info" />}
                         title={<a>Nama Ujian</a>}
                         description={data.ujian.nama}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Pin Ujian</a>}
-                        description={data.ujian.pin}
                       />
                     </List.Item>
 
@@ -209,9 +214,9 @@ class ProfilAdmin extends React.Component {
                 </Card>
               </Col>
               <Col xs={24} md={14}>
-                <Card title="Peserta Ujian: ">
+                <Card title="Peserta Ujian:">
                   <ListKelas
-                    mahasiswas={data.ujian.kelas.mahasiswas}
+                    mahasiswas={data.ujian.soalMahasiswas}
                     loading={loading}
                     kelas={data.ujian.kelas.id}
                   />
