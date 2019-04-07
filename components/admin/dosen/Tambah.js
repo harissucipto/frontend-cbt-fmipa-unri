@@ -26,7 +26,9 @@ const CREATE_DOSEN_MUTATION = gql`
         password: $password
         passwordKasih: $passwordKasih
         permissions: { set: [USER, DOSEN] }
-        dosen: { create: { nama: $nama, nip: $nip, image: $image, prodi: { connect: { nama: $prodi } } } }
+        dosen: {
+          create: { nama: $nama, nip: $nip, image: $image, prodi: { connect: { nama: $prodi } } }
+        }
       }
     ) {
       id
@@ -241,7 +243,6 @@ class TambahDosen extends React.Component {
                       )}
                       <Input
                         disabled={loading}
-
                         name="image"
                         type="file"
                         onChange={this.uploadFile}

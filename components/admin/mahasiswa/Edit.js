@@ -3,12 +3,11 @@ import { Card, Select, Form, Button, Input, Alert, Spin } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-
 import { SEARCH_LIST } from './List';
-import { CURRENT_QUERY} from './Profil'
+import { CURRENT_QUERY } from './Profil';
 import { jurusans, prodis } from '../../../lib/jurusanProdi';
 import PesanError from '../../PesanError';
-import UpdatePassword from './UpdatePassword'
+import UpdatePassword from './UpdatePassword';
 
 const { Option } = Select;
 
@@ -71,7 +70,6 @@ class FormEdit extends Component {
     });
   };
 
-
   saveToState = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -102,127 +100,126 @@ class FormEdit extends Component {
           nim: this.state.nim,
           prodi: this.state.prodi,
           idMahasiswa: this.state.id,
-          image: this.state.image
+          image: this.state.image,
         }}
-        refetchQueries={[{
-          query: SEARCH_LIST, variables: {
-            searchTerm: '',
-            jurusan: '',
-            prodi: '',
-          }
-        }]}
+        refetchQueries={[
+          {
+            query: SEARCH_LIST,
+            variables: {
+              searchTerm: '',
+              jurusan: '',
+              prodi: '',
+            },
+          },
+        ]}
       >
         {(updateMahasiswa, {
  data, error, loading, called,
 }) => {
-  if (loading) return <Spin  tip="loading..." style={{ textAlign: "center"}} />
-  return (
-  <Form
-    method="post"
-    onSubmit={async (e) => {
-              e.preventDefault();
-              await updateMahasiswa();
-            }}
-  >
-    <PesanError error={error} />
-    {!error && !loading && called && (
-    <Alert
-      message="Rubah informasi akun  mahasiswa berhasil"
-      type="success"
-      showIcon
-      style={{ margin: '10px 0' }}
-    />
-            )}
+          if (loading) return <Spin tip="loading..." style={{ textAlign: 'center' }} />;
+          return (
+            <Form
+              method="post"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await updateMahasiswa();
+              }}
+            >
+              <PesanError error={error} />
+              {!error && !loading && called && (
+                <Alert
+                  message="Rubah informasi akun  mahasiswa berhasil"
+                  type="success"
+                  showIcon
+                  style={{ margin: '10px 0' }}
+                />
+              )}
 
-    <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="email"
-        value={this.state.email}
-        placeholder="Email mahasiswa"
-        type="email"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
+              <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="email"
+                  value={this.state.email}
+                  placeholder="Email mahasiswa"
+                  type="email"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
 
-    <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="nama"
-        value={this.state.nama}
-        placeholder="Nama Lengkap Dosen"
-        type="string"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
+              <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="nama"
+                  value={this.state.nama}
+                  placeholder="Nama Lengkap Dosen"
+                  type="string"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
 
-    <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="nim"
-        value={this.state.nim}
-        placeholder="NIP"
-        type="string"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
+              <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="nim"
+                  value={this.state.nim}
+                  placeholder="NIP"
+                  type="string"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
 
-    <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Select
-        placeholder="Pilih Jurusan"
-        onChange={this.handleJurusanChange}
-        value={this.state.jurusan}
-      >
-        {jurusans.map(jurusan => (
-          <Option key={jurusan} value={jurusan}>
-            {jurusan.toUpperCase()}
-          </Option>
-                ))}
-      </Select>
-    </Form.Item>
-    <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Select
-        placeholder="Pilih Prodi"
-        disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
-        value={this.state.prodi}
-        onChange={this.handleProdiChange}
-      >
-        {this.state.prodies.map(prodiku => (
-          <Option key={prodiku} value={prodiku}>
-            {prodiku.toUpperCase()}
-          </Option>
-                ))}
-      </Select>
-    </Form.Item>
+              <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Select
+                  placeholder="Pilih Jurusan"
+                  onChange={this.handleJurusanChange}
+                  value={this.state.jurusan}
+                >
+                  {jurusans.map(jurusan => (
+                    <Option key={jurusan} value={jurusan}>
+                      {jurusan.toUpperCase()}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Select
+                  placeholder="Pilih Prodi"
+                  disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
+                  value={this.state.prodi}
+                  onChange={this.handleProdiChange}
+                >
+                  {this.state.prodies.map(prodiku => (
+                    <Option key={prodiku} value={prodiku}>
+                      {prodiku.toUpperCase()}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
 
               <Form.Item label="Photo Profil" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
                 {this.state.loading ? (
                   <Spin />
                 ) : (
-                    <>
-                      {this.state.image && (
-                        <img src={this.state.image} alt="Upload Preview" width="200" />
-                      )}
-                      <Input
-                        disabled={loading}
-                        name="image"
-                        type="file"
-                        onChange={this.uploadFile}
-                      />
-                    </>
-                  )}
+                  <>
+                    {this.state.image && (
+                      <img src={this.state.image} alt="Upload Preview" width="200" />
+                    )}
+                    <Input disabled={loading} name="image" type="file" onChange={this.uploadFile} />
+                  </>
+                )}
               </Form.Item>
 
-    <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-      <Button type="primary" htmlType="submit">
-                Simpan
-      </Button>
-    </Form.Item>
-  </Form>
-        )}}
+              <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
+                <Button type="primary" htmlType="submit">
+                  Simpan
+                </Button>
+              </Form.Item>
+            </Form>
+          );
+        }}
       </Mutation>
     );
   }
@@ -232,15 +229,11 @@ class EditDosen extends Component {
   render() {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }} fetchPolicy="network-only">
-        {({ data, loading, error }) => {
-          return (
-
-            <Card  title="Edit Akun Mahasiswa" loading={loading}>
-              <FormEdit mahasiswa={data.mahasiswa} />
-            </Card>
-
-          );
-        }}
+        {({ data, loading, error }) => (
+          <Card title="Edit Akun Mahasiswa" loading={loading}>
+            <FormEdit mahasiswa={data.mahasiswa} />
+          </Card>
+        )}
       </Query>
     );
   }

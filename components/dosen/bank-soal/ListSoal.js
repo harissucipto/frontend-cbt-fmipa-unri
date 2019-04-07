@@ -166,8 +166,8 @@ class ListKelas extends Component {
                               <Col span={18}>
                                 <div className="readonly-editor">
                                   <div>
-                                    {jawaban.gambar && (
-                                      <img src={jawaban.gambar} alt="gambar jawaban" width={200} />
+                                    {jawaban.image && (
+                                      <img src={jawaban.image} alt="gambar jawaban" width={200} />
                                     )}
                                   </div>
 

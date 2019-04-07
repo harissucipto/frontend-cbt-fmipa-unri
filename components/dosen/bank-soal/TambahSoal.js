@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select, Row, Col } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Row, Col, Spin } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -22,10 +22,12 @@ const CREATE_SOAL = gql`
     $jawaban: [JawabanCreateWithoutSoalInput!]
     $tingkatKesulitan: String!
     $bankSoal: ID!
+    $image: String
   ) {
     createSoal(
       data: {
         pertanyaan: $pertanyaan
+        image: $image
         kunciJawaban: $kunciJawaban
         bankSoal: { connect: { id: $bankSoal } }
         tingkatKesulitan: $tingkatKesulitan
@@ -46,10 +48,121 @@ class TambahSoal extends React.Component {
     b: EditorState.createEmpty(),
     c: EditorState.createEmpty(),
     d: EditorState.createEmpty(),
+    image: '',
+    imageA: '',
+    imageB: '',
+    imageC: '',
+    imageD: '',
+    loading: false,
 
     kunciJawaban: undefined,
     tingkatKesulitan: undefined,
     renderEditor: false,
+  };
+
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileA = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageA: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileB = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageB: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileC = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageC: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileD = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageD: file.secure_url,
+      loading: false,
+    });
   };
 
   componentDidMount() {
@@ -104,21 +217,26 @@ class TambahSoal extends React.Component {
       kunciJawaban: this.state.kunciJawaban,
       bankSoal: this.props.id,
       tingkatKesulitan: this.state.tingkatKesulitan,
+      image: this.state.image,
       jawaban: [
         {
           title: 'a',
+          image: this.state.imageA,
           content: JSON.stringify(convertToRaw(this.state.a.getCurrentContent())),
         },
         {
           title: 'b',
+          image: this.state.imageB,
           content: JSON.stringify(convertToRaw(this.state.b.getCurrentContent())),
         },
         {
           title: 'c',
+          image: this.state.imageC,
           content: JSON.stringify(convertToRaw(this.state.c.getCurrentContent())),
         },
         {
           title: 'd',
+          image: this.state.imageD,
           content: JSON.stringify(convertToRaw(this.state.d.getCurrentContent())),
         },
       ],
@@ -150,6 +268,11 @@ class TambahSoal extends React.Component {
       ],
       kunciJawaban: undefined,
       tingkatKesulitan: undefined,
+      image: '',
+      imageA: '',
+      imageB: '',
+      imageC: '',
+      imageD: '',
     });
   };
 
@@ -196,6 +319,27 @@ class TambahSoal extends React.Component {
                     />
                   </Form.Item>
                   <Form.Item label="Pertanyaan">
+                    <Form.Item
+                      label="Gambar"
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 18, lg: 10 }}
+                    >
+                      {this.state.loading ? (
+                        <Spin />
+                      ) : (
+                        <>
+                          {this.state.image && (
+                            <img src={this.state.image} alt="Upload Preview" width="200" />
+                          )}
+                          <Input
+                            disabled={loading}
+                            name="image"
+                            type="file"
+                            onChange={this.uploadFile}
+                          />
+                        </>
+                      )}
+                    </Form.Item>
                     {this.state.renderEditor && (
                       <Editor
                         initialEditorState={this.state.pertanyaan}
@@ -208,6 +352,27 @@ class TambahSoal extends React.Component {
 
                   <Form.Item label="Jawaban">
                     <Form.Item label="A">
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                            <>
+                              {this.state.imageA && (
+                                <img src={this.state.imageA} alt="Upload Preview" width="200" />
+                              )}
+                              <Input
+                                disabled={loading}
+                                name="image"
+                                type="file"
+                                onChange={this.uploadFileA}
+                              />
+                            </>
+                          )}
+                      </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
                           initialEditorState={this.state.a}
@@ -218,6 +383,27 @@ class TambahSoal extends React.Component {
                       )}
                     </Form.Item>
                     <Form.Item label="B">
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                            <>
+                              {this.state.imageB && (
+                                <img src={this.state.imageB} alt="Upload Preview" width="200" />
+                              )}
+                              <Input
+                                disabled={loading}
+                                name="image"
+                                type="file"
+                                onChange={this.uploadFileB}
+                              />
+                            </>
+                          )}
+                      </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
                           initialEditorState={this.state.b}
@@ -228,6 +414,27 @@ class TambahSoal extends React.Component {
                       )}
                     </Form.Item>
                     <Form.Item label="C">
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                            <>
+                              {this.state.imageC && (
+                                <img src={this.state.imageC} alt="Upload Preview" width="200" />
+                              )}
+                              <Input
+                                disabled={loading}
+                                name="image"
+                                type="file"
+                                onChange={this.uploadFileC}
+                              />
+                            </>
+                          )}
+                      </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
                           initialEditorState={this.state.c}
@@ -238,6 +445,27 @@ class TambahSoal extends React.Component {
                       )}
                     </Form.Item>
                     <Form.Item label="D">
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                            <>
+                              {this.state.imageD && (
+                                <img src={this.state.imageD} alt="Upload Preview" width="200" />
+                              )}
+                              <Input
+                                disabled={loading}
+                                name="image"
+                                type="file"
+                                onChange={this.uploadFileD}
+                              />
+                            </>
+                          )}
+                      </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
                           initialEditorState={this.state.d}

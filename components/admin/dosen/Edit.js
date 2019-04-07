@@ -100,7 +100,7 @@ class FormEdit extends Component {
           nip: this.state.nip,
           prodi: this.state.prodi,
           idDosen: this.state.id,
-          image: this.state.image
+          image: this.state.image,
         }}
         refetchQueries={[
           {
@@ -115,116 +115,111 @@ class FormEdit extends Component {
       >
         {(updateDosen, {
  data, error, loading, called,
-}) =>{
-  if (loading) return <Spin tip="loading..." style={{ textAlign: "center"}} />;
-  return (
-  <Form
-    method="post"
-    onSubmit={async (e) => {
-              e.preventDefault();
-              await updateDosen();
-            }}
-  >
-    <PesanError error={error} />
-    {!error && !loading && called && (
-    <Alert
-      message="Rubah informasi akun  dosen berhasil"
-      type="success"
-      showIcon
-      style={{ margin: '10px 0' }}
-    />
-            )}
-
-    <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="email"
-        value={this.state.email}
-        placeholder="Email dosen"
-        type="email"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
-
-    <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="nama"
-        value={this.state.nama}
-        placeholder="Nama Lengkap Dosen"
-        type="string"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
-
-    <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Input
-        disabled={loading}
-        name="nip"
-        value={this.state.nip}
-        placeholder="NIP"
-        type="string"
-        required
-        onChange={this.saveToState}
-      />
-    </Form.Item>
-
-    <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Select
-        placeholder="Pilih Jurusan"
-        onChange={this.handleJurusanChange}
-        value={this.state.jurusan}
-      >
-        {jurusans.map(jurusan => (
-          <Option key={jurusan} value={jurusan}>
-            {jurusan.toUpperCase()}
-          </Option>
-                ))}
-      </Select>
-    </Form.Item>
-    <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      <Select
-        placeholder="Pilih Prodi"
-        disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
-        value={this.state.prodi}
-        onChange={this.handleProdiChange}
-      >
-        {this.state.prodies.map(prodiku => (
-          <Option key={prodiku} value={prodiku}>
-            {prodiku.toUpperCase()}
-          </Option>
-                ))}
-      </Select>
-    </Form.Item>
-
-    <Form.Item label="Photo Profil" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-      {this.state.loading ? (
-        <Spin />
-              ) : (
-                <>
-                  {this.state.image && (
-                    <img src={this.state.image} alt="Upload Preview" width="200" />
-                  )}
-                  <Input
-                    disabled={loading}
-
-                    name="image"
-                    type="file"
-                    onChange={this.uploadFile}
-                  />
-                </>
+}) => {
+          if (loading) return <Spin tip="loading..." style={{ textAlign: 'center' }} />;
+          return (
+            <Form
+              method="post"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await updateDosen();
+              }}
+            >
+              <PesanError error={error} />
+              {!error && !loading && called && (
+                <Alert
+                  message="Rubah informasi akun  dosen berhasil"
+                  type="success"
+                  showIcon
+                  style={{ margin: '10px 0' }}
+                />
               )}
-    </Form.Item>
 
-    <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-      <Button type="primary" htmlType="submit">
-                Simpan
-      </Button>
-    </Form.Item>
-  </Form>
-        )}}
+              <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="email"
+                  value={this.state.email}
+                  placeholder="Email dosen"
+                  type="email"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
+
+              <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="nama"
+                  value={this.state.nama}
+                  placeholder="Nama Lengkap Dosen"
+                  type="string"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
+
+              <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Input
+                  disabled={loading}
+                  name="nip"
+                  value={this.state.nip}
+                  placeholder="NIP"
+                  type="string"
+                  required
+                  onChange={this.saveToState}
+                />
+              </Form.Item>
+
+              <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Select
+                  placeholder="Pilih Jurusan"
+                  onChange={this.handleJurusanChange}
+                  value={this.state.jurusan}
+                >
+                  {jurusans.map(jurusan => (
+                    <Option key={jurusan} value={jurusan}>
+                      {jurusan.toUpperCase()}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                <Select
+                  placeholder="Pilih Prodi"
+                  disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
+                  value={this.state.prodi}
+                  onChange={this.handleProdiChange}
+                >
+                  {this.state.prodies.map(prodiku => (
+                    <Option key={prodiku} value={prodiku}>
+                      {prodiku.toUpperCase()}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item label="Photo Profil" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                {this.state.loading ? (
+                  <Spin />
+                ) : (
+                  <>
+                    {this.state.image && (
+                      <img src={this.state.image} alt="Upload Preview" width="200" />
+                    )}
+                    <Input disabled={loading} name="image" type="file" onChange={this.uploadFile} />
+                  </>
+                )}
+              </Form.Item>
+
+              <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
+                <Button type="primary" htmlType="submit">
+                  Simpan
+                </Button>
+              </Form.Item>
+            </Form>
+          );
+        }}
       </Mutation>
     );
   }
@@ -233,7 +228,11 @@ class FormEdit extends Component {
 class EditDosen extends Component {
   render() {
     return (
-      <Query fetchPolicy="network-only" query={CURRENT_DOSEN_QUERY} variables={{ id: this.props.id }}>
+      <Query
+        fetchPolicy="network-only"
+        query={CURRENT_DOSEN_QUERY}
+        variables={{ id: this.props.id }}
+      >
         {({ data, loading, error }) => (
           <Card title="Edit Informasi Akun Dosen" loading={loading}>
             <FormEdit dosen={data.dosen} />

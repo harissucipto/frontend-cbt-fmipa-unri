@@ -26,7 +26,9 @@ const CREATE_MAHASISWA_MUTATION = gql`
         password: $password
         passwordKasih: $passwordKasih
         permissions: { set: [USER, MAHASISWA] }
-        mahasiswa: { create: { nama: $nama, nim: $nim, image: $image, prodi: { connect: { nama: $prodi } } } }
+        mahasiswa: {
+          create: { nama: $nama, nim: $nim, image: $image, prodi: { connect: { nama: $prodi } } }
+        }
       }
     ) {
       id
@@ -118,145 +120,153 @@ class TambahDosen extends React.Component {
           nama: this.state.nama.toLowerCase(),
           nim: this.state.nim,
           prodi: this.state.prodi,
-          image: this.state.image
+          image: this.state.image,
         }}
       >
         {(createDosen, {
  data, error, loading, called,
 }) => {
-  if (loading) return <Spin tip="Loading..." style={{ textAlign: 'center'}} />
-  return (
-  <Content>
-    <Card
-      title="Buat Akun Mahasiswa"
-
-    >
-
-      <Form
-        method="post"
-        onSubmit={async (e) => {
-                  e.preventDefault();
-                  await createDosen();
-                  this.setState({
-                    ...DEFAULTSTATE,
-                  });
-                  console.log(this.state);
-                }}
-      >
-        <PesanError error={error} />
-        {!error && !loading && called && (
-        <Alert
-          message={`Buat akun  mahasiswa ${data.createUser.mahasiswa.nama} berhasil`}
-          type="success"
-          showIcon
-          style={{ margin: '10px 0' }}
-        />
-                )}
+          if (loading) return <Spin tip="Loading..." style={{ textAlign: 'center' }} />;
+          return (
+            <Content>
+              <Card title="Buat Akun Mahasiswa">
+                <Form
+                  method="post"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    await createDosen();
+                    this.setState({
+                      ...DEFAULTSTATE,
+                    });
+                    console.log(this.state);
+                  }}
+                >
+                  <PesanError error={error} />
+                  {!error && !loading && called && (
+                    <Alert
+                      message={`Buat akun  mahasiswa ${data.createUser.mahasiswa.nama} berhasil`}
+                      type="success"
+                      showIcon
+                      style={{ margin: '10px 0' }}
+                    />
+                  )}
 
                   <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Input
-            disabled={loading}
-            name="email"
-            value={this.state.email}
-            placeholder="Email mahasiswa"
-            type="email"
-            required
-            onChange={this.saveToState}
-          />
-        </Form.Item>
+                    <Input
+                      disabled={loading}
+                      name="email"
+                      value={this.state.email}
+                      placeholder="Email mahasiswa"
+                      type="email"
+                      required
+                      onChange={this.saveToState}
+                    />
+                  </Form.Item>
 
-                  <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Input
-            disabled={loading}
-            name="password"
-            value={this.state.password}
-            type="password"
-            placeholder="Password untuk login akun mahasiswa"
-            required
-            onChange={this.saveToState}
-          />
-        </Form.Item>
+                  <Form.Item
+                    label="Password"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
+                    <Input
+                      disabled={loading}
+                      name="password"
+                      value={this.state.password}
+                      type="password"
+                      placeholder="Password untuk login akun mahasiswa"
+                      required
+                      onChange={this.saveToState}
+                    />
+                  </Form.Item>
 
                   <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Input
-            disabled={loading}
-            name="nama"
-            value={this.state.nama}
-            placeholder="Nama Lengkap"
-            type="string"
-            required
-            onChange={this.saveToState}
-          />
-        </Form.Item>
+                    <Input
+                      disabled={loading}
+                      name="nama"
+                      value={this.state.nama}
+                      placeholder="Nama Lengkap"
+                      type="string"
+                      required
+                      onChange={this.saveToState}
+                    />
+                  </Form.Item>
 
                   <Form.Item label="NIM" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Input
-            disabled={loading}
-            name="nim"
-            value={this.state.nim}
-            placeholder="Nomor Induk Mahasiswa"
-            type="string"
-            required
-            onChange={this.saveToState}
-          />
-        </Form.Item>
+                    <Input
+                      disabled={loading}
+                      name="nim"
+                      value={this.state.nim}
+                      placeholder="Nomor Induk Mahasiswa"
+                      type="string"
+                      required
+                      onChange={this.saveToState}
+                    />
+                  </Form.Item>
 
-                  <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
-            {jurusans.map(jurusan => (
-              <Option key={jurusan} value={jurusan}>
-                {jurusan.toUpperCase()}
-              </Option>
-                    ))}
-          </Select>
-        </Form.Item>
-                  <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
-          <Select
-            placeholder="Pilih Prodi"
-            disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
-            value={this.state.prodi}
-            onChange={this.handleProdiChange}
-          >
-            {this.state.prodies.map(prodiku => (
-              <Option key={prodiku} value={prodiku}>
-                {prodiku.toUpperCase()}
-              </Option>
-                    ))}
-          </Select>
-        </Form.Item>
+                  <Form.Item
+                    label="Jurusan"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
+                    <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
+                      {jurusans.map(jurusan => (
+                        <Option key={jurusan} value={jurusan}>
+                          {jurusan.toUpperCase()}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    label="Program Studi"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
+                    <Select
+                      placeholder="Pilih Prodi"
+                      disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
+                      value={this.state.prodi}
+                      onChange={this.handleProdiChange}
+                    >
+                      {this.state.prodies.map(prodiku => (
+                        <Option key={prodiku} value={prodiku}>
+                          {prodiku.toUpperCase()}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
 
-        <Form.Item
-          label="Gambar Profil"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18, lg: 10 }}
-        >
-          {this.state.loading ? (
-            <Spin />
-                  ) : (
-                    <>
-                      {this.state.image && (
-                        <img src={this.state.image} alt="Upload Preview" width="200" />
-                      )}
-                      <Input
-                        disabled={loading}
+                  <Form.Item
+                    label="Gambar Profil"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18, lg: 10 }}
+                  >
+                    {this.state.loading ? (
+                      <Spin />
+                    ) : (
+                      <>
+                        {this.state.image && (
+                          <img src={this.state.image} alt="Upload Preview" width="200" />
+                        )}
+                        <Input
+                          disabled={loading}
+                          name="image"
+                          type="file"
+                          onChange={this.uploadFile}
+                        />
+                      </>
+                    )}
+                  </Form.Item>
 
-                        name="image"
-                        type="file"
-                        onChange={this.uploadFile}
-                      />
-                    </>
-                  )}
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-          <Button type="primary" htmlType="submit">
-                    Buat Akun
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
-  </Content>
-        )}}
+                  <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
+                    <Button type="primary" htmlType="submit">
+                      Buat Akun
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Card>
+            </Content>
+          );
+        }}
       </Mutation>
     );
   }
