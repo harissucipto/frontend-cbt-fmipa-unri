@@ -2,13 +2,13 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button } from 'antd';
+import { Card, List, Avatar, Row, Col, Button, Table, Popover } from 'antd';
 
 import ListKelas from '../../dosen/ujian/ListKelas';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
-    ujian(where: { id: $id }) {
+    ujiansMahasiswa(where: { AND: [{ id: $id }] }) {
       id
       nama
 
@@ -32,6 +32,28 @@ const CURRENT_QUERY = gql`
           nama
         }
       }
+      soalMahasiswas {
+        id
+        ujian {
+          id
+        }
+        soals {
+          id
+          kunciJawaban
+        }
+        jawaban {
+          idSoal
+          id
+          jawaban {
+            id
+            title
+          }
+        }
+        skor {
+          id
+          nilai
+        }
+      }
 
       tanggalPelaksanaan
       lokasi
@@ -52,11 +74,13 @@ class ProfilAdmin extends React.Component {
           if (!data) return <p>Loading..</p>;
           console.log(data, 'data profil');
 
+          const [ujian] = data.ujiansMahasiswa;
+
           return (
             <Row type="flex" gutter={16} style={{ margin: '40px' }} justify="center">
               <Col xs={24} md={24}>
                 <Card
-                  title={<span style={{ textAlign: 'center' }}>Informasi Ujian</span>}
+                  title={<span style={{ textAlign: 'center' }}>Informasi Hasil Ujian</span>}
                   loading={loading}
                 >
                   {/* <HeaderAvatar>
@@ -75,7 +99,7 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="info" />}
                         title={<a>Nama Ujian</a>}
-                        description={data.ujian.nama}
+                        description={ujian.nama}
                       />
                     </List.Item>
 
@@ -83,7 +107,7 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="schedule" />}
                         title={<a>Waktu Pelaksanaan</a>}
-                        description={data.ujian.tanggalPelaksanaan}
+                        description={ujian.tanggalPelaksanaan}
                       />
                     </List.Item>
 
@@ -91,14 +115,14 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="info" />}
                         title={<a>Durasi Ujian</a>}
-                        description={`${data.ujian.durasiPengerjaan} menit`}
+                        description={`${ujian.durasiPengerjaan} menit`}
                       />
                     </List.Item>
                     {/* <List.Item>
                         <List.Item.Meta
                           avatar={<Avatar icon="info" />}
                           title={<a> Mata Kuliah</a>}
-                          description={data.ujian.mataKuliah ? data.ujian.mataKuliah.nama : '-'}
+                          description={ujian.mataKuliah ? ujian.mataKuliah.nama : '-'}
                         />
                       </List.Item> */}
 
@@ -106,14 +130,14 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="deployment-unit" />}
                         title={<a>Jurusan</a>}
-                        description={data.ujian.prodi.jurusan.nama}
+                        description={ujian.prodi.jurusan.nama}
                       />
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar icon="cluster" />}
                         title={<a>Program Studi</a>}
-                        description={data.ujian.prodi.nama}
+                        description={ujian.prodi.nama}
                       />
                     </List.Item>
 
@@ -121,7 +145,7 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="user" />}
                         title={<a>Dosen</a>}
-                        description={data.ujian.dosen ? data.ujian.dosen.nama : '-'}
+                        description={ujian.dosen ? ujian.dosen.nama : '-'}
                       />
                     </List.Item>
 
@@ -129,9 +153,7 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="bank" />}
                         title={<a>Kelas</a>}
-                        description={`${data.ujian.kelas.nama} - ${
-                          data.ujian.kelas.mataKuliah.nama
-                        }`}
+                        description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
                       />
                     </List.Item>
 
@@ -139,10 +161,66 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="info" />}
                         title={<a>Jumlah Soal</a>}
-                        description={data.ujian.JumlahSoal}
+                        description={ujian.JumlahSoal}
                       />
                     </List.Item>
                   </List>
+                </Card>
+                <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
+                  <h4>Nilai Ujian Kamu</h4>
+                  <h1>
+                    {ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor.nilai}
+                  </h1>
+                </Card>
+                <Card>
+                  <h3>Lembar Jawabanmu</h3>
+                  <Table
+                    pagination={false}
+                    bordered
+                    rowKey={record => record.id}
+                    loading={loading}
+                    columns={[
+                      {
+                        title: 'soal / kunci jawaban',
+                        key: 'nama',
+                        render: (text, record, id) => (id === 0 ? 'jawaban' : 'jawabanmu'),
+                      },
+
+                      ...ujian.soalMahasiswas[0].soals.map((item, i) => ({
+                        title: (
+                          <Popover content={`id soal: ${item.id}`}>
+                            <Button>
+                              {i + 1} / {item.kunciJawaban}{' '}
+                            </Button>
+                          </Popover>
+                        ),
+
+                        key: item.id,
+                        width: 5,
+                        render: (text, record) => {
+                          console.log(item, 'ini item');
+                          const jawabanKu = record.jawaban.find(jawab => jawab.idSoal === item.id);
+                          return (
+                            <div
+                              style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                backgroundColor: !jawabanKu
+                                  ? 'red'
+                                  : item.kunciJawaban === jawabanKu.jawaban.title
+                                  ? 'blue'
+                                  : 'red',
+                              }}
+                            >
+                              <p>{jawabanKu ? jawabanKu.jawaban.title : ''}</p>
+                            </div>
+                          );
+                        },
+                      })),
+                    ]}
+                    dataSource={ujian.soalMahasiswas}
+                    scroll={{ x: 1300 }}
+                  />
                 </Card>
               </Col>
             </Row>

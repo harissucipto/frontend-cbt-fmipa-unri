@@ -76,7 +76,7 @@ class List extends Component {
         render: (text, record) => (
           <Link
             href={{
-              pathname: '/mahasiswa/ujian/profil',
+              pathname: '/mahasiswa/ujian/profil-hasil',
               query: { id: record.id },
             }}
           >

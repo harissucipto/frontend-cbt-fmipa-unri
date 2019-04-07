@@ -216,6 +216,7 @@ class ProfilAdmin extends React.Component {
               <Col xs={24} md={14}>
                 <Card title="Peserta Ujian:">
                   <ListKelas
+                    idUjian={id}
                     mahasiswas={data.ujian.soalMahasiswas}
                     loading={loading}
                     kelas={data.ujian.kelas.id}

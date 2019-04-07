@@ -29,8 +29,17 @@ class ListKelas extends Component {
       },
       {
         title: 'Skor Ujian',
-        dataIndex: 'skor.nilai',
         key: 'skor',
+        render: (text, record, i) => (
+          <Link
+            href={{
+              pathname: '/dosen/ujian/detail-hasil',
+              query: { id: this.props.idUjian, mahasiswa: record.mahasiswa.id },
+            }}
+          >
+            <a>{record.skor.nilai}</a>
+          </Link>
+        ),
       },
     ];
   }
