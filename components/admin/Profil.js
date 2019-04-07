@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Card, List, Avatar } from 'antd';
+import { Card, List, Avatar, Icon } from 'antd';
 import styled from 'styled-components';
 
 const CURRENT_ADMIN_QUERY = gql`
@@ -11,6 +11,7 @@ const CURRENT_ADMIN_QUERY = gql`
 
       admin {
         nama
+        image
       }
       permissions
     }
@@ -43,11 +44,15 @@ const ProfilAdmin = () => (
       if (loading) return <p>loading...</p>;
       return (
         <Card title="Informasi Pengguna Login" loading={loading}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Avatar src={data.admin.admin.image} size={200} />
+          </div>
+
           <List>
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar icon="user" />}
-                title={<a>Nama</a>}
+                title="Nama"
                 description={data.admin.admin.nama}
               />
             </List.Item>

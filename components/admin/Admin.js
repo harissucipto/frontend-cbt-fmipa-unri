@@ -5,9 +5,12 @@ import gql from 'graphql-tag';
 const CURRENT_ADMIN_QUERY = gql`
   query {
     admin {
+      id
       email
       admin {
+        id
         nama
+        image
       }
       permissions
     }

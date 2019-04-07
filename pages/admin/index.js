@@ -5,10 +5,10 @@ import ProfilAdmin from '../../components/admin/Profil';
 
 export default () => (
   <Row type="flex" gutter={16} style={{ margin: '40px' }}>
-    <Col order={2} xs={24} md={8}>
+    <Col order={2} xs={24} md={5}>
       <ProfilAdmin />
     </Col>
-    <Col order={1} xs={24} md={16} style={{ display: 'flex', marginBottom: '20px' }}>
+    <Col order={1} xs={24} md={19} style={{ display: 'flex', marginBottom: '20px' }}>
       <Card style={{ width: '100%', height: '100%', paddingBottom: '100px' }}>
         <h1
           style={{
