@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button } from 'antd';
+import { Table, Avatar } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
@@ -14,7 +14,14 @@ class ListKelas extends Component {
       {
         title: 'Nomor',
         key: 'nomor',
+        width: 20,
         render: (text, record, i) => <p>{i + 1}</p>,
+      },
+      {
+        title: 'Foto',
+        key: 'image',
+        width: 110,
+        render: (text, record, i) => <Avatar shape="square" size={100} src={record.image} />,
       },
       {
         title: 'Nama',
@@ -32,7 +39,9 @@ class ListKelas extends Component {
   render() {
     return (
       <Table
+        bordered
         columns={this.columns}
+        pagination={false}
         dataSource={this.props.mahasiswas}
         rowKey={record => record.nim}
         loading={this.props.loading}

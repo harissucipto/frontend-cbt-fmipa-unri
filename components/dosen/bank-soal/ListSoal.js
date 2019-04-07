@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button, Input, Select, Form } from 'antd';
+import { Table, Divider, Button, Input, Select, Form, Card, Row, Col, Tag } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { ConvertFromRaw, EditorState } from 'draft-js';
@@ -27,6 +27,7 @@ class ListKelas extends Component {
 
     this.state = {
       filterSoal: '',
+      display: false,
     };
 
     this.columns = [
@@ -89,6 +90,10 @@ class ListKelas extends Component {
     ];
   }
 
+  componentDidMount() {
+    this.setState({ display: true });
+  }
+
   handleTingkatKesulitanSoal = soals =>
     (this.state.filterSoal === ''
       ? soals
@@ -126,14 +131,119 @@ class ListKelas extends Component {
           {this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals).length : 0}
         </Form.Item>
 
-        <Table
+        {this.props.soals.length ? (
+          this.handleTingkatKesulitanSoal(this.props.soals).map((soal, i) => {
+            console.log(soal);
+            return (
+              <Card key={soal.id} style={{ border: '1px solid black', marginBottom: '10px' }}>
+                <Row gutter={40}>
+                  <Col span={1}>{i + 1}.</Col>
+                  <Col span={18}>
+                    {' '}
+                    {soal.image && <img src={soal.image} width={200} alt="gambar soal" />}
+                    {this.state.display && (
+                      <>
+                        <div
+                          className="readonly-editor"
+                          style={{
+                            marginBottom: '10px',
+                            padding: '5px',
+                          }}
+                        >
+                          <Editor
+                            toolbarHidden
+                            readOnly
+                            initialContentState={JSON.parse(soal.pertanyaan)}
+                          />
+                        </div>
+
+                        <div style={{ marginLeft: '20px' }}>
+                          {soal.jawaban.map(jawaban => (
+                            <Row key={jawaban.id}>
+                              <Col span={1}>
+                                <h4>{jawaban.title}.</h4>
+                              </Col>
+                              <Col span={18}>
+                                <div className="readonly-editor">
+                                  <div>
+                                    {jawaban.gambar && (
+                                      <img src={jawaban.gambar} alt="gambar jawaban" width={200} />
+                                    )}
+                                  </div>
+
+                                  <Editor
+                                    toolbarHidden
+                                    readOnly
+                                    initialContentState={JSON.parse(jawaban.content)}
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+                          ))}
+                        </div>
+                        <div
+                          style={{
+                            marginBottom: '5px',
+                            marginTop: '10px',
+                            borderTop: '1px solid black',
+                            paddingTop: '10px',
+                          }}
+                        >
+                          <Tag color="volcano">
+                            {' '}
+                            <h4>Kunci jawaban: {soal.kunciJawaban}</h4>
+                          </Tag>
+                          <Tag
+                            color={
+                              soal.tingkatKesulitan === 'MUDAH'
+                                ? 'green'
+                                : soal.tingkatKesulitan === 'SEDANG'
+                                ? 'orange'
+                                : 'red'
+                            }
+                          >
+                            {' '}
+                            <h4>Tingkat Kesulitan : {soal.tingkatKesulitan}</h4>
+                          </Tag>
+                        </div>
+                      </>
+                    )}
+                  </Col>
+                  <Col span={5}>
+                    <span>
+                      <Button
+                        onClick={() =>
+                          Router.replace({
+                            pathname: '/dosen/bank-soal/edit-soal',
+                            query: { id: soal.id },
+                          })
+                        }
+                        type="ghost"
+                      >
+                        Edit
+                      </Button>
+
+                      <Divider type="vertical" />
+
+                      <HapusSoal id={soal.id} bankSoal={this.props.bankSoal} />
+                    </span>
+                  </Col>
+                </Row>
+              </Card>
+            );
+          })
+        ) : (
+          <p>Belum Ada</p>
+        )}
+
+        {/* <Table
           columns={this.columns}
           dataSource={
             this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals) : []
           }
           rowKey={record => record.id}
           loading={this.props.loading}
-        />
+        /> */}
       </>
     );
   }

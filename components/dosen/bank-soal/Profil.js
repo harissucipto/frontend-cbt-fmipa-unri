@@ -29,8 +29,10 @@ const CURRENT_QUERY = gql`
       }
       soals {
         id
+        image
         pertanyaan
         jawaban {
+          image
           id
           title
           content
@@ -51,8 +53,8 @@ const ProfilAdmin = ({ id }) => (
 
       return (
         <Row type="flex" gutter={16} style={{ margin: '40px' }}>
-          <Col xs={24} md={8}>
-            <Card title="Informasi Bank Soal" loading={loading}>
+          <Col xs={24} md={24}>
+            <Card title="Informasi Bank Soal" loading={loading} style={{ marginBottom: '20px' }}>
               {/* <HeaderAvatar>
             <Avatar size={144} icon="user" />
             <div>
@@ -64,7 +66,14 @@ const ProfilAdmin = ({ id }) => (
             </div>
           </HeaderAvatar> */}
 
-              <List>
+              <List
+                grid={{
+                  gutter: 16,
+                  lg: 3,
+                  md: 2,
+                  xs: 1,
+                }}
+              >
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon="file-text" />}
@@ -152,9 +161,9 @@ const ProfilAdmin = ({ id }) => (
               </List>
             </Card>
           </Col>
-          <Col xs={24} md={16}>
+          <Col xs={24} md={24}>
             <Card
-              title="Daftar Soal"
+              title="Soal Yang Telah Dibuat"
               extra={
                 <Button
                   type="primary"

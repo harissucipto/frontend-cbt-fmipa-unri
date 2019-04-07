@@ -30,6 +30,7 @@ const CURRENT_QUERY = gql`
       mahasiswas {
         id
         nama
+        image
         nim
       }
     }
