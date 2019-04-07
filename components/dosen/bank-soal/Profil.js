@@ -83,6 +83,13 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
+                    avatar={<Avatar icon="mail" />}
+                    title={<a> Mata Kuliah</a>}
+                    description={data.bankSoal.mataKuliah.nama}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
                     avatar={<Avatar icon="info" />}
                     title={<a>Jumlah Soal</a>}
                     description={data.bankSoal.soals.length}
@@ -90,7 +97,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    avatar={<Avatar icon="setting" />}
                     title={<a>Jumlah soal tingkat kesulitan mudah</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -104,7 +111,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    avatar={<Avatar icon="setting" />}
                     title={<a>Jumlah soal tingkat kesulitan sedang</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -118,7 +125,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    avatar={<Avatar icon="setting" />}
                     title={<a>Jumlah soal tingkat kesulitan susah</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -130,13 +137,7 @@ const ProfilAdmin = ({ id }) => (
                     }
                   />
                 </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar icon="mail" />}
-                    title={<a> Mata Kuliah</a>}
-                    description={data.bankSoal.mataKuliah.nama}
-                  />
-                </List.Item>
+
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon="deployment-unit" />}
