@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Spin } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -11,32 +11,24 @@ const { Content } = Layout;
 const { Option } = Select;
 
 const CREATE_DOSEN_MUTATION = gql`
-    mutation  CREATE_DOSEN_MUTATION(
-      $email: String!
-      $password: String!
-      $passwordKasih: String!
-      $prodi: String!
-      $nama: String!
-      $nip: String!
-    ) {
+  mutation CREATE_DOSEN_MUTATION(
+    $email: String!
+    $password: String!
+    $passwordKasih: String!
+    $prodi: String!
+    $nama: String!
+    $nip: String!
+    $image: String
+  ) {
     createUser(
       data: {
-      email: $email
-      password: $password
-      passwordKasih: $passwordKasih
-      permissions: { set: [USER, DOSEN] }
-        dosen: {
-          create: {
-            nama: $nama
-            nip: $nip
-            prodi: {
-              connect: { nama: $prodi }
-            }
-          }
-        }
+        email: $email
+        password: $password
+        passwordKasih: $passwordKasih
+        permissions: { set: [USER, DOSEN] }
+        dosen: { create: { nama: $nama, nip: $nip, image: $image, prodi: { connect: { nama: $prodi } } } }
       }
-    )
-    {
+    ) {
       id
       dosen {
         id
@@ -50,11 +42,13 @@ const CREATE_DOSEN_MUTATION = gql`
 const DEFAULTSTATE = {
   email: '',
   password: '',
+  image: '',
   nama: '',
   nip: '',
   jurusan: '',
   prodi: '',
   prodies: [],
+  loading: false,
 };
 
 class TambahDosen extends React.Component {
@@ -82,6 +76,27 @@ class TambahDosen extends React.Component {
     });
   };
 
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
+  };
+
   render() {
     return (
       <Mutation
@@ -103,16 +118,14 @@ class TambahDosen extends React.Component {
           nama: this.state.nama.toLowerCase(),
           nip: this.state.nip,
           prodi: this.state.prodi,
+          image: this.state.image,
         }}
       >
         {(createDosen, {
  data, error, loading, called,
 }) => (
   <Content>
-    <Card
-      title="Buat Akun Dosen Baru"
-
-    >
+    <Card title="Buat Akun Dosen Baru">
       <Form
         method="post"
         onSubmit={async (e) => {
@@ -134,7 +147,7 @@ class TambahDosen extends React.Component {
         />
                 )}
 
-                  <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
+        <Form.Item label="Email" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="email"
@@ -146,7 +159,11 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-                  <Form.Item label="Password" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
+        <Form.Item
+          label="Password"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18, lg: 10 }}
+        >
           <Input
             disabled={loading}
             name="password"
@@ -158,7 +175,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-                  <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
+        <Form.Item label="Nama" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="nama"
@@ -170,7 +187,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-                  <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
+        <Form.Item label="NIP" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Input
             disabled={loading}
             name="nip"
@@ -182,7 +199,7 @@ class TambahDosen extends React.Component {
           />
         </Form.Item>
 
-                  <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10}}>
+        <Form.Item label="Jurusan" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
           <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange}>
             {jurusans.map(jurusan => (
               <Option key={jurusan} value={jurusan}>
@@ -191,7 +208,11 @@ class TambahDosen extends React.Component {
                     ))}
           </Select>
         </Form.Item>
-                  <Form.Item label="Program Studi" labelCol={{ span: 6 }} wrapperCol={{ span: 18, lg: 10 }}>
+        <Form.Item
+          label="Program Studi"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18, lg: 10 }}
+        >
           <Select
             placeholder="Pilih Prodi"
             disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
@@ -204,6 +225,29 @@ class TambahDosen extends React.Component {
               </Option>
                     ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="Gambar Profil"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18, lg: 10 }}
+        >
+          {this.state.loading ? (
+            <Spin />
+                  ) : (
+                    <>
+                      {this.state.image && (
+                        <img src={this.state.image} alt="Upload Preview" width="200" />
+                      )}
+                      <Input
+                        disabled={loading}
+                        onChange={this.saveToState}
+                        name="image"
+                        type="file"
+                        onChange={this.uploadFile}
+                      />
+                    </>
+                  )}
         </Form.Item>
 
         <Form.Item wrapperCol={{ span: 14, offset: 6 }}>

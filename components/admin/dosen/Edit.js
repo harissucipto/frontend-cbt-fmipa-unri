@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Select, Form, Button, Input, Alert } from 'antd';
+import { Card, Select, Form, Button, Input, Alert, Spin } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -18,12 +18,14 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
     $nama: String!
     $nip: String!
     $idDosen: ID!
+    $image: String
   ) {
     updateDosen(
       where: { id: $idDosen }
       data: {
         nama: $nama
         nip: $nip
+        image: $image
         prodi: { connect: { nama: $prodi } }
         user: { update: { email: $email } }
       }
@@ -36,13 +38,36 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
 
 class FormEdit extends Component {
   state = {
+    loading: false,
     id: this.props.dosen.id,
     email: this.props.dosen.user.email,
     nama: this.props.dosen.nama,
+    image: this.props.dosen.image,
     nip: this.props.dosen.nip,
     jurusan: this.props.dosen.prodi.jurusan.nama,
     prodi: this.props.dosen.prodi.nama,
     prodies: prodis[this.props.dosen.prodi.jurusan.nama],
+  };
+
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
   };
 
   saveToState = (e) => {
@@ -75,6 +100,7 @@ class FormEdit extends Component {
           nip: this.state.nip,
           prodi: this.state.prodi,
           idDosen: this.state.id,
+          image: this.state.image
         }}
         refetchQueries={[
           {
@@ -89,7 +115,9 @@ class FormEdit extends Component {
       >
         {(updateDosen, {
  data, error, loading, called,
-}) => (
+}) =>{
+  if (loading) return <Spin tip="loading..." style={{ textAlign: "center"}} />;
+  return (
   <Form
     method="post"
     onSubmit={async (e) => {
@@ -171,13 +199,32 @@ class FormEdit extends Component {
       </Select>
     </Form.Item>
 
+    <Form.Item label="Photo Profil" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+      {this.state.loading ? (
+        <Spin />
+              ) : (
+                <>
+                  {this.state.image && (
+                    <img src={this.state.image} alt="Upload Preview" width="200" />
+                  )}
+                  <Input
+                    disabled={loading}
+                    onChange={this.saveToState}
+                    name="image"
+                    type="file"
+                    onChange={this.uploadFile}
+                  />
+                </>
+              )}
+    </Form.Item>
+
     <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
       <Button type="primary" htmlType="submit">
                 Simpan
       </Button>
     </Form.Item>
   </Form>
-        )}
+        )}}
       </Mutation>
     );
   }
@@ -186,12 +233,12 @@ class FormEdit extends Component {
 class EditDosen extends Component {
   render() {
     return (
-      <Query query={CURRENT_DOSEN_QUERY} variables={{ id: this.props.id }}>
+      <Query fetchPolicy="network-only" query={CURRENT_DOSEN_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => (
           <Card title="Edit Informasi Akun Dosen" loading={loading}>
             <FormEdit dosen={data.dosen} />
           </Card>
-          )}
+        )}
       </Query>
     );
   }

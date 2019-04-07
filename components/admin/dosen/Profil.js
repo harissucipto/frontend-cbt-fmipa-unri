@@ -13,6 +13,7 @@ const CURRENT_DOSEN_QUERY = gql`
       id
       nama
       nip
+      image
       prodi {
         id
         nama
@@ -24,6 +25,7 @@ const CURRENT_DOSEN_QUERY = gql`
       user {
         id
         email
+        passwordKasih
       }
       kelases {
         id
@@ -86,6 +88,10 @@ const ProfilAdmin = ({ id }) => (
             </div>
           </HeaderAvatar> */}
 
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Avatar src={data.dosen.image} size={200} />
+              </div>
+
               <List>
                 <List.Item>
                   <List.Item.Meta
@@ -120,6 +126,13 @@ const ProfilAdmin = ({ id }) => (
                     avatar={<Avatar icon="mail" />}
                     title={<a>Email</a>}
                     description={data.dosen.user.email}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="lock" />}
+                    title={<a>Password Akun</a>}
+                    description={data.dosen.user.passwordKasih}
                   />
                 </List.Item>
                 {/* <List.Item>
