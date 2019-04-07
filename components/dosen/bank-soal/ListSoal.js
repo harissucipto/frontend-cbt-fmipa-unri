@@ -215,7 +215,7 @@ class ListKelas extends Component {
                         onClick={() =>
                           Router.replace({
                             pathname: '/dosen/bank-soal/edit-soal',
-                            query: { id: soal.id },
+                            query: { id: soal.id, bankSoal: this.props.bankSoal },
                           })
                         }
                         type="ghost"

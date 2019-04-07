@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Select, Form, Button, Input, Alert } from 'antd';
+import { Card, Select, Form, Button, Input, Alert, Spin } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import PesanError from '../../PesanError';
 import DetailBankSoal from './DetailBankSoal';
@@ -17,10 +21,12 @@ const EDIT_SOAL = gql`
     $jawaban: [JawabanUpdateWithWhereUniqueWithoutSoalInput!]
     $tingkatKesulitan: String!
     $id: ID!
+    $image: String
   ) {
     updateSoal(
       data: {
         pertanyaan: $pertanyaan
+        image: $image
         kunciJawaban: $kunciJawaban
         tingkatKesulitan: $tingkatKesulitan
         jawaban: { update: $jawaban }
@@ -39,9 +45,11 @@ const CURRENT_SOAL = gql`
   query CURRENT_SOAL($id: ID!) {
     soal(where: { id: $id }) {
       id
+      image
       pertanyaan
       jawaban {
         id
+        image
         title
         content
       }
@@ -54,26 +62,147 @@ const CURRENT_SOAL = gql`
   }
 `;
 
-class FormEdit extends Component {
-  constructor(props) {
-    super(props);
+class FormEdit extends React.Component {
+  state = {
+    pertanyaan: JSON.parse(this.props.soal.pertanyaan) || EditorState.createEmpty(),
+    a:
+      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'a').content) ||
+      EditorState.createEmpty(),
+    b:
+      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'b').content) ||
+      EditorState.createEmpty(),
+    c:
+      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'c').content) ||
+      EditorState.createEmpty(),
+    d:
+      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'd').content) ||
+      EditorState.createEmpty(),
+    image: this.props.soal.image || '',
+    imageA: this.props.soal.jawaban.find(jawaban => jawaban.title === 'a').image || '',
+    imageB: this.props.soal.jawaban.find(jawaban => jawaban.title === 'b').image || '',
+    imageC: this.props.soal.jawaban.find(jawaban => jawaban.title === 'c').image || '',
+    imageD: this.props.soal.jawaban.find(jawaban => jawaban.title === 'd').image || '',
+    loading: false,
 
-    const jawaban = this.props.soal.jawaban.map(item => ({
-      key: item.title,
-      value: item.content,
-      id: item.id,
-    }));
+    kunciJawaban: this.props.soal.kunciJawaban,
+    tingkatKesulitan: this.props.soal.tingkatKesulitan,
+    renderEditor: false,
+  };
 
-    console.log(jawaban);
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
 
-    this.state = {
-      id: this.props.soal.id,
-      pertanyaan: this.props.soal.pertanyaan,
-      kunciJawaban: this.props.soal.kunciJawaban,
-      tingkatKesulitan: this.props.soal.tingkatKesulitan,
-      jawaban,
-    };
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileA = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageA: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileB = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageB: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileC = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageC: file.secure_url,
+      loading: false,
+    });
+  };
+
+  uploadFileD = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      imageD: file.secure_url,
+      loading: false,
+    });
+  };
+
+  componentDidMount() {
+    this.setState({ renderEditor: true });
   }
+
+  changePertanyaan = pertanyaan => this.setState({ pertanyaan });
+  changeA = a => this.setState({ a });
+  changeB = b => this.setState({ b });
+  changeC = c => this.setState({ c });
+  changeD = d => this.setState({ d });
 
   saveToState = (e) => {
     this.setState({
@@ -113,19 +242,49 @@ class FormEdit extends Component {
     console.log('make');
 
     const soalBaru = {
-      pertanyaan: this.state.pertanyaan,
+      pertanyaan: JSON.stringify(this.state.pertanyaan),
       kunciJawaban: this.state.kunciJawaban,
-      id: this.state.id,
+      id: this.props.soal.id,
       tingkatKesulitan: this.state.tingkatKesulitan,
-      jawaban: this.state.jawaban.map(item => ({
-        where: {
-          id: item.id,
+      image: this.state.image,
+      jawaban: [
+        {
+          where: {
+            id: this.props.soal.jawaban.find(jawaban => jawaban.title === 'a').id,
+          },
+          data: {
+            image: this.state.imageA,
+            content: JSON.stringify(this.state.a),
+          },
         },
-        data: {
-          title: item.key,
-          content: item.value,
+        {
+          where: {
+            id: this.props.soal.jawaban.find(jawaban => jawaban.title === 'b').id,
+          },
+          data: {
+            image: this.state.imageB,
+            content: JSON.stringify(this.state.b),
+          },
         },
-      })),
+        {
+          where: {
+            id: this.props.soal.jawaban.find(jawaban => jawaban.title === 'c').id,
+          },
+          data: {
+            image: this.state.imageC,
+            content: JSON.stringify(this.state.c),
+          },
+        },
+        {
+          where: {
+            id: this.props.soal.jawaban.find(jawaban => jawaban.title === 'd').id,
+          },
+          data: {
+            image: this.state.imageD,
+            content: JSON.stringify(this.state.d),
+          },
+        },
+      ],
     };
 
     console.log(soalBaru);
@@ -137,19 +296,8 @@ class FormEdit extends Component {
   render() {
     return (
       <>
-        <DetailBankSoal id={this.props.soal.bankSoal.id} />
-        <Card title="Edit Soal">
-          <Mutation
-            mutation={EDIT_SOAL}
-            refetchQueries={[
-              {
-                query: CURRENT_SOAL,
-                variables: {
-                  id: this.props.soal.id,
-                },
-              },
-            ]}
-          >
+        <Card title="Update Soal">
+          <Mutation mutation={EDIT_SOAL}>
             {(createSoal, {
  error, data, loading, called,
 }) => {
@@ -165,7 +313,7 @@ class FormEdit extends Component {
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message="Edit Soal berhasil"
+                      message="Update soal berhasil"
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}
@@ -178,43 +326,167 @@ class FormEdit extends Component {
                     />
                   </Form.Item>
                   <Form.Item label="Pertanyaan">
-                    <Pertanyaan onChange={this.saveToState} value={this.state.pertanyaan} />
+                    <Form.Item
+                      label="Gambar"
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 18, lg: 10 }}
+                    >
+                      {this.state.loading ? (
+                        <Spin />
+                      ) : (
+                        <>
+                          {this.state.image && (
+                            <img src={this.state.image} alt="Upload Preview" width="200" />
+                          )}
+                          <Input
+                            disabled={loading}
+                            name="image"
+                            type="file"
+                            onChange={this.uploadFile}
+                          />
+                        </>
+                      )}
+                    </Form.Item>
+                    {this.state.renderEditor && (
+                      <Editor
+                        initialContentState={this.state.pertanyaan}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.changePertanyaan}
+                      />
+                    )}
                   </Form.Item>
 
                   <Form.Item label="Jawaban">
                     <Form.Item label="A">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('a')}
-                        name="a"
-                      />
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                          <>
+                            {this.state.imageA && (
+                              <img src={this.state.imageA} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileA}
+                            />
+                          </>
+                        )}
+                      </Form.Item>
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialContentState={this.state.a}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeA}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="B">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('b')}
-                        name="b"
-                      />
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                          <>
+                            {this.state.imageB && (
+                              <img src={this.state.imageB} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileB}
+                            />
+                          </>
+                        )}
+                      </Form.Item>
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialContentState={this.state.b}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeB}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="C">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('c')}
-                        name="c"
-                      />
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                          <>
+                            {this.state.imageC && (
+                              <img src={this.state.imageC} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileC}
+                            />
+                          </>
+                        )}
+                      </Form.Item>
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialContentState={this.state.c}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeC}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="D">
-                      <Jawaban
-                        onChange={this.pushJawaban}
-                        value={this.valueJawaban('d')}
-                        name="d"
-                      />
+                      <Form.Item
+                        label="Gambar"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18, lg: 10 }}
+                      >
+                        {this.state.loading ? (
+                          <Spin />
+                        ) : (
+                          <>
+                            {this.state.imageD && (
+                              <img src={this.state.imageD} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileD}
+                            />
+                          </>
+                        )}
+                      </Form.Item>
+                      {this.state.renderEditor && (
+                        <Editor
+                          initialContentState={this.state.d}
+                          wrapperClassName="demo-wrapper"
+                          editorClassName="demo-editor"
+                          onEditorStateChange={this.changeD}
+                        />
+                      )}
                     </Form.Item>
                   </Form.Item>
 
                   <Form.Item label="Kunci Jawaban">
                     <PilihKunciJawaban
-                      data={this.state.jawaban}
+                      data={[{ key: 'a' }, { key: 'b' }, { key: 'c' }, { key: 'd' }]}
                       value={this.state.kunciJawaban}
                       onChange={this.changeKunciJawaban}
                     />
