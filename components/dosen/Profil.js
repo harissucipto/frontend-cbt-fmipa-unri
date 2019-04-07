@@ -13,6 +13,7 @@ const CURRENT_DOSEN_QUERY = gql`
       dosen {
         id
         nama
+        image
         nip
         prodi {
           id
@@ -55,6 +56,10 @@ const ProfilAdmin = () => (
 
       return (
         <Card loading={loading} title="Informasi Pengguna Login">
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Avatar src={data.currentDosen.dosen.image} size={200} />
+          </div>
+
           <List>
             <List.Item>
               <List.Item.Meta

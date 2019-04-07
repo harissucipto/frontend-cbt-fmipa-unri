@@ -209,7 +209,7 @@ class FormEdit extends Component {
                   )}
                   <Input
                     disabled={loading}
-                    onChange={this.saveToState}
+
                     name="image"
                     type="file"
                     onChange={this.uploadFile}

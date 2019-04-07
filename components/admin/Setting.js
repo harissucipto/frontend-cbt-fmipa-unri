@@ -134,13 +134,7 @@ class FormEditPermissions extends React.Component {
                   {this.state.image && (
                     <img src={this.state.image} alt="Upload Preview" width="200" />
                   )}
-                  <Input
-                    disabled={loading}
-                    onChange={this.saveToState}
-                    name="image"
-                    type="file"
-                    onChange={this.uploadFile}
-                  />
+                  <Input disabled={loading} name="image" type="file" onChange={this.uploadFile} />
                 </>
               )}
             </Form.Item>

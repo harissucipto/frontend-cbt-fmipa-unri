@@ -9,6 +9,7 @@ const CURRENT_DOSEN_QUERY = gql`
       dosen {
         id
         nama
+        image
       }
       permissions
     }
