@@ -71,8 +71,6 @@ const ProfilAdmin = ({ id }) => (
   <Query query={CURRENT_DOSEN_QUERY} variables={{ id }} fetchPolicy="network-only">
     {({ data, loading }) => {
       console.log(data, 'data profil');
-      if (loading) return <p>Loading...</p>;
-
       return (
         <Row type="flex" gutter={16} style={{ margin: '40px' }}>
           <Col xs={24} md={8}>

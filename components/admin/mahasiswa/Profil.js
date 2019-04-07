@@ -12,6 +12,7 @@ const CURRENT_QUERY = gql`
       id
       nama
       nim
+      image
       prodi {
         id
         nama
@@ -23,6 +24,7 @@ const CURRENT_QUERY = gql`
       user {
         id
         email
+        passwordKasih
       }
       kelases {
         id
@@ -47,9 +49,11 @@ const CURRENT_QUERY = gql`
 const ProfilAdmin = ({ id }) => (
   <Query query={CURRENT_QUERY} variables={{ id }} fetchPolicy="network-only">
     {({ data, loading }) => {
-      if (loading) return <p>Loading...</p>;
+      {
+        /* if (loading) return <p>Loading...</p>;
       if (!data) return <p>loading...</p>;
-      console.log(data, 'data profil');
+      console.log(data, 'data profil'); */
+      }
 
       return (
         <Row type="flex" gutter={16} style={{ margin: '40px' }}>
@@ -65,6 +69,10 @@ const ProfilAdmin = ({ id }) => (
               </p>
             </div>
           </HeaderAvatar> */}
+
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Avatar src={data.mahasiswa.image} size={200} />
+              </div>
 
               <List>
                 <List.Item>
@@ -100,6 +108,13 @@ const ProfilAdmin = ({ id }) => (
                     avatar={<Avatar icon="mail" />}
                     title={<a>Email</a>}
                     description={data.mahasiswa.user.email}
+                  />
+                </List.Item>
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="mail" />}
+                    title={<a>Password</a>}
+                    description={data.mahasiswa.user.passwordKasih}
                   />
                 </List.Item>
                 {/* <List.Item>

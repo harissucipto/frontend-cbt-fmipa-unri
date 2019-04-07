@@ -48,11 +48,6 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
-      },
-      {
         title: 'Nama ',
         dataIndex: 'nama',
         key: 'nama',
@@ -76,11 +71,6 @@ class List extends Component {
         title: 'Email',
         dataIndex: 'user.email',
         key: 'email',
-      },
-      {
-        title: 'Password',
-        dataIndex: 'user.passwordKasih',
-        key: 'passwordKasih',
       },
       {
         title: 'Program Studi',
@@ -140,6 +130,7 @@ class List extends Component {
                 Total Akun: <b>{data.mahasiswas.length}</b> Mahasiswa
               </i>
               <Table
+                bordered
                 dataSource={data.mahasiswas}
                 columns={this.columns}
                 rowKey={record => record.nim}

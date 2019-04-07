@@ -42,7 +42,7 @@ class FormEdit extends Component {
     id: this.props.dosen.id,
     email: this.props.dosen.user.email,
     nama: this.props.dosen.nama,
-    image: this.props.dosen.image,
+    image: this.props.dosen.image || '',
     nip: this.props.dosen.nip,
     jurusan: this.props.dosen.prodi.jurusan.nama,
     prodi: this.props.dosen.prodi.nama,

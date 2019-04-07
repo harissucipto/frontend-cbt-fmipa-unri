@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Select, Form, Button, Input, Alert } from 'antd';
+import { Card, Select, Form, Button, Input, Alert, Spin } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -19,12 +19,14 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
     $nama: String!
     $nim: String!
     $idMahasiswa: ID!
+    $image: String
   ) {
     updateMahasiswa(
       where: { id: $idMahasiswa }
       data: {
         nama: $nama
         nim: $nim
+        image: $image
         prodi: { connect: { nama: $prodi } }
         user: { update: { email: $email } }
       }
@@ -37,6 +39,8 @@ const MUTATION_UPDATE_DATA_DOSEN = gql`
 
 class FormEdit extends Component {
   state = {
+    loading: false,
+    image: this.props.mahasiswa.image || '',
     id: this.props.mahasiswa.id,
     email: this.props.mahasiswa.user.email,
     nama: this.props.mahasiswa.nama,
@@ -45,6 +49,28 @@ class FormEdit extends Component {
     prodi: this.props.mahasiswa.prodi.nama,
     prodies: prodis[this.props.mahasiswa.prodi.jurusan.nama],
   };
+
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
+  };
+
 
   saveToState = (e) => {
     this.setState({
@@ -76,6 +102,7 @@ class FormEdit extends Component {
           nim: this.state.nim,
           prodi: this.state.prodi,
           idMahasiswa: this.state.id,
+          image: this.state.image
         }}
         refetchQueries={[{
           query: SEARCH_LIST, variables: {
@@ -87,7 +114,9 @@ class FormEdit extends Component {
       >
         {(updateMahasiswa, {
  data, error, loading, called,
-}) => (
+}) => {
+  if (loading) return <Spin  tip="loading..." style={{ textAlign: "center"}} />
+  return (
   <Form
     method="post"
     onSubmit={async (e) => {
@@ -169,13 +198,32 @@ class FormEdit extends Component {
       </Select>
     </Form.Item>
 
+              <Form.Item label="Photo Profil" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+                {this.state.loading ? (
+                  <Spin />
+                ) : (
+                    <>
+                      {this.state.image && (
+                        <img src={this.state.image} alt="Upload Preview" width="200" />
+                      )}
+                      <Input
+                        disabled={loading}
+                        onChange={this.saveToState}
+                        name="image"
+                        type="file"
+                        onChange={this.uploadFile}
+                      />
+                    </>
+                  )}
+              </Form.Item>
+
     <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
       <Button type="primary" htmlType="submit">
                 Simpan
       </Button>
     </Form.Item>
   </Form>
-        )}
+        )}}
       </Mutation>
     );
   }
@@ -184,7 +232,7 @@ class FormEdit extends Component {
 class EditDosen extends Component {
   render() {
     return (
-      <Query query={CURRENT_QUERY} variables={{ id: this.props.id }}>
+      <Query query={CURRENT_QUERY} variables={{ id: this.props.id }} fetchPolicy="network-only">
         {({ data, loading, error }) => {
           return (
 

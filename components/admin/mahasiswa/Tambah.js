@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Spin } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -18,6 +18,7 @@ const CREATE_MAHASISWA_MUTATION = gql`
     $prodi: String!
     $nama: String!
     $nim: String!
+    $image: String
   ) {
     createUser(
       data: {
@@ -25,7 +26,7 @@ const CREATE_MAHASISWA_MUTATION = gql`
         password: $password
         passwordKasih: $passwordKasih
         permissions: { set: [USER, MAHASISWA] }
-        mahasiswa: { create: { nama: $nama, nim: $nim, prodi: { connect: { nama: $prodi } } } }
+        mahasiswa: { create: { nama: $nama, nim: $nim, image: $image, prodi: { connect: { nama: $prodi } } } }
       }
     ) {
       id
@@ -46,11 +47,34 @@ const DEFAULTSTATE = {
   jurusan: '',
   prodi: '',
   prodies: [],
+  image: '',
+  loading: false,
 };
 
 class TambahDosen extends React.Component {
   state = {
     ...DEFAULTSTATE,
+  };
+
+  uploadFile = async (e) => {
+    console.log('uploading...');
+    this.setState({ loading: true });
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    console.log(files);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      loading: false,
+    });
   };
 
   saveToState = (e) => {
@@ -94,11 +118,14 @@ class TambahDosen extends React.Component {
           nama: this.state.nama.toLowerCase(),
           nim: this.state.nim,
           prodi: this.state.prodi,
+          image: this.state.image
         }}
       >
         {(createDosen, {
  data, error, loading, called,
-}) => (
+}) => {
+  if (loading) return <Spin tip="Loading..." style={{ textAlign: 'center'}} />
+  return (
   <Content>
     <Card
       title="Buat Akun Mahasiswa"
@@ -155,7 +182,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="nama"
             value={this.state.nama}
-            placeholder="Nama Lengkap Dosen"
+            placeholder="Nama Lengkap"
             type="string"
             required
             onChange={this.saveToState}
@@ -167,7 +194,7 @@ class TambahDosen extends React.Component {
             disabled={loading}
             name="nim"
             value={this.state.nim}
-            placeholder="NIP"
+            placeholder="Nomor Induk Mahasiswa"
             type="string"
             required
             onChange={this.saveToState}
@@ -198,6 +225,29 @@ class TambahDosen extends React.Component {
           </Select>
         </Form.Item>
 
+        <Form.Item
+          label="Gambar Profil"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18, lg: 10 }}
+        >
+          {this.state.loading ? (
+            <Spin />
+                  ) : (
+                    <>
+                      {this.state.image && (
+                        <img src={this.state.image} alt="Upload Preview" width="200" />
+                      )}
+                      <Input
+                        disabled={loading}
+                        onChange={this.saveToState}
+                        name="image"
+                        type="file"
+                        onChange={this.uploadFile}
+                      />
+                    </>
+                  )}
+        </Form.Item>
+
         <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
           <Button type="primary" htmlType="submit">
                     Buat Akun
@@ -206,7 +256,7 @@ class TambahDosen extends React.Component {
       </Form>
     </Card>
   </Content>
-        )}
+        )}}
       </Mutation>
     );
   }
