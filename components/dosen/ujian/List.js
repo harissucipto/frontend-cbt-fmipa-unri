@@ -82,7 +82,7 @@ class List extends Component {
         title: 'Jam ',
         dataIndex: 'tanggalPelaksanaan',
         key: 'jam',
-        render: (text, record) => <p>{moment(record.tanggalPelaksanaan).format('h:mm:ss a')}</p>,
+        render: (text, record) => <p>{moment(record.tanggalPelaksanaan).format('hh:mm:ss a')}</p>,
       },
       {
         title: 'Durasi Ujian ',

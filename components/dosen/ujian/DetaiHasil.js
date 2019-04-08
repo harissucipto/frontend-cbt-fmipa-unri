@@ -5,6 +5,7 @@ import Router from 'next/router';
 import { Card, List, Avatar, Row, Col, Button, Table, Popover } from 'antd';
 
 import ListKelas from './ListKelas';
+import ProfilUjian from './ProfilUjianHasil';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!, $mahasiswa: ID!) {
@@ -30,6 +31,7 @@ const CURRENT_QUERY = gql`
         mahasiswas {
           id
           nama
+          image
           nim
         }
         mataKuliah {
@@ -88,107 +90,19 @@ class ProfilAdmin extends React.Component {
           return (
             <Row type="flex" gutter={16} style={{ margin: '40px' }} justify="center">
               <Col xs={24} md={24}>
-                <Card
-                  title={<span style={{ textAlign: 'center' }}>Informasi Hasil Ujian</span>}
-                  loading={loading}
-                >
-                  {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.admin.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
-
-                  <List grid={{ gutter: 16, column: 4 }}>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="user" />}
-                        title={<a>Nama Mahasiswa</a>}
-                        description={mahasiswa.nama}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>NIM</a>}
-                        description={mahasiswa.nim}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Nama Ujian</a>}
-                        description={ujian.nama}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="schedule" />}
-                        title={<a>Waktu Pelaksanaan</a>}
-                        description={ujian.tanggalPelaksanaan}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Durasi Ujian</a>}
-                        description={`${ujian.durasiPengerjaan} menit`}
-                      />
-                    </List.Item>
-                    {/* <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar icon="info" />}
-                          title={<a> Mata Kuliah</a>}
-                          description={ujian.mataKuliah ? ujian.mataKuliah.nama : '-'}
-                        />
-                      </List.Item> */}
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="deployment-unit" />}
-                        title={<a>Jurusan</a>}
-                        description={ujian.prodi.jurusan.nama}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="cluster" />}
-                        title={<a>Program Studi</a>}
-                        description={ujian.prodi.nama}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="user" />}
-                        title={<a>Dosen</a>}
-                        description={ujian.dosen ? ujian.dosen.nama : '-'}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="bank" />}
-                        title={<a>Kelas</a>}
-                        description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Jumlah Soal</a>}
-                        description={ujian.JumlahSoal}
-                      />
-                    </List.Item>
-                  </List>
+                <Card title="Profil Ujian">
+                  <ProfilUjian
+                    mahasiswa={mahasiswa}
+                    ujian={ujian}
+                    grid={{
+                      gutter: 16,
+                      lg: 3,
+                      md: 2,
+                      xs: 1,
+                    }}
+                  />
                 </Card>
+
                 <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
                   <h4>Nilai Ujian yang didapat</h4>
                   <h1>

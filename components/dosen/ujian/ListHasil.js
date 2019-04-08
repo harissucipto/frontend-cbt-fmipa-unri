@@ -25,6 +25,7 @@ const SEARCH_LIST = gql`
       id
       nama
       tanggalPelaksanaan
+      durasiPengerjaan
       dosen {
         id
         nama
@@ -55,11 +56,6 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
-      },
-      {
         title: 'Nama Ujian',
         dataIndex: 'nama',
         key: 'nama',
@@ -75,12 +71,24 @@ class List extends Component {
         ),
       },
       {
-        title: 'Tanggal Ujian',
+        title: 'Tanggal dilaksankan',
         dataIndex: 'tanggalPelaksanaan',
         key: 'pelaksanaan',
         render: (text, record) => (
-          <p>{moment(record.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY, h:mm:ss a')}</p>
+          <p>{moment(record.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}</p>
         ),
+      },
+      {
+        title: 'Jam ',
+        dataIndex: 'tanggalPelaksanaan',
+        key: 'jam',
+        render: (text, record) => <p>{moment(record.tanggalPelaksanaan).format('hh:mm:ss a')}</p>,
+      },
+      {
+        title: 'Durasi Ujian ',
+        dataIndex: 'durasi',
+        key: 'durasi',
+        render: (text, record) => <p>{record.durasiPengerjaan} menit</p>,
       },
       {
         title: 'Mata Kuliah',
@@ -91,11 +99,6 @@ class List extends Component {
         title: 'Kelas',
         dataIndex: 'kelas.nama',
         key: 'kelas',
-      },
-      {
-        title: 'Dosen',
-        dataIndex: 'dosen.nama',
-        key: 'dosen',
       },
       {
         title: 'Program Studi',
@@ -130,6 +133,7 @@ class List extends Component {
                 Total Ujian: <b>{data.ujians.length}</b>
               </i>
               <Table
+                bordered
                 dataSource={data.ujians}
                 columns={this.columns}
                 rowKey={record => record.id}

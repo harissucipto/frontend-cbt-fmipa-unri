@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { List, Avatar } from 'antd';
 
+import moment from 'moment';
+import 'moment/locale/id';
+
 export default class ProfilUjian extends Component {
   render() {
     const { grid, ujian } = this.props;
@@ -17,14 +20,22 @@ export default class ProfilUjian extends Component {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar icon="schedule" />}
-            title={<a>Waktu Pelaksanaan</a>}
-            description={ujian.tanggalPelaksanaan}
+            title={<a>Tanggal Pelaksanaan</a>}
+            description={moment(ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
           />
         </List.Item>
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="info" />}
+            avatar={<Avatar icon="schedule" />}
+            title={<a>Waktu Pelaksanaan</a>}
+            description={moment(ujian.tanggalPelaksanaan).format('hh:mm a')}
+          />
+        </List.Item>
+
+        <List.Item>
+          <List.Item.Meta
+            avatar={<Avatar icon="schedule" />}
             title={<a>Durasi Ujian</a>}
             description={`${ujian.durasiPengerjaan} menit`}
           />
