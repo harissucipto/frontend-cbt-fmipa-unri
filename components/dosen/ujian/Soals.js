@@ -44,8 +44,17 @@ const CURRENT_QUERY = gql`
         id
         nama
         soals {
+          image
           id
+          pertanyaan
+          kunciJawaban
           tingkatKesulitan
+          jawaban {
+            image
+            id
+            title
+            content
+          }
         }
       }
 
