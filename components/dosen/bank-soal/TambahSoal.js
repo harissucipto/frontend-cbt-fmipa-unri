@@ -294,7 +294,7 @@ class TambahSoal extends React.Component {
             {(createSoal, {
  error, data, loading, called,
 }) => {
-              if (loading) return <p>loading...</p>;
+              if (loading) return <Spin tip="Loading.." />
 
               return (
                 <Form

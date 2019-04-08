@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Spin } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -92,7 +92,7 @@ class TambahDosen extends React.Component {
         {(createMataKuliah, {
  data, error, loading, called,
 }) => {
-          if (!loading) console.log(data);
+          if (loading) return <Spin tip="Loading..." />;
           return (
             <Content>
               <Card title="Buat Bank Soal">

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button, Popover } from 'antd';
+import { Table, Card, List, Avatar, Button, Popover } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
@@ -15,7 +15,7 @@ class ListKelas extends Component {
 
     this.columns = [
       {
-        title: 'Peserta',
+        title: 'Peserta Ujian',
         children: [
           {
             title: 'Nama',
@@ -48,7 +48,7 @@ class ListKelas extends Component {
                   style={{
                     backgroundColor:
                       item.tingkatKesulitan === 'SUSAH'
-                        ? 'danger'
+                        ? 'red'
                         : item.tingkatKesulitan === 'SEDANG'
                         ? 'orange'
                         : 'blue',
@@ -77,14 +77,43 @@ class ListKelas extends Component {
 
   render() {
     return (
-      <Table
-        bordered
-        rowKey={record => record.mahasiswa.id}
-        loading={this.props.loading}
-        columns={this.columns}
-        dataSource={this.props.soalMahasiswas}
-        scroll={{ x: 1300 }}
-      />
+      <div>
+        <Card title="Hasil Generate Soal" style={{ marginBottom: '15px' }}>
+          <List xs={24} md={24}>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
+                title={<a>Kesulitan Mudah</a>}
+                description={`${
+                  this.props.soalMahasiswas[0].soals.filter(item => item.tingkatKesulitan === 'MUDAH').length
+                } soal`}
+              />
+              <List.Item.Meta
+                avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
+                title={<a>Kesulitan Sedang</a>}
+                description={`${
+                  this.props.soalMahasiswas[0].soals.filter(item => item.tingkatKesulitan === 'SEDANG').length
+                } soal`}
+              />
+              <List.Item.Meta
+                avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
+                title={<a>Kesulitan Susah</a>}
+                description={`${
+                  this.props.soalMahasiswas[0].soals.filter(item => item.tingkatKesulitan === 'SUSAH').length
+                } soal`}
+              />
+            </List.Item>
+          </List>
+        </Card>
+        <Table
+          bordered
+          rowKey={record => record.mahasiswa.id}
+          loading={this.props.loading}
+          columns={this.columns}
+          dataSource={this.props.soalMahasiswas}
+          scroll={{ x: 1300 }}
+        />
+      </div>
     );
   }
 }
