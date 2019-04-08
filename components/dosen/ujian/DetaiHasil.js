@@ -50,6 +50,7 @@ const CURRENT_QUERY = gql`
           image
           kunciJawaban
           pertanyaan
+          tingkatKesulitan
           jawaban {
             id
             image
@@ -127,6 +128,106 @@ class ProfilAdmin extends React.Component {
                     {ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor.nilai}
                   </h1>
                 </Card>
+
+                {detailSoal && (
+                  <Card
+                    style={{
+                      border: '1px solid black',
+                      marginBottom: '10px',
+                    }}
+                    title="Detail Soal"
+                  >
+                    <div
+                      style={{
+                        overflow: 'auto',
+                        background: 'ivory',
+                        height: '30rem',
+                      }}
+                    >
+                      <Row gutter={40}>
+                        <Col span={1}>{this.state.noSoal}</Col>
+                        <Col span={18}>
+                          {' '}
+                          {detailSoal.image && (
+                            <img src={detailSoal.image} width={200} alt="gambar soal" />
+                          )}
+                          {this.state.display && (
+                            <>
+                              <div
+                                className="readonly-editor"
+                                style={{
+                                  marginBottom: '10px',
+                                  padding: '5px',
+                                }}
+                              >
+                                <Editor
+                                  toolbarHidden
+                                  readOnly
+                                  initialContentState={JSON.parse(detailSoal.pertanyaan)}
+                                />
+                              </div>
+
+                              <div style={{ marginLeft: '20px' }}>
+                                {detailSoal.jawaban.map(jawaban => (
+                                  <Row key={jawaban.id}>
+                                    <Col span={1}>
+                                      <h4>{jawaban.title}.</h4>
+                                    </Col>
+                                    <Col span={18}>
+                                      <div className="readonly-editor">
+                                        <div>
+                                          {jawaban.image && (
+                                            <img
+                                              src={jawaban.image}
+                                              alt="gambar jawaban"
+                                              width={200}
+                                            />
+                                          )}
+                                        </div>
+
+                                        <Editor
+                                          toolbarHidden
+                                          readOnly
+                                          initialContentState={JSON.parse(jawaban.content)}
+                                        />
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </div>
+                              <div
+                                style={{
+                                  marginBottom: '5px',
+                                  marginTop: '10px',
+                                  borderTop: '1px solid black',
+                                  paddingTop: '10px',
+                                }}
+                              >
+                                <Tag color="volcano">
+                                  {' '}
+                                  <h4>Kunci jawaban: {detailSoal.kunciJawaban}</h4>
+                                </Tag>
+                                <Tag
+                                  color={
+                                    detailSoal.tingkatKesulitan === 'MUDAH'
+                                      ? 'green'
+                                      : detailSoal.tingkatKesulitan === 'SEDANG'
+                                      ? 'orange'
+                                      : 'red'
+                                  }
+                                >
+                                  {' '}
+                                  <h4>Tingkat Kesulitan : {detailSoal.tingkatKesulitan}</h4>
+                                </Tag>
+                              </div>
+                            </>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </Card>
+                )}
+
                 <Card title="Lembar Jawaban">
                   <Table
                     pagination={false}
@@ -184,105 +285,6 @@ class ProfilAdmin extends React.Component {
                     dataSource={ujian.soalMahasiswas}
                     scroll={{ x: 1300 }}
                   />
-
-                  {detailSoal && (
-                    <Card
-                      style={{
-                        border: '1px solid black',
-                        marginBottom: '10px',
-                      }}
-                      title="Detail Soal"
-                    >
-                      <div
-                        style={{
-                          overflow: 'auto',
-                          background: 'ivory',
-                          height: '30rem',
-                        }}
-                      >
-                        <Row gutter={40}>
-                          <Col span={1}>{this.state.noSoal}</Col>
-                          <Col span={18}>
-                            {' '}
-                            {detailSoal.image && (
-                              <img src={detailSoal.image} width={200} alt="gambar soal" />
-                            )}
-                            {this.state.display && (
-                              <>
-                                <div
-                                  className="readonly-editor"
-                                  style={{
-                                    marginBottom: '10px',
-                                    padding: '5px',
-                                  }}
-                                >
-                                  <Editor
-                                    toolbarHidden
-                                    readOnly
-                                    initialContentState={JSON.parse(detailSoal.pertanyaan)}
-                                  />
-                                </div>
-
-                                <div style={{ marginLeft: '20px' }}>
-                                  {detailSoal.jawaban.map(jawaban => (
-                                    <Row key={jawaban.id}>
-                                      <Col span={1}>
-                                        <h4>{jawaban.title}.</h4>
-                                      </Col>
-                                      <Col span={18}>
-                                        <div className="readonly-editor">
-                                          <div>
-                                            {jawaban.image && (
-                                              <img
-                                                src={jawaban.image}
-                                                alt="gambar jawaban"
-                                                width={200}
-                                              />
-                                            )}
-                                          </div>
-
-                                          <Editor
-                                            toolbarHidden
-                                            readOnly
-                                            initialContentState={JSON.parse(jawaban.content)}
-                                          />
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  ))}
-                                </div>
-                                <div
-                                  style={{
-                                    marginBottom: '5px',
-                                    marginTop: '10px',
-                                    borderTop: '1px solid black',
-                                    paddingTop: '10px',
-                                  }}
-                                >
-                                  <Tag color="volcano">
-                                    {' '}
-                                    <h4>Kunci jawaban: {detailSoal.kunciJawaban}</h4>
-                                  </Tag>
-                                  <Tag
-                                    color={
-                                      detailSoal.tingkatKesulitan === 'MUDAH'
-                                        ? 'green'
-                                        : detailSoal.tingkatKesulitan === 'SEDANG'
-                                        ? 'orange'
-                                        : 'red'
-                                    }
-                                  >
-                                    {' '}
-                                    <h4>Tingkat Kesulitan : {detailSoal.tingkatKesulitan}</h4>
-                                  </Tag>
-                                </div>
-                              </>
-                            )}
-                          </Col>
-                        </Row>
-                      </div>
-                    </Card>
-                  )}
                 </Card>
               </Col>
             </Row>
