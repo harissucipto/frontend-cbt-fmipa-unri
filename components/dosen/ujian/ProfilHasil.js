@@ -6,7 +6,6 @@ import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
-import { da } from 'date-fns/esm/locale';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {

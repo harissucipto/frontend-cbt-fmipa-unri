@@ -74,7 +74,7 @@ export default class ProfilUjian extends Component {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar icon="bank" />}
-            title={<a>Kelas</a>}
+            title={<a>Kelas - Mata Kuliah</a>}
             description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
           />
         </List.Item>
