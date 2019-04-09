@@ -19,10 +19,7 @@ const CURRENT_QUERY = gql`
           nama
           nim
         }
-        skor {
-          id
-          nilai
-        }
+        skor
       }
 
       dosen {

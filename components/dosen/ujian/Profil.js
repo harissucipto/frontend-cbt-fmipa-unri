@@ -12,6 +12,7 @@ const CURRENT_QUERY = gql`
       id
       nama
       pin
+      pinPengawas
       dosen {
         id
         nama
@@ -107,6 +108,14 @@ class ProfilAdmin extends React.Component {
                         avatar={<Avatar icon="info" />}
                         title={<a>Pin Ujian</a>}
                         description={data.ujian.pin}
+                      />
+                    </List.Item>
+
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon="info" />}
+                        title={<a>Pin Pengawas</a>}
+                        description={data.ujian.pinPengawas}
                       />
                     </List.Item>
 

@@ -94,7 +94,7 @@ class ListKelas extends Component {
     console.log(soal, 'soal terpilih');
     return (
       <div>
-        <Card title="Jumlah Soal" style={{ marginBottom: '15px' }}>
+        <Card title="Jumlah Soal dalam Bank Soal" style={{ marginBottom: '15px' }}>
           <List xs={24} md={24}>
             <List.Item>
               <List.Item.Meta
@@ -152,11 +152,7 @@ class ListKelas extends Component {
                           padding: '5px',
                         }}
                       >
-                        <Editor
-                          toolbarHidden
-                          readOnly
-                          initialContentState={JSON.parse(soal.pertanyaan)}
-                        />
+                        <Editor toolbarHidden readOnly contentState={JSON.parse(soal.pertanyaan)} />
                       </div>
 
                       <div style={{ marginLeft: '20px' }}>
@@ -178,7 +174,7 @@ class ListKelas extends Component {
                                   <Editor
                                     toolbarHidden
                                     readOnly
-                                    initialContentState={JSON.parse(jawaban.content)}
+                                    contentState={JSON.parse(jawaban.content)}
                                   />
                                 </div>
                               </Col>

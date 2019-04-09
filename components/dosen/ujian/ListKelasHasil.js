@@ -37,7 +37,7 @@ class ListKelas extends Component {
               query: { id: this.props.idUjian, mahasiswa: record.mahasiswa.id },
             }}
           >
-            <a>{record.skor.nilai}</a>
+            <a>{record.skor}</a>
           </Link>
         ),
       },

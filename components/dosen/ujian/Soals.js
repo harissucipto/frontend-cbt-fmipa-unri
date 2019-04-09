@@ -83,7 +83,7 @@ class ProfilAdmin extends React.Component {
             <Row type="flex" gutter={16} style={{ margin: '40px' }}>
               <Col xs={24} md={24}>
                 <Card
-                  title={`Informasi Distribusi Soal Ujian ${ujian.nama}`}
+                  title="Informasi Distribusi Soal Ujian"
                   loading={loading}
                   style={{ marginBottom: '15px' }}
                 >

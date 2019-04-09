@@ -42,6 +42,7 @@ const CURRENT_QUERY = gql`
       }
       soalMahasiswas {
         id
+        skor
         ujian {
           id
         }
@@ -66,10 +67,6 @@ const CURRENT_QUERY = gql`
             id
             title
           }
-        }
-        skor {
-          id
-          nilai
         }
       }
 
@@ -124,9 +121,7 @@ class ProfilAdmin extends React.Component {
 
                 <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
                   <h4>Nilai Ujian yang didapat</h4>
-                  <h1>
-                    {ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor.nilai}
-                  </h1>
+                  <h1>{ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor}</h1>
                 </Card>
 
                 {detailSoal && (
@@ -163,7 +158,7 @@ class ProfilAdmin extends React.Component {
                                 <Editor
                                   toolbarHidden
                                   readOnly
-                                  initialContentState={JSON.parse(detailSoal.pertanyaan)}
+                                  contentState={JSON.parse(detailSoal.pertanyaan)}
                                 />
                               </div>
 
@@ -188,7 +183,7 @@ class ProfilAdmin extends React.Component {
                                         <Editor
                                           toolbarHidden
                                           readOnly
-                                          initialContentState={JSON.parse(jawaban.content)}
+                                          contentState={JSON.parse(jawaban.content)}
                                         />
                                       </div>
                                     </Col>

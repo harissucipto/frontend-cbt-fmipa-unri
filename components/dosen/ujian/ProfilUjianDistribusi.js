@@ -56,25 +56,25 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
             title={<a>Tingkat Kesulitan Soal Susah</a>}
-            description={`${ujian.presentasiSusah}% (${Math.round(ujian.presentasiSusah * ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.presentasiSusah}% (${Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
             title={<a>Tingkat Kesulitan Soal Sedang</a>}
-            description={`${ujian.presentasiSedang}% (${Math.round(ujian.presentasiSedang * ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.presentasiSedang}% (${Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
-            title={<a>Tingkat Kesulitan Soal Mudah</a>}
-            description={`${ujian.presentasiMudah}% (${Math.round(ujian.presentasiMudah * ujian.JumlahSoal) / 100} soal)`}
+            avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
+            title={<a>Tingkat Kesulitan Soal Mudah </a>}
+            description={`${ujian.presentasiMudah}% (${Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
