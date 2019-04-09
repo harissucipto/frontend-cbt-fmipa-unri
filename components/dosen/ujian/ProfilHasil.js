@@ -2,7 +2,9 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button } from 'antd';
+import { Card, List, Avatar, Row, Col, Button, Table } from 'antd';
+import TableMahasiswa from './TableMahasiswa';
+import TableBeritaAcara from './TableBeritaAcara';
 
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
@@ -15,6 +17,7 @@ const CURRENT_QUERY = gql`
       soalMahasiswas {
         id
         mahasiswa {
+          image
           id
           nama
           nim
@@ -58,6 +61,27 @@ const CURRENT_QUERY = gql`
       presentasiSedang
       presentasiMudah
       durasiPengerjaan
+      beritaAcaraUjian {
+        id
+        mahasiswa {
+          id
+          nama
+          nim
+        }
+        teralambat
+        wajah
+        sakit
+        menyontek
+        alatDilarang
+      }
+      tidakHadirs {
+        id
+        mahasiswa {
+          id
+          nama
+          nim
+        }
+      }
     }
   }
 `;
@@ -114,7 +138,7 @@ class ProfilAdmin extends React.Component {
                   />
                 </Card>
               </Col>
-              <Col xs={24}>
+              <Col xs={24} style={{ marginBottom: '15px' }}>
                 <Card title="Peserta Ujian:">
                   <ListKelas
                     idUjian={id}
@@ -122,6 +146,16 @@ class ProfilAdmin extends React.Component {
                     loading={loading}
                     kelas={data.ujian.kelas.id}
                   />
+                </Card>
+              </Col>
+              <Col md={24} style={{ marginBottom: '15px' }}>
+                <Card title="Berita Acara Ujian" loading={loading}>
+                  <TableBeritaAcara mahasiswas={data.ujian.beritaAcaraUjian} />
+                </Card>
+              </Col>
+              <Col md={7} style={{ marginBottom: '15px' }}>
+                <Card title="Peserta Tidak Hadir" loading={loading}>
+                  <TableMahasiswa mahasiswas={data.ujian.tidakHadirs} />
                 </Card>
               </Col>
             </Row>
