@@ -122,8 +122,8 @@ class ProfilAdmin extends React.Component {
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar icon="schedule" />}
-                        title={<a>Waktu Pelaksanaan</a>}
-                        description={data.ujian.tanggalPelaksanaan}
+                        title={<a>Tanggal Pelaksanaan</a>}
+                        description={moment(data.ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
                       />
                     </List.Item>
 

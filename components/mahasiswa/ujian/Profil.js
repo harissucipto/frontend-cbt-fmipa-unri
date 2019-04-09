@@ -6,6 +6,9 @@ import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
 import ListKelas from '../../dosen/ujian/ListKelas';
 
+import moment from 'moment';
+import 'moment/locale/id';
+
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
     ujian(where: { id: $id }) {
@@ -82,8 +85,16 @@ class ProfilAdmin extends React.Component {
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar icon="schedule" />}
-                        title={<a>Waktu Pelaksanaan</a>}
-                        description={data.ujian.tanggalPelaksanaan}
+                        title={<a>Tanggal Pelaksanaan</a>}
+                        description={moment(data.ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
+                      />
+                    </List.Item>
+
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon="schedule" />}
+                        title={<a>Jam</a>}
+                        description={moment(data.ujian.tanggalPelaksanaan).format('hh:mm:ss a')}
                       />
                     </List.Item>
 
@@ -92,6 +103,13 @@ class ProfilAdmin extends React.Component {
                         avatar={<Avatar icon="info" />}
                         title={<a>Durasi Ujian</a>}
                         description={`${data.ujian.durasiPengerjaan} menit`}
+                      />
+                    </List.Item>
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon="info" />}
+                        title={<a>Lokasi Ujian</a>}
+                        description={`${data.ujian.lokasi}`}
                       />
                     </List.Item>
                     {/* <List.Item>
@@ -143,6 +161,10 @@ class ProfilAdmin extends React.Component {
                       />
                     </List.Item>
                   </List>
+                </Card>
+
+                <Card style={{ marginTop: '20px' }}>
+                  <p>Count Down Waktu Pelaksanaan Ujian</p>
                 </Card>
               </Col>
             </Row>
