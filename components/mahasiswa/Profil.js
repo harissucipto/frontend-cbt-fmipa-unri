@@ -12,6 +12,7 @@ const CURRENT_DOSEN_QUERY = gql`
 
       mahasiswa {
         id
+        image
         nama
         nim
         prodi {
@@ -56,16 +57,9 @@ const ProfilAdmin = () => (
 
       return (
         <Card title="Informasi Pengguna Login" loading={loading}>
-          {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.currentMahasiswa.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Avatar src={data.currentMahasiswa.mahasiswa.image} size={200} />
+          </div>
 
           <List>
             <List.Item>
