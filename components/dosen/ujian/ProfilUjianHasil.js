@@ -73,14 +73,14 @@ export default class ProfilUjian extends Component {
               <List.Item.Meta
                 avatar={<Avatar icon="deployment-unit" />}
                 title={<a>Jurusan</a>}
-                description={ujian.prodi.jurusan.nama}
+                description={ujian.kelas.prodi.jurusan.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar icon="cluster" />}
                 title={<a>Program Studi</a>}
-                description={ujian.prodi.nama}
+                description={ujian.kelas.prodi.nama}
               />
             </List.Item>
 

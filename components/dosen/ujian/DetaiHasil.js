@@ -10,70 +10,66 @@ import ProfilUjian from './ProfilUjianHasil';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!, $mahasiswa: ID!) {
-    ujians(where: { AND: [{ id: $id }, { kelas: { mahasiswas_some: { id: $mahasiswa } } }] }) {
+    getInfosoalMahasiswa(
+      where: { AND: [{ mahasiswa: { id: $mahasiswa } }, { ujian: { id: $id } }] }
+    ) {
       id
-      nama
-
-      dosen {
+      skor
+      soals {
         id
-        nama
-      }
-      prodi {
-        id
-        nama
-        jurusan {
-          id
-          nama
-        }
-      }
-      kelas {
-        id
-        nama
-        mahasiswas {
-          id
-          nama
-          image
-          nim
-        }
-        mataKuliah {
-          id
-          nama
-        }
-      }
-      soalMahasiswas {
-        id
-        skor
-        ujian {
-          id
-        }
-        soals {
-          id
-          image
-          kunciJawaban
-          pertanyaan
-          tingkatKesulitan
-          jawaban {
-            id
-            image
-            title
-            image
-            content
-          }
-        }
+        image
+        pertanyaan
         jawaban {
-          idSoal
           id
-          jawaban {
+          image
+          title
+          content
+        }
+        kunciJawaban
+        tingkatKesulitan
+      }
+      ujian {
+        id
+        nama
+        tanggalPelaksanaan
+        lokasi
+        JumlahSoal
+        durasiPengerjaan
+        dosen {
+          id
+          nama
+        }
+        kelas {
+          id
+          nama
+          prodi {
             id
-            title
+            nama
+            jurusan {
+              id
+              nama
+            }
+          }
+          mataKuliah {
+            id
+            nama
           }
         }
       }
-
-      tanggalPelaksanaan
-      lokasi
-      JumlahSoal
-      durasiPengerjaan
+      jawaban {
+        id
+        idSoal
+        jawaban {
+          id
+          title
+        }
+      }
+      mahasiswa {
+        id
+        nama
+        image
+        nim
+      }
     }
   }
 `;
@@ -86,22 +82,24 @@ class ProfilAdmin extends React.Component {
   };
 
   render() {
-    const { id, mahasiswa } = this.props;
-    console.log(id, mahasiswa);
+    const { id } = this.props;
 
     return (
-      <Query query={CURRENT_QUERY} variables={{ id, mahasiswa }} fetchPolicy="network-only">
+      <Query
+        query={CURRENT_QUERY}
+        variables={{ id, mahasiswa: this.props.mahasiswa }}
+        fetchPolicy="network-only"
+      >
         {({ data, loading, error }) => {
+          console.log(id, 'ini props id ujian');
           if (loading) return <p>Loading...</p>;
           console.log(error);
-          if (error) return <p>anda tidak boleh curang</p>;
-          if (!data) return <p>Loading..</p>;
-          console.log(data, 'data profil');
 
-          const [ujian] = data.ujians;
-          const [mahasiswa] = ujian.kelas.mahasiswas;
+          const {
+ ujian, soals, skor, mahasiswa, jawaban,
+} = data.getInfosoalMahasiswa[0];
 
-          const detailSoal = ujian.soalMahasiswas[0].soals.find(item => item.id === this.state.indexSoal);
+          const detailSoal = soals.find(item => item.id === this.state.indexSoal);
 
           return (
             <Row type="flex" gutter={16} style={{ margin: '40px' }} justify="center">
@@ -119,9 +117,16 @@ class ProfilAdmin extends React.Component {
                   />
                 </Card>
 
-                <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
+                <Card
+                  style={{
+                    marginTop: '1rem',
+                    marginBottom: '1rem',
+                    textAlign: 'center',
+                    color: 'blue',
+                  }}
+                >
                   <h4>Nilai Ujian yang didapat</h4>
-                  <h1>{ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor}</h1>
+                  <h1>{skor}</h1>
                 </Card>
 
                 {detailSoal && (
@@ -237,10 +242,10 @@ class ProfilAdmin extends React.Component {
                           </div>
                         ),
                         key: 'nama',
-                        render: () => <p>jawaban yang di pilih</p>,
+                        render: (record, item, i) => (i < 1 ? <p>jawaban yang di pilih</p> : false),
                       },
 
-                      ...ujian.soalMahasiswas[0].soals.map((item, i) => ({
+                      ...soals.map((item, i) => ({
                         title: (
                           <Popover
                             content={`id soal: ${item.id}`}
@@ -248,7 +253,17 @@ class ProfilAdmin extends React.Component {
                               this.setState({ indexSoal: item.id, noSoal: i + 1 })
                             }
                           >
-                            <Button type="dashed">
+                            <Button
+                              type="primary"
+                              style={{
+                                backgroundColor:
+                                  item.tingkatKesulitan === 'MUDAH'
+                                    ? 'green'
+                                    : item.tingkatKesulitan === 'SEDANG'
+                                    ? 'orange'
+                                    : 'red',
+                              }}
+                            >
                               {i + 1} / {item.kunciJawaban}{' '}
                             </Button>
                           </Popover>
@@ -256,19 +271,21 @@ class ProfilAdmin extends React.Component {
 
                         key: item.id,
                         width: 5,
-                        render: (text, record) => {
+                        render: (text, record, index) => {
                           console.log(item, 'ini item');
-                          const jawabanKu = record.jawaban.find(jawab => jawab.idSoal === item.id);
-                          return (
+                          const jawabanKu = jawaban.find(test => test.idSoal === item.id);
+                          const benarTidak =
+                            jawaban.findIndex(test => test.jawaban.title === item.kunciJawaban) >=
+                            0;
+                          console.log(jawabanKu, 'iiii');
+                          return index > 0 ? (
+                            false
+                          ) : (
                             <div
                               style={{
                                 textAlign: 'center',
                                 color: 'white',
-                                backgroundColor: !jawabanKu
-                                  ? 'red'
-                                  : item.kunciJawaban === jawabanKu.jawaban.title
-                                  ? 'blue'
-                                  : 'red',
+                                backgroundColor: benarTidak ? 'skyblue' : 'silver',
                               }}
                             >
                               <p>{jawabanKu ? jawabanKu.jawaban.title : ''}</p>
@@ -277,7 +294,7 @@ class ProfilAdmin extends React.Component {
                         },
                       })),
                     ]}
-                    dataSource={ujian.soalMahasiswas}
+                    dataSource={[soals]}
                     scroll={{ x: 1300 }}
                   />
                 </Card>
