@@ -1,179 +1,226 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button, Table, Popover } from 'antd';
+import { Card, Row, Col, Button, Table, Popover, Tag } from 'antd';
 
-import ListKelas from '../../dosen/ujian/ListKelas';
+import ProfilUjian from '../../dosen/ujian/ProfilUjianHasil';
+import { Editor } from 'react-draft-wysiwyg';
 
 const CURRENT_QUERY = gql`
-  query CURRENT_QUERY($id: ID!) {
-    ujiansMahasiswa(where: { AND: [{ id: $id }] }) {
+  query CURRENT_QUERY($idUjian: ID!) {
+    infosoalMahasiswa(idUjian: $idUjian) {
       id
-      nama
-
-      dosen {
+      skor
+      soals {
         id
-        nama
-      }
-      prodi {
-        id
-        nama
-        jurusan {
-          id
-          nama
-        }
-      }
-      kelas {
-        id
-        nama
-        mataKuliah {
-          id
-          nama
-        }
-      }
-      soalMahasiswas {
-        id
-        ujian {
-          id
-        }
-        soals {
-          id
-          kunciJawaban
-        }
+        image
+        pertanyaan
         jawaban {
-          idSoal
           id
-          jawaban {
+          image
+          title
+          content
+        }
+        kunciJawaban
+        tingkatKesulitan
+      }
+      ujian {
+        id
+        nama
+        tanggalPelaksanaan
+        lokasi
+        JumlahSoal
+        durasiPengerjaan
+        dosen {
+          id
+          nama
+        }
+        kelas {
+          id
+          nama
+          prodi {
             id
-            title
+            nama
+            jurusan {
+              id
+              nama
+            }
+          }
+          mataKuliah {
+            id
+            nama
           }
         }
-        skor {
+      }
+      jawaban {
+        id
+        idSoal
+        jawaban {
           id
-          nilai
+          title
         }
       }
-
-      tanggalPelaksanaan
-      lokasi
-      JumlahSoal
-      durasiPengerjaan
+      mahasiswa {
+        id
+        nama
+        image
+        nim
+      }
     }
   }
 `;
 
 class ProfilAdmin extends React.Component {
+  state = {
+    indexSoal: undefined,
+    noSoal: undefined,
+    display: true,
+  };
   render() {
     const { id } = this.props;
 
+
     return (
-      <Query query={CURRENT_QUERY} variables={{ id }} fetchPolicy="network-only">
+      <Query query={CURRENT_QUERY} variables={{ idUjian: id }} fetchPolicy="network-only">
         {({ data, loading }) => {
           if (loading) return <p>Loading...</p>;
           if (!data) return <p>Loading..</p>;
-          console.log(data, 'data profil');
 
-          const [ujian] = data.ujiansMahasiswa;
+
+          const {
+ ujian, soals, skor, mahasiswa, jawaban,
+} = data.infosoalMahasiswa[0];
+
+          const detailSoal = soals.find(item => item.id === this.state.indexSoal);
 
           return (
             <Row type="flex" gutter={16} style={{ margin: '40px' }} justify="center">
               <Col xs={24} md={24}>
+                <Card title="Profil Ujian">
+                  <ProfilUjian
+                    mahasiswa={mahasiswa}
+                    ujian={ujian}
+                    grid={{
+                      gutter: 16,
+                      lg: 3,
+                      md: 2,
+                      xs: 1,
+                    }}
+                  />
+                </Card>
+
                 <Card
-                  title={<span style={{ textAlign: 'center' }}>Informasi Hasil Ujian</span>}
-                  loading={loading}
+                  style={{
+                    marginTop: '1rem',
+                    marginBottom: '1rem',
+                    textAlign: 'center',
+                    color: 'blue',
+                  }}
                 >
-                  {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.admin.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
-
-                  <List grid={{ gutter: 16, column: 4 }}>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Nama Ujian</a>}
-                        description={ujian.nama}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="schedule" />}
-                        title={<a>Waktu Pelaksanaan</a>}
-                        description={ujian.tanggalPelaksanaan}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Durasi Ujian</a>}
-                        description={`${ujian.durasiPengerjaan} menit`}
-                      />
-                    </List.Item>
-                    {/* <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar icon="info" />}
-                          title={<a> Mata Kuliah</a>}
-                          description={ujian.mataKuliah ? ujian.mataKuliah.nama : '-'}
-                        />
-                      </List.Item> */}
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="deployment-unit" />}
-                        title={<a>Jurusan</a>}
-                        description={ujian.prodi.jurusan.nama}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="cluster" />}
-                        title={<a>Program Studi</a>}
-                        description={ujian.prodi.nama}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="user" />}
-                        title={<a>Dosen</a>}
-                        description={ujian.dosen ? ujian.dosen.nama : '-'}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="bank" />}
-                        title={<a>Kelas</a>}
-                        description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
-                        title={<a>Jumlah Soal</a>}
-                        description={ujian.JumlahSoal}
-                      />
-                    </List.Item>
-                  </List>
+                  <h4>Nilai Ujian yang didapat</h4>
+                  <h1>{skor}</h1>
                 </Card>
-                <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
-                  <h4>Nilai Ujian Kamu</h4>
-                  <h1>
-                    {ujian.soalMahasiswas.find(item => item.ujian.id === ujian.id).skor.nilai}
-                  </h1>
-                </Card>
-                <Card>
-                  <h3>Lembar Jawabanmu</h3>
+
+                {detailSoal && (
+                  <Card
+                    style={{
+                      border: '1px solid black',
+                      marginBottom: '10px',
+                    }}
+                    title="Detail Soal"
+                  >
+                    <div
+                      style={{
+                        overflow: 'auto',
+                        background: 'ivory',
+                        height: '30rem',
+                      }}
+                    >
+                      <Row gutter={40}>
+                        <Col span={1}>{this.state.noSoal}</Col>
+                        <Col span={18}>
+                          {' '}
+                          {detailSoal.image && (
+                            <img src={detailSoal.image} width={200} alt="gambar soal" />
+                          )}
+                          {this.state.display && (
+                            <>
+                              <div
+                                className="readonly-editor"
+                                style={{
+                                  marginBottom: '10px',
+                                  padding: '5px',
+                                }}
+                              >
+                                <Editor
+                                  toolbarHidden
+                                  readOnly
+                                  contentState={JSON.parse(detailSoal.pertanyaan)}
+                                />
+                              </div>
+
+                              <div style={{ marginLeft: '20px' }}>
+                                {detailSoal.jawaban.map(jawaban => (
+                                  <Row key={jawaban.id}>
+                                    <Col span={1}>
+                                      <h4>{jawaban.title}.</h4>
+                                    </Col>
+                                    <Col span={18}>
+                                      <div className="readonly-editor">
+                                        <div>
+                                          {jawaban.image && (
+                                            <img
+                                              src={jawaban.image}
+                                              alt="gambar jawaban"
+                                              width={200}
+                                            />
+                                          )}
+                                        </div>
+
+                                        <Editor
+                                          toolbarHidden
+                                          readOnly
+                                          contentState={JSON.parse(jawaban.content)}
+                                        />
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </div>
+                              <div
+                                style={{
+                                  marginBottom: '5px',
+                                  marginTop: '10px',
+                                  borderTop: '1px solid black',
+                                  paddingTop: '10px',
+                                }}
+                              >
+                                <Tag color="volcano">
+                                  {' '}
+                                  <h4>Kunci jawaban: {detailSoal.kunciJawaban}</h4>
+                                </Tag>
+                                <Tag
+                                  color={
+                                    detailSoal.tingkatKesulitan === 'MUDAH'
+                                      ? 'green'
+                                      : detailSoal.tingkatKesulitan === 'SEDANG'
+                                      ? 'orange'
+                                      : 'red'
+                                  }
+                                >
+                                  {' '}
+                                  <h4>Tingkat Kesulitan : {detailSoal.tingkatKesulitan}</h4>
+                                </Tag>
+                              </div>
+                            </>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </Card>
+                )}
+
+                <Card title="Lembar Jawaban">
                   <Table
                     pagination={false}
                     bordered
@@ -181,15 +228,34 @@ class ProfilAdmin extends React.Component {
                     loading={loading}
                     columns={[
                       {
-                        title: 'soal / kunci jawaban',
+                        title: (
+                          <div>
+                            soal / kunci jawaban (sentuh nomor soal untuk melihat detail soal)
+                          </div>
+                        ),
                         key: 'nama',
-                        render: (text, record, id) => (id === 0 ? 'jawaban' : 'jawabanmu'),
+                        render: (record, item, i) => (i < 1 ? <p>jawaban yang di pilih</p> : false),
                       },
 
-                      ...ujian.soalMahasiswas[0].soals.map((item, i) => ({
+                      ...soals.map((item, i) => ({
                         title: (
-                          <Popover content={`id soal: ${item.id}`}>
-                            <Button>
+                          <Popover
+                            content={`id soal: ${item.id}`}
+                            onVisibleChange={() =>
+                              this.setState({ indexSoal: item.id, noSoal: i + 1 })
+                            }
+                          >
+                            <Button
+                              type="primary"
+                              style={{
+                                backgroundColor:
+                                  item.tingkatKesulitan === 'MUDAH'
+                                    ? 'green'
+                                    : item.tingkatKesulitan === 'SEDANG'
+                                    ? 'orange'
+                                    : 'red',
+                              }}
+                            >
                               {i + 1} / {item.kunciJawaban}{' '}
                             </Button>
                           </Popover>
@@ -197,19 +263,21 @@ class ProfilAdmin extends React.Component {
 
                         key: item.id,
                         width: 5,
-                        render: (text, record) => {
+                        render: (text, record, index) => {
                           console.log(item, 'ini item');
-                          const jawabanKu = record.jawaban.find(jawab => jawab.idSoal === item.id);
-                          return (
+                          const jawabanKu = jawaban.find(test => test.idSoal === item.id);
+                          const benarTidak =
+                            jawaban.findIndex(test => test.jawaban.title === item.kunciJawaban) >=
+                            0;
+                          console.log(jawabanKu, 'iiii');
+                          return index > 0 ? (
+                            false
+                          ) : (
                             <div
                               style={{
                                 textAlign: 'center',
                                 color: 'white',
-                                backgroundColor: !jawabanKu
-                                  ? 'red'
-                                  : item.kunciJawaban === jawabanKu.jawaban.title
-                                  ? 'blue'
-                                  : 'red',
+                                backgroundColor: benarTidak ? 'skyblue' : 'silver',
                               }}
                             >
                               <p>{jawabanKu ? jawabanKu.jawaban.title : ''}</p>
@@ -218,7 +286,7 @@ class ProfilAdmin extends React.Component {
                         },
                       })),
                     ]}
-                    dataSource={ujian.soalMahasiswas}
+                    dataSource={[soals]}
                     scroll={{ x: 1300 }}
                   />
                 </Card>

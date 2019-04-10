@@ -41,16 +41,9 @@ class KelolaMahasiwa extends Component {
 
   render() {
     return (
-      <Card
-        title="Kelola Ujian yang akan datang"
-        extra={
-          <Button type="dashed" onClick={() => Router.push('/dosen/ujian/tambah')}>
-            Tambah Ujian
-          </Button>
-        }
-      >
+      <Card title="Informasi Ujian yang akan datang">
         <Form>
-          <Form.Item
+          {/* <Form.Item
             label="Jurusan"
             style={{ maxWidth: '480px' }}
             labelCol={{ span: 6 }}
@@ -86,7 +79,7 @@ class KelolaMahasiwa extends Component {
                 </Option>
               ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
 
           <div
             style={{

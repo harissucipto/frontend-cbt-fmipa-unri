@@ -25,6 +25,7 @@ const SEARCH_LIST = gql`
       id
       nama
       tanggalPelaksanaan
+      durasiPengerjaan
       dosen {
         id
         nama
@@ -50,10 +51,7 @@ const SEARCH_LIST = gql`
         ujian {
           id
         }
-        skor {
-          id
-          nilai
-        }
+        skor
       }
     }
   }
@@ -65,12 +63,7 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
-      },
-      {
-        title: 'Nama',
+        title: 'Nama Ujian',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
@@ -85,12 +78,24 @@ class List extends Component {
         ),
       },
       {
-        title: 'Tanggal Ujian',
+        title: 'Tanggal dilaksankan',
         dataIndex: 'tanggalPelaksanaan',
         key: 'pelaksanaan',
         render: (text, record) => (
-          <p>{moment(record.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY, h:mm:ss a')}</p>
+          <p>{moment(record.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}</p>
         ),
+      },
+      {
+        title: 'Jam ',
+        dataIndex: 'tanggalPelaksanaan',
+        key: 'jam',
+        render: (text, record) => <p>{moment(record.tanggalPelaksanaan).format('hh:mm:ss a')}</p>,
+      },
+      {
+        title: 'Durasi Ujian ',
+        dataIndex: 'durasi',
+        key: 'durasi',
+        render: (text, record) => <p>{record.durasiPengerjaan} menit</p>,
       },
       {
         title: 'Mata Kuliah',
@@ -108,21 +113,11 @@ class List extends Component {
         key: 'dosen',
       },
       {
-        title: 'Program Studi',
-        dataIndex: 'prodi.nama',
-        key: 'prodi',
-      },
-      {
-        title: 'Jurusan',
-        dataIndex: 'prodi.jurusan.nama',
-        key: 'jurusan',
-      },
-      {
         title: 'Nilai Ujian',
         dataIndex: 'soalMahasiswas[0].id',
         key: 'skor',
         render: (text, record) =>
-          record.soalMahasiswas.find(item => item.ujian.id === record.id).skor.nilai,
+          record.soalMahasiswas.find(item => item.ujian.id === record.id).skor,
       },
     ];
   }
@@ -139,22 +134,20 @@ class List extends Component {
         }}
         fetchPolicy="network-only"
       >
-        {({ data, loading, error }) => {
-          console.log(data);
-          return (
-            <>
-              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
-                Total Ujian: <b>{data.ujiansMahasiswa.length}</b>
-              </i>
-              <Table
-                dataSource={data.ujiansMahasiswa}
-                columns={this.columns}
-                rowKey={record => record.id}
-                loading={loading}
-              />
-            </>
-          );
-        }}
+        {({ data, loading, error }) => (
+          <>
+            <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+              Total Ujian: <b>{data.ujiansMahasiswa.length}</b>
+            </i>
+            <Table
+              bordered
+              dataSource={data.ujiansMahasiswa}
+              columns={this.columns}
+              rowKey={record => record.id}
+              loading={loading}
+            />
+          </>
+        )}
       </Query>
     );
   }

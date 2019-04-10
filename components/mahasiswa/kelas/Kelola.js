@@ -43,7 +43,7 @@ class KelolaMahasiwa extends Component {
     return (
       <Card title="Informasi Kelas yang diambil">
         <Form>
-          <Form.Item
+          {/* <Form.Item
             label="Jurusan"
             style={{ maxWidth: '480px' }}
             labelCol={{ span: 6 }}
@@ -79,7 +79,7 @@ class KelolaMahasiwa extends Component {
                 </Option>
               ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
 
           <div
             style={{

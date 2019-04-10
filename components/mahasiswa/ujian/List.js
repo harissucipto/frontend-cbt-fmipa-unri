@@ -56,12 +56,7 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
-      },
-      {
-        title: 'Nama',
+        title: 'Nama Ujian',
         dataIndex: 'nama',
         key: 'nama',
         render: (text, record) => (
@@ -109,16 +104,6 @@ class List extends Component {
         title: 'Dosen',
         dataIndex: 'dosen.nama',
         key: 'dosen',
-      },
-      {
-        title: 'Program Studi',
-        dataIndex: 'prodi.nama',
-        key: 'prodi',
-      },
-      {
-        title: 'Jurusan',
-        dataIndex: 'prodi.jurusan.nama',
-        key: 'jurusan',
       },
     ];
   }
