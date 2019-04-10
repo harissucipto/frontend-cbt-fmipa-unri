@@ -64,21 +64,21 @@ const ProfilAdmin = () => (
           <List>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="user" />}
+                avatar={<Avatar icon="user" style={{ backgroundColor: 'olive' }} />}
                 title={<a>Nama</a>}
                 description={data.currentMahasiswa.mahasiswa.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="info" />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'teal' }} />}
                 title={<a>NIM</a>}
                 description={data.currentMahasiswa.mahasiswa.nim}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="mail" />}
+                avatar={<Avatar icon="mail" style={{ backgroundColor: 'navy' }} />}
                 title={<a>Email</a>}
                 description={data.currentMahasiswa.email}
               />
@@ -86,7 +86,7 @@ const ProfilAdmin = () => (
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="cluster" />}
+                avatar={<Avatar icon="cluster" style={{ backgroundColor: 'black' }} />}
                 title={<a>Jurusan</a>}
                 description={data.currentMahasiswa.mahasiswa.prodi.jurusan.nama}
               />
@@ -94,7 +94,7 @@ const ProfilAdmin = () => (
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="deployment-unit" />}
+                avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'purple' }} />}
                 title={<a>Program Studi</a>}
                 description={data.currentMahasiswa.mahasiswa.prodi.nama}
               />

@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import { Card, List, Avatar, Row, Col, Button } from 'antd';
+import CountDown from 'react-countdown-now';
 
 import moment from 'moment-timezone';
 import 'moment/locale/id';
@@ -241,7 +242,21 @@ class ProfilAdmin extends React.Component {
                   </List>
                 </Card>
               </Col>
+
               <Col xs={24} md={14}>
+                <Card
+                  style={{
+                    marginTop: '20px',
+                    textAlign: 'center',
+                    padding: '1.2rem 0',
+                    fontSize: '1.2rem',
+                    color: 'navy',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <p style={{ color: 'grey' }}>Count Down Waktu Pelaksanaan Ujian</p>
+                  <CountDown date={moment(data.ujian.tanggalPelaksanaan)} />
+                </Card>
                 <Card title="Peserta Ujian: ">
                   <ListKelas
                     mahasiswas={data.ujian.kelas.mahasiswas}

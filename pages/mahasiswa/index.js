@@ -36,11 +36,11 @@ export default () => (
           }}
         >
           <div style={{ textAlign: 'center', marginRight: '20px' }}>
-            <Avatar shape="square" size={100} icon="bank" style={{ marginBottom: '5px' }} />
+            <Avatar shape="square" size={100} icon="bank" style={{ marginBottom: '5px', backgroundColor: 'maroon' }} />
             <p>Informasi Kelas</p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <Avatar shape="square" size={100} icon="schedule" style={{ marginBottom: '5px' }} />
+            <Avatar shape="square" size={100} icon="schedule" style={{ marginBottom: '5px', backgroundColor: 'brown' }} />
             <p>Informasi Ujian</p>
           </div>
         </div>

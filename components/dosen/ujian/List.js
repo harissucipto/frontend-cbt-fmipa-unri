@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button, Tag } from 'antd';
+import { Table, Divider, Button, Tag, Popover } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
@@ -10,6 +10,7 @@ import moment from 'moment-timezone';
 import 'moment/locale/id';
 
 import Hapus from './Hapus';
+import AkhiriUjian from './AkhiriUjian';
 
 const SEARCH_LIST = gql`
   query SEARCH_LIST($searchTerm: String!, $jurusan: String!, $prodi: String!) {
@@ -84,12 +85,7 @@ class List extends Component {
         key: 'jam',
         render: (text, record) => <p>{moment(record.tanggalPelaksanaan).format('hh:mm:ss a')}</p>,
       },
-      {
-        title: 'Durasi Ujian ',
-        dataIndex: 'durasi',
-        key: 'durasi',
-        render: (text, record) => <p>{record.durasiPengerjaan} menit</p>,
-      },
+
       {
         title: 'Mata Kuliah',
         dataIndex: 'kelas.mataKuliah.nama',
@@ -132,13 +128,35 @@ class List extends Component {
         key: 'aksi',
         render: (text, record) => (
           <>
-            <Button onClick={() => Router.push(`/dosen/ujian/edit?id=${record.id}`)}>Edit</Button>
+            <Button
+              style={{ marginLeft: '5px' }}
+              type="ghost"
+              onClick={() => Router.push(`/dosen/ujian/edit?id=${record.id}`)}
+            >
+              Edit
+            </Button>
+
             <Hapus
               id={record.id}
               prodi={this.props.prodi}
               jurusan={this.props.jurusan}
               keyword={this.props.keyword}
             />
+
+            {moment(record.tanggalPelaksanaan).unix() +
+              Number(record.durasiPengerjaan) * 60 -
+              moment().unix() <=
+              0 && (
+              <>
+                <Divider />
+                <AkhiriUjian
+                  prodi={this.props.prodi}
+                  jurusan={this.props.jurusan}
+                  keyword={this.props.keyword}
+                  idUjian={record.id}
+                />
+              </>
+            )}
           </>
         ),
       },

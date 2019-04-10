@@ -44,11 +44,6 @@ class List extends Component {
 
     this.columns = [
       {
-        title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
-      },
-      {
         title: 'Nama',
         dataIndex: 'nama',
         key: 'nama',
@@ -106,6 +101,7 @@ class List extends Component {
                 Total Kelas: <b>{data.kelasesMahasiswa.length}</b> Kelas
               </i>
               <Table
+                bordered
                 dataSource={data.kelasesMahasiswa}
                 columns={this.columns}
                 rowKey={record => record.id}

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button } from 'antd';
+import { Table, Divider, Button, Tag } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
@@ -104,6 +104,23 @@ class List extends Component {
         title: 'Dosen',
         dataIndex: 'dosen.nama',
         key: 'dosen',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: (text, record) => (
+          <div>
+            {moment(record.tanggalPelaksanaan).unix() +
+              Number(record.durasiPengerjaan) * 60 -
+              moment().unix() <=
+            0 ? (
+              <Tag color="red">kadarluasa / tidak valid</Tag>
+            ) : (
+              <Tag color="green"> valid</Tag>
+            )}
+          </div>
+        ),
       },
     ];
   }
