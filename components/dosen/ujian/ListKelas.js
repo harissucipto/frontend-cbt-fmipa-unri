@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Table, Divider, Button } from 'antd';
+import { Table, Divider, Button, Avatar } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
@@ -13,8 +13,15 @@ class ListKelas extends Component {
     this.columns = [
       {
         title: 'No.',
-        key: 'nomor',
-        render: (text, record, i) => <span>{i + 1}</span>,
+        key: 'no',
+        width: 10,
+        render: (text, record, i) => <p>{i + 1}</p>,
+      },
+      {
+        title: 'Foto',
+        key: 'image',
+        width: 110,
+        render: (text, record, i) => <Avatar shape="square" size={100} src={text} />,
       },
       {
         title: 'Nama',

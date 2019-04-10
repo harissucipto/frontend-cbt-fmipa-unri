@@ -6,7 +6,7 @@ import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
 import ListKelas from '../../dosen/ujian/ListKelas';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'moment/locale/id';
 
 const CURRENT_QUERY = gql`

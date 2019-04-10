@@ -6,7 +6,7 @@ import { Table, Divider, Button, Tag } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'moment/locale/id';
 
 import Hapus from './Hapus';
@@ -115,7 +115,7 @@ class List extends Component {
         dataIndex: 'status',
         key: 'status',
         render: (text, record) => (
-          <p>
+          <div>
             {moment(record.tanggalPelaksanaan).unix() +
               Number(record.durasiPengerjaan) * 60 -
               moment().unix() <=
@@ -126,7 +126,7 @@ class List extends Component {
             ) : (
               <Tag color="green"> valid</Tag>
             )}
-          </p>
+          </div>
         ),
       },
       {

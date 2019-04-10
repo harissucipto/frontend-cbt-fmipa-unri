@@ -12,6 +12,7 @@ import {
   InputNumber,
   Row,
   Col,
+  Spin,
 } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -92,6 +93,7 @@ const DEFAULTSTATE = {
 
   // persen
   maxPersen: 100,
+  loading: false,
 };
 
 class TambahDosen extends React.Component {
@@ -308,6 +310,7 @@ class TambahDosen extends React.Component {
  data, error, loading, called,
 }) => {
           if (!loading) console.log(data);
+          if (loading || this.state.loading) return <Spin tip="Loading..." />
           return (
 
               <Card
@@ -318,8 +321,10 @@ class TambahDosen extends React.Component {
                 <Form
                   method="post"
                   onSubmit={async (e) => {
+                    this.setState({ loading: true });
                     e.preventDefault();
                     await this.submit(createMataKuliah);
+                    this.setState({ loading: false });
                   }}
                 >
                   <PesanError error={error} />
@@ -344,7 +349,7 @@ class TambahDosen extends React.Component {
                       disabled={loading}
                       name="nama"
                       value={this.state.nama}
-                      placeholder="Nama Kelas"
+                      placeholder="Nama Ujian"
                       type="string"
                       required
                       onChange={this.saveToState}
@@ -412,7 +417,7 @@ class TambahDosen extends React.Component {
                   >
                     <Input
                       placeholder="Dalam menit"
-                      requried
+
                       value={this.state.durasiPengerjaan}
                       name="durasiPengerjaan"
                       onChange={this.saveToState}
@@ -423,7 +428,7 @@ class TambahDosen extends React.Component {
                       value={this.state.lokasi}
                       name="lokasi"
                       onChange={this.saveToState}
-                      required
+
                       placeholder="tempat dilaksanakan ujian"
                     />
                   </Form.Item>{' '}

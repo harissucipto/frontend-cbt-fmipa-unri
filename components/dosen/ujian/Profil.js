@@ -4,6 +4,9 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import { Card, List, Avatar, Row, Col, Button } from 'antd';
 
+import moment from 'moment-timezone';
+import 'moment/locale/id';
+
 import ListKelas from './ListKelas';
 
 const CURRENT_QUERY = gql`
@@ -33,6 +36,7 @@ const CURRENT_QUERY = gql`
           nama
         }
         mahasiswas {
+          image
           id
           nama
           nim
@@ -124,6 +128,14 @@ class ProfilAdmin extends React.Component {
                         avatar={<Avatar icon="schedule" />}
                         title={<a>Tanggal Pelaksanaan</a>}
                         description={moment(data.ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
+                      />
+                    </List.Item>
+
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon="schedule" />}
+                        title={<a>Jam</a>}
+                        description={moment(data.ujian.tanggalPelaksanaan).format('hh:mm:ss a')}
                       />
                     </List.Item>
 
