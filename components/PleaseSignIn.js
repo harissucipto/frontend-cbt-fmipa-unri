@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';

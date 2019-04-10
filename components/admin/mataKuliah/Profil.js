@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -65,28 +67,28 @@ const ProfilAdmin = ({ id }) => (
               <List>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    avatar={<Avatar icon="user" style={{ backgroundColor: 'maroon' }} />}
                     title={<a>Nama</a>}
                     description={data.mataKuliah.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="info" />}
+                    avatar={<Avatar icon="info" style={{ backgroundColor: 'navy' }} />}
                     title={<a>Kode Mata Kuliah</a>}
                     description={data.mataKuliah.kode}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="deployment-unit" />}
+                    avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'brown' }} />}
                     title={<a>Jurusan</a>}
                     description={data.mataKuliah.prodi.jurusan.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="cluster" />}
+                    avatar={<Avatar icon="cluster" style={{ backgroundColor: 'olive' }} />}
                     title={<a>Program Studi</a>}
                     description={data.mataKuliah.prodi.nama}
                   />

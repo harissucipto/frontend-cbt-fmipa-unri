@@ -102,14 +102,14 @@ class ProfilAdmin extends React.Component {
                   <List>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
+                        avatar={<Avatar icon="info" style={{ backgroundColor: 'maroon' }} />}
                         title={<a>Nama Ujian</a>}
                         description={data.ujian.nama}
                       />
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
+                        avatar={<Avatar icon="info" style={{ backgroundColor: 'brown' }} />}
                         title={<a>Pin Ujian</a>}
                         description={data.ujian.pin}
                       />
@@ -117,7 +117,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
+                        avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                         title={<a>Pin Pengawas</a>}
                         description={data.ujian.pinPengawas}
                       />
@@ -125,7 +125,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="schedule" />}
+                        avatar={<Avatar icon="schedule" style={{ backgroundColor: 'teal' }} />}
                         title={<a>Tanggal Pelaksanaan</a>}
                         description={moment(data.ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
                       />
@@ -133,7 +133,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="schedule" />}
+                        avatar={<Avatar icon="schedule" style={{ backgroundColor: 'navy' }} />}
                         title={<a>Jam</a>}
                         description={moment(data.ujian.tanggalPelaksanaan).format('hh:mm:ss a')}
                       />
@@ -141,7 +141,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
+                        avatar={<Avatar icon="info" style={{ backgroundColor: 'black' }} />}
                         title={<a>Durasi Ujian</a>}
                         description={`${data.ujian.durasiPengerjaan} menit`}
                       />
@@ -156,14 +156,16 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="deployment-unit" />}
+                        avatar={
+                          <Avatar icon="deployment-unit" style={{ backgroundColor: 'lime' }} />
+                        }
                         title={<a>Jurusan</a>}
                         description={data.ujian.prodi.jurusan.nama}
                       />
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="cluster" />}
+                        avatar={<Avatar icon="cluster" style={{ backgroundColor: 'cyan' }} />}
                         title={<a>Program Studi</a>}
                         description={data.ujian.prodi.nama}
                       />
@@ -171,7 +173,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="user" />}
+                        avatar={<Avatar icon="user" style={{ backgroundColor: 'purple' }} />}
                         title={<a>Dosen</a>}
                         description={data.ujian.dosen ? data.ujian.dosen.nama : '-'}
                       />
@@ -179,7 +181,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="bank" />}
+                        avatar={<Avatar icon="bank" style={{ backgroundColor: 'magenta' }} />}
                         title={<a>Kelas</a>}
                         description={`${data.ujian.kelas.nama} - ${
                           data.ujian.kelas.mataKuliah.nama
@@ -189,7 +191,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="file" />}
+                        avatar={<Avatar icon="file" style={{ backgroundColor: 'lavender' }} />}
                         title={<a>Bank Soal</a>}
                         description={data.ujian.bankSoal.nama}
                       />
@@ -197,7 +199,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="info" />}
+                        avatar={<Avatar icon="info" style={{ backgroundColor: 'pink' }} />}
                         title={<a>Jumlah Soal</a>}
                         description={data.ujian.JumlahSoal}
                       />
@@ -205,7 +207,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="setting" />}
+                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
                         title={<a>Tingkat Kesulitan Soal Susah</a>}
                         description={`${data.ujian.presentasiSusah}%`}
                       />
@@ -213,7 +215,7 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="setting" />}
+                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
                         title={<a>Tingkat Kesulitan Soal Sedang</a>}
                         description={`${data.ujian.presentasiSedang}%`}
                       />
@@ -221,9 +223,19 @@ class ProfilAdmin extends React.Component {
 
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar icon="setting" />}
+                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
                         title={<a>Tingkat Kesulitan Soal Mudah</a>}
                         description={`${data.ujian.presentasiMudah}%`}
+                      />
+                    </List.Item>
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'green' }} />}
+                        title={<a>Tingkat Kesulitan Soal Acak</a>}
+                        description={`${100 -
+                          data.ujian.presentasiMudah -
+                          data.ujian.presentasiSedang -
+                          data.ujian.presentasiSusah}% `}
                       />
                     </List.Item>
                   </List>

@@ -21,7 +21,7 @@ class ListKelas extends Component {
         title: 'Foto',
         key: 'image',
         width: 110,
-        render: (text, record, i) => <Avatar shape="square" size={100} src={text} />,
+        render: (text, record, i) => <Avatar shape="square" size={100} src={record.image} />,
       },
       {
         title: 'Nama',

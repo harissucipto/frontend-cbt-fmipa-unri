@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import Link from 'next/link';
@@ -122,23 +123,23 @@ class List extends Component {
         }}
         fetchPolicy="network-only"
       >
-        {({ data, loading, error }) => {
-          console.log(data);
-          return (
-            <>
-              <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
+        {({ data, loading }) =>
+          /* console.log(data); */
+           (
+             <>
+               <i style={{ marginLeft: '40px', marginBottom: '50px', display: 'inline-block' }}>
                 Total Akun: <b>{data.mahasiswas.length}</b> Mahasiswa
-              </i>
-              <Table
-                bordered
-                dataSource={data.mahasiswas}
-                columns={this.columns}
-                rowKey={record => record.nim}
-                loading={loading}
-              />
-            </>
-          );
-        }}
+               </i>
+               <Table
+                 bordered
+                 dataSource={data.mahasiswas}
+                 columns={this.columns}
+                 rowKey={record => record.nim}
+                 loading={loading}
+               />
+             </>
+          )
+        }
       </Query>
     );
   }

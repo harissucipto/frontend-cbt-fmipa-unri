@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Card, Form, Input, Button, Avatar, Alert, Spin } from 'antd';
+import { Card, Form, Input, Button, Alert, Spin, message } from 'antd';
 import PesanError from '../PesanError';
 import Admin, { CURRENT_ADMIN_QUERY } from './Admin';
 
@@ -63,6 +63,9 @@ class FormEditPermissions extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
+    }).catch(() => {
+      this.setState({ loading: false });
+      message.error('Error Tidak bisa mengupload, periksa koneksi internet anda!');
     });
     const file = await res.json();
     console.log(file);

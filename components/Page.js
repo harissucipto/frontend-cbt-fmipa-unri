@@ -1,7 +1,6 @@
 import React from 'react';
-import { injectGlobal } from 'styled-components';
 import PropTypes from 'prop-types';
-import { Layout } from 'antd';
+import { Layout, Icon } from 'antd';
 import Header from './Header';
 import PleaseSignIn from './PleaseSignIn';
 import Meta from './Meta';
@@ -20,7 +19,8 @@ const Page = props => (
 
           <Content>{props.children}</Content>
           <Footer style={{ textAlign: 'center' }}>
-            Aplikasi CBT FMIPA UR ©2018 Created by Haris Sucipto
+            Made with <Icon type="heart" color="red" style={{ margin: '0px 5px' }} /> by Haris
+            Sucipto
           </Footer>
         </Layout>
       </>

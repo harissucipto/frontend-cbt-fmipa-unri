@@ -29,26 +29,6 @@ const CURRENT_DOSEN_QUERY = gql`
   }
 `;
 
-const HeaderAvatar = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-
-  div {
-    margin-top: 20px;
-    text-align: center;
-    h2 {
-      margin-bottom: 4px;
-      color: rgba(0, 0, 0, 0.85);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 28px;
-    }
-  }
-`;
-
 const ProfilAdmin = () => (
   <Query query={CURRENT_DOSEN_QUERY}>
     {({ data, loading }) => {
@@ -63,14 +43,14 @@ const ProfilAdmin = () => (
           <List>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="user" />}
+                avatar={<Avatar icon="user" style={{ backgroundColor: 'teal' }} />}
                 title="Nama"
                 description={data.currentDosen.dosen.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="info" />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'navy' }} />}
                 title="NIP"
                 description={data.currentDosen.dosen.nip}
               />
@@ -78,7 +58,7 @@ const ProfilAdmin = () => (
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="deployment-unit" />}
+                avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'black' }} />}
                 title="Jurusan"
                 description={
                   data.currentDosen.dosen.prodi ? data.currentDosen.dosen.prodi.jurusan.nama : ''
@@ -88,7 +68,7 @@ const ProfilAdmin = () => (
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="cluster" />}
+                avatar={<Avatar icon="cluster" style={{ backgroundColor: 'lime' }} />}
                 title="Program Studi"
                 description={
                   data.currentDosen.dosen.prodi ? data.currentDosen.dosen.prodi.nama : ''
@@ -98,7 +78,7 @@ const ProfilAdmin = () => (
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="mail" />}
+                avatar={<Avatar icon="mail" style={{ backgroundColor: 'green' }} />}
                 title="Email"
                 description={data.currentDosen.email}
               />

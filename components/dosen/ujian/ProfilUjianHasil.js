@@ -19,28 +19,28 @@ export default class ProfilUjian extends Component {
           <List grid={grid}>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="user" />}
+                avatar={<Avatar icon="user" style={{ backgroundColor: 'maroon' }} />}
                 title={<a>Nama Peserta</a>}
                 description={mahasiswa.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="info" />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'brown' }} />}
                 title={<a>NIM</a>}
                 description={mahasiswa.nim}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="info" />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                 title={<a>Nama Ujian</a>}
                 description={ujian.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="schedule" />}
+                avatar={<Avatar icon="schedule" style={{ backgroundColor: 'teal' }} />}
                 title={<a>Tanggal Pelaksanaan</a>}
                 description={moment(ujian.tanggalPelaksanaan).format('dddd, Do MMMM  YYYY')}
               />
@@ -48,7 +48,7 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="schedule" />}
+                avatar={<Avatar icon="schedule" style={{ backgroundColor: 'navy' }} />}
                 title={<a>Waktu Pelaksanaan</a>}
                 description={moment(ujian.tanggalPelaksanaan).format('hh:mm a')}
               />
@@ -56,7 +56,7 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="schedule" />}
+                avatar={<Avatar icon="schedule" style={{ backgroundColor: 'black' }} />}
                 title={<a>Durasi Ujian</a>}
                 description={`${ujian.durasiPengerjaan} menit`}
               />
@@ -71,14 +71,14 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="deployment-unit" />}
+                avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'lime' }} />}
                 title={<a>Jurusan</a>}
                 description={ujian.kelas.prodi.jurusan.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="cluster" />}
+                avatar={<Avatar icon="cluster" style={{ backgroundColor: 'purple' }} />}
                 title={<a>Program Studi</a>}
                 description={ujian.kelas.prodi.nama}
               />
@@ -86,7 +86,7 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="user" />}
+                avatar={<Avatar icon="user" style={{ backgroundColor: '#444' }} />}
                 title={<a>Dosen</a>}
                 description={ujian.dosen ? ujian.dosen.nama : '-'}
               />
@@ -94,7 +94,7 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="bank" />}
+                avatar={<Avatar icon="bank" style={{ backgroundColor: '#590' }} />}
                 title={<a>Kelas</a>}
                 description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
               />
@@ -102,7 +102,7 @@ export default class ProfilUjian extends Component {
 
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="info" />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: '#987' }} />}
                 title={<a>Jumlah Soal</a>}
                 description={ujian.JumlahSoal}
               />

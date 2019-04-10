@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Select, Button, Avatar, Alert } from 'antd';
-import { ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Card, Form, Input, Select, Button } from 'antd';
 import Router from 'next/router';
 
 import { Qjurusans as jurusans, Qprodis as prodis } from '../../../lib/jurusanProdi';

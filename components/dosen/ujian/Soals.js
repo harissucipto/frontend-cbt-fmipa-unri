@@ -34,6 +34,7 @@ const CURRENT_QUERY = gql`
           id
           nama
           nim
+          image
         }
         soals {
           id

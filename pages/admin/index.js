@@ -36,19 +36,19 @@ export default () => (
           }}
         >
           <div style={{ textAlign: 'center', marginRight: '20px' }}>
-            <Avatar shape="square" size={100} style={{ marginBottom: '5px' }} icon="user" />
+            <Avatar shape="square" size={100} style={{ marginBottom: '5px', backgroundColor: 'maroon' }} icon="user" />
             <p>Kelola Akun Mahasiswa</p>
           </div>
           <div style={{ textAlign: 'center', marginRight: '20px' }}>
-            <Avatar shape="square" size={100} style={{ marginBottom: '5px' }} icon="user" />
+            <Avatar shape="square" size={100} style={{ marginBottom: '5px', backgroundColor: 'brown' }} icon="user" />
             <p>Kelola Akun Dosen</p>
           </div>
-          <div style={{ textAlign: 'center', marginRight: '20px' }}>
-            <Avatar shape="square" size={100} icon="file-text" style={{ marginBottom: '5px' }} />
+          <div style={{ textAlign: 'center', marginRight: '20px' , }}>
+            <Avatar shape="square" size={100} icon="file-text" style={{ marginBottom: '5px',  backgroundColor: 'olive' }} />
             <p>Kelola Mata Kuliah</p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <Avatar shape="square" size={100} icon="bank" style={{ marginBottom: '5px' }} />
+            <Avatar shape="square" size={100} icon="bank" style={{ marginBottom: '5px', backgroundColor: 'navy' }} />
             <p>Kelola Kelas</p>
           </div>
         </div>

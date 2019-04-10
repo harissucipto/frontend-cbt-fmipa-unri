@@ -76,28 +76,28 @@ const ProfilAdmin = ({ id }) => (
               >
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="file-text" />}
+                    avatar={<Avatar icon="file-text" style={{ backgroundColor: 'maroon' }} />}
                     title={<a>Nama Bank Soal</a>}
                     description={data.bankSoal.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="mail" />}
+                    avatar={<Avatar icon="mail" style={{ backgroundColor: 'brown' }} />}
                     title={<a> Mata Kuliah</a>}
                     description={data.bankSoal.mataKuliah.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="info" />}
+                    avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                     title={<a>Jumlah Soal</a>}
                     description={data.bankSoal.soals.length}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="setting" />}
+                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
                     title={<a>Jumlah soal tingkat kesulitan mudah</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -111,7 +111,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="setting" />}
+                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
                     title={<a>Jumlah soal tingkat kesulitan sedang</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -125,7 +125,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="setting" />}
+                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
                     title={<a>Jumlah soal tingkat kesulitan susah</a>}
                     description={
                       !data.bankSoal.soals.length
@@ -140,21 +140,21 @@ const ProfilAdmin = ({ id }) => (
 
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="deployment-unit" />}
+                    avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'navy' }} />}
                     title={<a>Jurusan</a>}
                     description={data.bankSoal.prodi.jurusan.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="cluster" />}
+                    avatar={<Avatar icon="cluster" style={{ backgroundColor: 'black' }} />}
                     title={<a>Prodi</a>}
                     description={data.bankSoal.prodi.nama}
                   />
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    avatar={<Avatar icon="user" style={{ backgroundColor: 'lime' }} />}
                     title={<a>Dosen</a>}
                     description={data.bankSoal.dosen.nama}
                   />

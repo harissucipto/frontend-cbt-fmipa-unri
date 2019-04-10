@@ -51,14 +51,14 @@ const ProfilAdmin = () => (
           <List>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="user" />}
+                avatar={<Avatar icon="user" style={{ backgroundColor: 'teal' }} />}
                 title="Nama"
                 description={data.admin.admin.nama}
               />
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="mail" />}
+                avatar={<Avatar icon="mail" style={{ backgroundColor: 'navy' }} />}
                 title={<a>Email</a>}
                 description={data.admin.email}
               />

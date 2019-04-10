@@ -120,9 +120,7 @@ class List extends Component {
               Number(record.durasiPengerjaan) * 60 -
               moment().unix() <=
             0 ? (
-              <Tag color="red" size>
-                kadarluasa / tidak valid
-              </Tag>
+              <Tag color="red">kadarluasa / tidak valid</Tag>
             ) : (
               <Tag color="green"> valid</Tag>
             )}
