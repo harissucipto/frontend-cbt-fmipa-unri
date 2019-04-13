@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';

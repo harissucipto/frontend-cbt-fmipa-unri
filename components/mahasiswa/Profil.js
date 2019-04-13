@@ -50,7 +50,7 @@ const HeaderAvatar = styled.div`
 `;
 
 const ProfilAdmin = () => (
-  <Query query={CURRENT_DOSEN_QUERY}>
+  <Query query={CURRENT_DOSEN_QUERY} fetchPolicy="network-only">
     {({ data, loading }) => {
       if (loading) return <p>loading...</p>;
       if (!data) return <p>loading...s</p>;

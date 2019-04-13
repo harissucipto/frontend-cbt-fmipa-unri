@@ -66,7 +66,7 @@ const PleaseSignIn = props => (
             <Meta />
             <div style={{ width: '400px', marginTop: '80px' }}>
               <Logo>
-                <img src="../static/logo.svg" alt="logo" />
+                <img src="../static/logo-ur.png" alt="logo" />
                 <h1>CBT FMIPA UR</h1>
               </Logo>
               <SubLogo>

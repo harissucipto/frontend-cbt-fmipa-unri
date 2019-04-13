@@ -44,8 +44,8 @@ class KelolaMahasiwa extends Component {
       <Card
         title="Informasi Mata Kuliah"
         extra={
-          <Button type="primary" onClick={() => Router.push('/admin/dosen/tambah')}>
-            Tambah Akun
+          <Button type="primary" onClick={() => Router.push('/admin/mata-kuliah/tambah')}>
+            Tambah Mata Kuliah
           </Button>
         }
       >

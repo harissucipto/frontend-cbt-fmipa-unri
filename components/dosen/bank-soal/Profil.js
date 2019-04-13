@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button } from 'antd';
+import { Card, List, Avatar, Row, Col, Button, Spin } from 'antd';
 
 import ListSoal from './ListSoal';
 
@@ -47,7 +49,20 @@ const CURRENT_QUERY = gql`
 const ProfilAdmin = ({ id }) => (
   <Query query={CURRENT_QUERY} variables={{ id }} fetchPolicy="network-only">
     {({ data, loading }) => {
-      if (loading) return <p>Loading...</p>;
+      if (loading) {
+        return (
+          <div
+            style={{
+              flex: 1,
+              minHeight: '100vh',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Spin tip="loading..." size="large" style={{ display: 'block' }} />
+          </div>
+        );
+      }
       if (!data) return <p>Loading..</p>;
       console.log(data, 'data profil');
 
@@ -83,7 +98,7 @@ const ProfilAdmin = ({ id }) => (
                 </List.Item>
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon="mail" style={{ backgroundColor: 'brown' }} />}
+                    avatar={<Avatar icon="info" style={{ backgroundColor: 'brown' }} />}
                     title={<a> Mata Kuliah</a>}
                     description={data.bankSoal.mataKuliah.nama}
                   />
@@ -92,7 +107,7 @@ const ProfilAdmin = ({ id }) => (
                   <List.Item.Meta
                     avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                     title={<a>Jumlah Soal</a>}
-                    description={data.bankSoal.soals.length}
+                    description={data.bankSoal.soals.length || '0 Soal'}
                   />
                 </List.Item>
                 <List.Item>
@@ -115,7 +130,7 @@ const ProfilAdmin = ({ id }) => (
                     title={<a>Jumlah soal tingkat kesulitan sedang</a>}
                     description={
                       !data.bankSoal.soals.length
-                        ? 0
+                        ? '0 Soal'
                         : `${
                             data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG')
                               .length
@@ -129,7 +144,7 @@ const ProfilAdmin = ({ id }) => (
                     title={<a>Jumlah soal tingkat kesulitan susah</a>}
                     description={
                       !data.bankSoal.soals.length
-                        ? 0
+                        ? '0 Soal'
                         : `${
                             data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH')
                               .length

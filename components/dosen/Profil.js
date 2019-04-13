@@ -30,7 +30,7 @@ const CURRENT_DOSEN_QUERY = gql`
 `;
 
 const ProfilAdmin = () => (
-  <Query query={CURRENT_DOSEN_QUERY}>
+  <Query query={CURRENT_DOSEN_QUERY} fetchPolicy="network-only">
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
 

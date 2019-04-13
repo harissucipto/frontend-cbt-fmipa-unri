@@ -35,7 +35,7 @@ const DetailBankSoal = props => (
             </List.Item>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar icon="mail" style={{ backgroundColor: 'brown' }} />}
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'brown' }} />}
                 title={<a> Mata Kuliah</a>}
                 description={data.bankSoal.mataKuliah.nama}
               />
@@ -44,7 +44,7 @@ const DetailBankSoal = props => (
               <List.Item.Meta
                 avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                 title={<a>Jumlah Soal</a>}
-                description={data.bankSoal.soals.length}
+                description={data.bankSoal.soals.length || '0 Soal'}
               />
             </List.Item>
             <List.Item>
@@ -66,7 +66,7 @@ const DetailBankSoal = props => (
                 title={<a>Jumlah soal tingkat kesulitan sedang</a>}
                 description={
                   !data.bankSoal.soals.length
-                    ? 0
+                    ? '0 Soal'
                     : `${
                         data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG')
                           .length
@@ -80,7 +80,7 @@ const DetailBankSoal = props => (
                 title={<a>Jumlah soal tingkat kesulitan susah</a>}
                 description={
                   !data.bankSoal.soals.length
-                    ? 0
+                    ? '0 Soal'
                     : `${
                         data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH').length
                       } soal`

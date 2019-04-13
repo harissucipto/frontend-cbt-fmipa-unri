@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select, Row, Col, Spin } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Spin, message } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -60,6 +60,11 @@ class TambahSoal extends React.Component {
     renderEditor: false,
   };
 
+  erorJaringan = () => {
+    this.setState({ loading: false });
+    message.error('Error koneksi jaringan internet buruk');
+  };
+
   uploadFile = async (e) => {
     console.log('uploading...');
     this.setState({ loading: true });
@@ -72,7 +77,7 @@ class TambahSoal extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -93,7 +98,7 @@ class TambahSoal extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -114,7 +119,7 @@ class TambahSoal extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -135,7 +140,7 @@ class TambahSoal extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -156,7 +161,7 @@ class TambahSoal extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -242,10 +247,9 @@ class TambahSoal extends React.Component {
       ],
     };
 
-    console.log(soalBaru);
     await mutasi({
       variables: soalBaru,
-    });
+    }).catch(() => message.error('Erorr tidak bisa membuat soal baru!'));
     this.setState({
       pertanyaan: '',
       jawaban: [
@@ -279,7 +283,7 @@ class TambahSoal extends React.Component {
   render() {
     return (
       <>
-        <Card title="Buat Soal">
+        <Card title="Buat Soal Baru">
           <Mutation
             mutation={CREATE_SOAL}
             refetchQueries={[
@@ -294,7 +298,7 @@ class TambahSoal extends React.Component {
             {(createSoal, {
  error, data, loading, called,
 }) => {
-              if (loading) return <Spin tip="Loading.." />
+              if (loading) return <Spin tip="Loading.." />;
 
               return (
                 <Form
@@ -360,18 +364,18 @@ class TambahSoal extends React.Component {
                         {this.state.loading ? (
                           <Spin />
                         ) : (
-                            <>
-                              {this.state.imageA && (
-                                <img src={this.state.imageA} alt="Upload Preview" width="200" />
-                              )}
-                              <Input
-                                disabled={loading}
-                                name="image"
-                                type="file"
-                                onChange={this.uploadFileA}
-                              />
-                            </>
-                          )}
+                          <>
+                            {this.state.imageA && (
+                              <img src={this.state.imageA} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileA}
+                            />
+                          </>
+                        )}
                       </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
@@ -391,18 +395,18 @@ class TambahSoal extends React.Component {
                         {this.state.loading ? (
                           <Spin />
                         ) : (
-                            <>
-                              {this.state.imageB && (
-                                <img src={this.state.imageB} alt="Upload Preview" width="200" />
-                              )}
-                              <Input
-                                disabled={loading}
-                                name="image"
-                                type="file"
-                                onChange={this.uploadFileB}
-                              />
-                            </>
-                          )}
+                          <>
+                            {this.state.imageB && (
+                              <img src={this.state.imageB} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileB}
+                            />
+                          </>
+                        )}
                       </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
@@ -422,18 +426,18 @@ class TambahSoal extends React.Component {
                         {this.state.loading ? (
                           <Spin />
                         ) : (
-                            <>
-                              {this.state.imageC && (
-                                <img src={this.state.imageC} alt="Upload Preview" width="200" />
-                              )}
-                              <Input
-                                disabled={loading}
-                                name="image"
-                                type="file"
-                                onChange={this.uploadFileC}
-                              />
-                            </>
-                          )}
+                          <>
+                            {this.state.imageC && (
+                              <img src={this.state.imageC} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileC}
+                            />
+                          </>
+                        )}
                       </Form.Item>
                       {this.state.renderEditor && (
                         <Editor
@@ -453,18 +457,18 @@ class TambahSoal extends React.Component {
                         {this.state.loading ? (
                           <Spin />
                         ) : (
-                            <>
-                              {this.state.imageD && (
-                                <img src={this.state.imageD} alt="Upload Preview" width="200" />
-                              )}
-                              <Input
-                                disabled={loading}
-                                name="image"
-                                type="file"
-                                onChange={this.uploadFileD}
-                              />
-                            </>
-                          )}
+                          <>
+                            {this.state.imageD && (
+                              <img src={this.state.imageD} alt="Upload Preview" width="200" />
+                            )}
+                            <Input
+                              disabled={loading}
+                              name="image"
+                              type="file"
+                              onChange={this.uploadFileD}
+                            />
+                          </>
+                        )}
                       </Form.Item>
                       {this.state.renderEditor && (
                         <Editor

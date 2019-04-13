@@ -42,7 +42,7 @@ const Nav = () => (
       return (
         <Sider breakpoint="lg" width="256" collapsedWidth="0">
           <Logo>
-            <img src="../static/logo.svg" alt="logo" />
+            <img src="../static/logo-ur.png" alt="logo" />
             <h1>CBT FMIPA UR</h1>
           </Logo>
 

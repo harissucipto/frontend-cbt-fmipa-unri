@@ -121,7 +121,7 @@ class FormEditPermissions extends React.Component {
 }
 
 const ProfilDosen = () => (
-  <Query query={CURRENT_DOSEN_QUERY}>
+  <Query query={CURRENT_DOSEN_QUERY} fetchPolicy="network-only">
     {({ data: { currentMahasiswa }, loading }) => (
       <Row type="flex" gutter={16}>
         <Col xs={24} lg={14}>

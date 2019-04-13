@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
-import { Table, Divider, Button, Avatar } from 'antd';
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { Table, Avatar } from 'antd';
 
 class ListKelas extends Component {
   constructor(props) {

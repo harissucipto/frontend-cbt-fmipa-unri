@@ -17,7 +17,7 @@ const CURRENT_DOSEN_QUERY = gql`
 `;
 
 const ProfilDosen = props => (
-  <Query {...props} query={CURRENT_DOSEN_QUERY}>
+  <Query {...props} query={CURRENT_DOSEN_QUERY} fetchPolicy="network-only">
     {payload => props.children(payload)}
   </Query>
 );

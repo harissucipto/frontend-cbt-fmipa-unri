@@ -1,10 +1,13 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button, Table } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import TableMahasiswa from './TableMahasiswa';
 import TableBeritaAcara from './TableBeritaAcara';
+import ReactToPrint from 'react-to-print';
 
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
@@ -105,17 +108,20 @@ class ProfilAdmin extends React.Component {
                   loading={loading}
                   style={{ marginBottom: '15px' }}
                   extra={
-                    <Button
-                      type="primary"
-                      onClick={() =>
-                        Router.push({
-                          pathname: '/dosen/ujian/soals',
-                          query: { id: data.ujian.id },
-                        })
-                      }
-                    >
-                      Lihat Distribusi Soal
-                    </Button>
+                    <>
+                      <Button
+                        style={{ marginRight: '20px' }}
+                        type="primary"
+                        onClick={() =>
+                          Router.push({
+                            pathname: '/dosen/ujian/soals',
+                            query: { id: data.ujian.id },
+                          })
+                        }
+                      >
+                        Lihat Distribusi Soal
+                      </Button>
+                    </>
                   }
                 >
                   {/* <HeaderAvatar>
@@ -140,7 +146,15 @@ class ProfilAdmin extends React.Component {
                 </Card>
               </Col>
               <Col xs={24} style={{ marginBottom: '15px' }}>
-                <Card title="Peserta Ujian:">
+                <Card
+                  title="Peserta Ujian:"
+                  extra={
+                    <ReactToPrint
+                      trigger={() => <a href="#">Print this out!</a>}
+                      content={() => this.componentRef}
+                    />
+                  }
+                >
                   <ListKelas
                     idUjian={id}
                     mahasiswas={data.ujian.soalMahasiswas}

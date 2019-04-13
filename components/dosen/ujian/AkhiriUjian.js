@@ -25,9 +25,9 @@ const TampilkanSoal = props => (
       {
         query: SEARCH_LIST,
         variables: {
-          searchTerm: this.props.keyword,
-          jurusan: this.props.jurusan,
-          prodi: this.props.prodi,
+          searchTerm: props.keyword,
+          jurusan: props.jurusan,
+          prodi: props.prodi,
         },
       },
     ]}
