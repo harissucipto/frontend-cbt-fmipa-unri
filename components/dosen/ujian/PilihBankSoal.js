@@ -9,7 +9,7 @@ const { Option } = Select;
 
 const DOSEN_LIST = gql`
   query DOSEN_LIST($mataKuliah: ID) {
-    bankSoals(where: { mataKuliah: { id: $mataKuliah } }) {
+    bankSoals(where: { AND: [{ mataKuliah: { id: $mataKuliah } }] }) {
       id
       nama
       mataKuliah {
