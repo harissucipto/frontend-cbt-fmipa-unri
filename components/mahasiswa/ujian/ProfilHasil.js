@@ -79,13 +79,11 @@ class ProfilAdmin extends React.Component {
   render() {
     const { id } = this.props;
 
-
     return (
       <Query query={CURRENT_QUERY} variables={{ idUjian: id }} fetchPolicy="network-only">
         {({ data, loading }) => {
           if (loading) return <p>Loading...</p>;
           if (!data) return <p>Loading..</p>;
-
 
           const {
  ujian, soals, skor, mahasiswa, jawaban,
@@ -266,9 +264,9 @@ class ProfilAdmin extends React.Component {
                         render: (text, record, index) => {
                           console.log(item, 'ini item');
                           const jawabanKu = jawaban.find(test => test.idSoal === item.id);
-                          const benarTidak =
-                            jawaban.findIndex(test => test.jawaban.title === item.kunciJawaban) >=
-                            0;
+                          const benarTidak = jawabanKu
+                            ? jawabanKu.jawaban.title === item.kunciJawaban
+                            : false;
                           console.log(jawabanKu, 'iiii');
                           return index > 0 ? (
                             false

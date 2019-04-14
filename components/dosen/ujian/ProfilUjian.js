@@ -99,7 +99,7 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
             title={<a>Tingkat Kesulitan Soal Susah</a>}
-            description={`${ujian.presentasiSusah}% (${Math.round(ujian.presentasiSusah * ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.presentasiSusah}% (${Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
@@ -107,7 +107,7 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
             title={<a>Tingkat Kesulitan Soal Sedang</a>}
-            description={`${ujian.presentasiSedang}% (${Math.round(ujian.presentasiSedang * ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.presentasiSedang}% (${Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
@@ -115,7 +115,7 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
             title={<a>Tingkat Kesulitan Soal Mudah</a>}
-            description={`${ujian.presentasiMudah}% (${Math.round(ujian.presentasiMudah * ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.presentasiMudah}% (${Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100)} soal)`}
           />
         </List.Item>
 
@@ -123,11 +123,10 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="setting" />}
             title={<a>Tingkat Kesulitan Soal Acak</a>}
-            description={`${100 -
-              ujian.presentasiMudah -
-              ujian.presentasiSedang -
-              ujian.presentasiSusah}% (${Math.round((100 - ujian.presentasiMudah - ujian.presentasiSedang - ujian.presentasiSusah) *
-                ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.JumlahSoal -
+              Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100) -
+              Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100) -
+              Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal`}
           />
         </List.Item>
       </List>

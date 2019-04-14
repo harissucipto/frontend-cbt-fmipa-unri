@@ -7,7 +7,7 @@ import Router from 'next/router';
 import { Card, Row, Col, Button } from 'antd';
 import TableMahasiswa from './TableMahasiswa';
 import TableBeritaAcara from './TableBeritaAcara';
-import ReactToPrint from 'react-to-print';
+
 
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
@@ -148,12 +148,7 @@ class ProfilAdmin extends React.Component {
               <Col xs={24} style={{ marginBottom: '15px' }}>
                 <Card
                   title="Peserta Ujian:"
-                  extra={
-                    <ReactToPrint
-                      trigger={() => <a href="#">Print this out!</a>}
-                      content={() => this.componentRef}
-                    />
-                  }
+
                 >
                   <ListKelas
                     idUjian={id}

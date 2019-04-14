@@ -40,7 +40,7 @@ class ListKelas extends Component {
 
       {
         title: (
-          <p>
+          <p style={{ textAlign: 'left' }}>
             Soal <br />
             <i style={{ color: 'gray' }}>Sentuh nomor soal untuk melihat</i>
           </p>
@@ -139,7 +139,7 @@ class ListKelas extends Component {
               }}
             >
               <Row gutter={40}>
-                <Col span={1}>{this.state.noSoal}</Col>
+                <Col span={1}>No. {this.state.noSoal}</Col>
                 <Col span={18}>
                   {' '}
                   {soal.image && <img src={soal.image} width={200} alt="gambar soal" />}

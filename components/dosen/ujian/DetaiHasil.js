@@ -274,10 +274,10 @@ class ProfilAdmin extends React.Component {
                         render: (text, record, index) => {
                           console.log(item, 'ini item');
                           const jawabanKu = jawaban.find(test => test.idSoal === item.id);
-                          const benarTidak =
-                            jawaban.findIndex(test => test.jawaban.title === item.kunciJawaban) >=
-                            0;
-                          console.log(jawabanKu, 'iiii');
+                          const benarTidak = jawabanKu
+                            ? jawabanKu.jawaban.title === item.kunciJawaban
+                            : false;
+
                           return index > 0 ? (
                             false
                           ) : (

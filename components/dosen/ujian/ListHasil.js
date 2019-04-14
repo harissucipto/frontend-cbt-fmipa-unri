@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import Link from 'next/link';
@@ -5,11 +6,10 @@ import Router from 'next/router';
 import { Table, Divider, Button } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import Hapus from './HapusSudah';
 
 import moment from 'moment';
 import 'moment/locale/id';
-
-import Hapus from './Hapus';
 
 const SEARCH_LIST = gql`
   query SEARCH_LIST($searchTerm: String!, $jurusan: String!, $prodi: String!) {
@@ -109,6 +109,20 @@ class List extends Component {
         title: 'Jurusan',
         dataIndex: 'prodi.jurusan.nama',
         key: 'jurusan',
+      },
+      {
+        title: 'Action',
+        key: 'aksi',
+        render: (text, record) => (
+          <>
+            <Hapus
+              id={record.id}
+              prodi={this.props.prodi}
+              jurusan={this.props.jurusan}
+              keyword={this.props.keyword}
+            />
+          </>
+        ),
       },
     ];
   }
