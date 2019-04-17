@@ -128,13 +128,15 @@ class List extends Component {
         key: 'aksi',
         render: (text, record) => (
           <>
-            <Button
-              style={{ marginLeft: '5px' }}
-              type="ghost"
-              onClick={() => Router.push(`/dosen/ujian/edit?id=${record.id}`)}
-            >
-              Edit
-            </Button>
+            {moment(record.tanggalPelaksanaan).unix() - moment().unix() > 0 && (
+              <Button
+                style={{ marginLeft: '5px' }}
+                type="ghost"
+                onClick={() => Router.push(`/dosen/ujian/edit?id=${record.id}`)}
+              >
+                Edit
+              </Button>
+            )}
 
             <Hapus
               id={record.id}
