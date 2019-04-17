@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   Layout,
@@ -27,7 +28,6 @@ import PilihBankSoal from './PilihBankSoal';
 
 import moment from 'moment';
 import 'moment/locale/id';
-import { th } from 'date-fns/esm/locale';
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -109,44 +109,70 @@ const DEFAULTSTATE = {
   waktuPelaksanaan: null,
   durasiPengerjaan: undefined,
   lokasi: undefined,
+
+  // persen
+  maxPersen: 100,
+  loading: false,
 };
 
 class TambahDosen extends React.Component {
   state = {
-    id: this.props.ujian.id,
-    nama: this.props.ujian.nama,
-    jurusan: this.props.ujian.prodi.jurusan.nama,
-    prodi: this.props.ujian.prodi.nama,
-    prodies: [],
-    kelas: this.props.ujian.kelas.id,
-    kelasNama: `${this.props.ujian.kelas.nama}  ${this.props.ujian.kelas.mataKuliah.nama}` ,
-    mataKuliah: '',
-    bankSoal: this.props.ujian.bankSoal.id,
-    mudah: 0,
-    sedang: 0,
-    susah: 0,
-    errorJumlahSoal: '',
-    errorPersentasiSoal: '',
-
-    totalSoalDibutuhkan: this.props.ujian.JumlahSoal,
-    mudahDibutuhkan: this.props.ujian.presentasiMudah,
-    susahDibutuhkan: this.props.ujian.presentasiSusah,
-    sedangDibutuhkan: this.props.ujian.presentasiSedang,
-
-    waktuPelaksanaan: moment(this.props.ujian.waktuPelaksanaan),
-    durasiPengerjaan: this.props.ujian.durasiPengerjaan,
-    lokasi: this.props.ujian.lokasi,
+    ...DEFAULTSTATE,
   };
 
+  componentWillMount() {
+    const {
+      nama,
+      prodi,
+      kelas,
+      tanggalPelaksanaan,
+      durasiPengerjaan,
+      lokasi,
+      bankSoal,
+      JumlahSoal,
+      presentasiSusah,
+  presentasiSedang,
+  presentasiMudah,
+    } = this.props.ujian;
 
 
-  saveToState = (e) => {
+
+    console.log(this.props.ujian, 'dari dari props ujian oper ke sini');
+
     this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
+       nama,
+        waktuPelaksanaan: moment(tanggalPelaksanaan),
+        durasiPengerjaan: durasiPengerjaan,
+        lokasi,
+      });
+
+
+
+    // kelas required;
+    const kelasData = {
+      kelas: kelas.id,
+      tampilkanNilai: `${kelas.nama} ${kelas.mataKuliah.nama}`,
+      mataKuliah: kelas.mataKuliah.id,
+    };
+
+
+    this.handleJurusanChange(prodi.jurusan.nama);
+    this.handleProdiChange(prodi.nama);
+    this.rubahKelas(kelasData);
+    this.rubahBankSoal(bankSoal.id);
+    this.setSoal(bankSoal.soals);
+
+    this.setState({ totalSoalDibutuhkan: JumlahSoal, mudahDibutuhkan: presentasiMudah, susahDibutuhkan: presentasiSusah, sedangDibutuhkan: presentasiSedang});
+
+  }
+
+  componentDidMount() {
+
+  }
+
 
   setSoal = (soals) => {
+    console.log(soals, 'ini daat dari soals');
     if (!soals.length) return;
     console.log(soals);
     const susah = soals.filter(soal => soal.tingkatKesulitan === 'SUSAH').length;
@@ -154,6 +180,13 @@ class TambahDosen extends React.Component {
     const mudah = soals.filter(soal => soal.tingkatKesulitan === 'MUDAH').length;
     this.setState({ susah, sedang, mudah });
   };
+
+  saveToState = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
 
   totalSoal = () => {
     const { mudah, sedang, susah } = this.state;
@@ -176,6 +209,9 @@ class TambahDosen extends React.Component {
       mudahDibutuhkan: 0,
       susahDibutuhkan: 0,
       sedangDibutuhkan: 0,
+      mudah: 0,
+      sedang: 0,
+      susah: 0,
     });
   };
 
@@ -194,6 +230,10 @@ class TambahDosen extends React.Component {
       mudahDibutuhkan: 0,
       susahDibutuhkan: 0,
       sedangDibutuhkan: 0,
+
+      mudah: 0,
+      sedang: 0,
+      susah: 0,
     });
   };
 
@@ -231,6 +271,7 @@ class TambahDosen extends React.Component {
 
   rubahJumlahSoal = (value) => {
     const mau = value.target.value;
+
     this.setState({
       totalSoalDibutuhkan: mau,
       errorJumlahSoal: '',
@@ -242,8 +283,8 @@ class TambahDosen extends React.Component {
   };
 
   ErrorPersen = (buatSoal, penyimpanan, persen, text) => {
-    const dibutuhkan = Math.floor((buatSoal * persen) / 100);
-    const sisa = Math.floor(penyimpanan - dibutuhkan);
+    const dibutuhkan = Math.round((buatSoal * persen) / 100);
+    const sisa = Math.round(penyimpanan - dibutuhkan);
 
     console.log(sisa, dibutuhkan, 'hhh');
 
@@ -255,6 +296,8 @@ class TambahDosen extends React.Component {
       return '';
     }
   };
+
+  persenKeSoal = persen => Math.round((Number(this.state.totalSoalDibutuhkan) * persen) / 100);
 
   rubahPersenMudahSoal = (value) => {
     const mau = value;
@@ -305,7 +348,6 @@ class TambahDosen extends React.Component {
 
     await mutation({
       variables: {
-        id: this.state.id,
         nama: this.state.nama,
         tanggalPelaksanaan: this.state.waktuPelaksanaan.format(),
         lokasi: this.state.lokasi,
@@ -315,11 +357,11 @@ class TambahDosen extends React.Component {
         presentasiSedang: this.state.sedangDibutuhkan,
         durasiPengerjaan: this.state.durasiPengerjaan,
         prodi: this.state.prodi,
-        bankSoal:  this.state.bankSoal,
-        kelas:  this.state.kelas
+        bankSoal: this.state.bankSoal,
+        kelas: this.state.kelas,
       },
     });
-
+    this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
   };
 
   render() {
@@ -344,75 +386,78 @@ class TambahDosen extends React.Component {
         }}
       >
         {(createMataKuliah, {
- data, error, loading, called,
-}) => {
-
+          data, error, loading, called,
+        }) => {
+          if (!loading) console.log(data);
+          if (loading || this.state.loading) return <Spin tip="Loading..." />
           return (
-            <Content>
-              <Card
-                title="Update Informasi Ujian"
-                style={{ maxWidth: '800px', margin: '20px auto', paddding: '20px' }}
+
+            <Card
+              title="Edit Ujian"
+
+            >
+
+              <Form
+                method="post"
+                onSubmit={async (e) => {
+                  this.setState({ loading: true });
+                  e.preventDefault();
+                  await this.submit(createMataKuliah);
+                  this.setState({ loading: false });
+                }}
               >
-                <h2>Rubah data Ujian</h2>
-                <Form
-                  method="post"
-                  onSubmit={async (e) => {
+                <PesanError error={error} />
+                {!error && !loading && called && (
+                  <Alert
+                    message={`Buat  Ujian  ${data.createUjian.nama} berhasil`}
+                    type="success"
+                    showIcon
+                    style={{ margin: '10px 0' }}
+                  />
+                )}
+                <Form.Item
+                  label="Nama"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  onSubmit={(e) => {
                     e.preventDefault();
-                    await this.submit(createMataKuliah);
+                    this.submit();
                   }}
                 >
-                  <PesanError error={error} />
-                  {!error && !loading && called && (
-                    <Alert
-                      message={`update  kelas  ${data.updateUjian.nama} berhasil`}
-                      type="success"
-                      showIcon
-                      style={{ margin: '10px 0' }}
-                    />
-                  )}
-                  <Form.Item
-                    label="Nama"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      this.submit();
-                    }}
+                  <Input
+                    disabled={loading}
+                    name="nama"
+                    value={this.state.nama}
+                    placeholder="Nama Ujian"
+                    type="string"
+                    required
+                    onChange={this.saveToState}
+                  />
+                </Form.Item>
+                <Form.Item label="Jurusan" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                  <Select placeholder="Pilih Jurusan" onChange={this.handleJurusanChange} value={this.state.jurusan}>
+                    {jurusans.map(jurusan => (
+                      <Option key={jurusan} value={jurusan}>
+                        {jurusan.toUpperCase()}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Program Studi" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                  <Select
+                    placeholder="Pilih Prodi"
+                    disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
+                    value={this.state.prodi}
+                    onChange={this.handleProdiChange}
                   >
-                    <Input
-                      disabled={loading}
-                      name="nama"
-                      value={this.state.nama}
-                      placeholder="Nama Kelas"
-                      type="string"
-                      required
-                      onChange={this.saveToState}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Jurusan" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-                    <Select placeholder="Pilih Jurusan" value={this.state.jurusan} onChange={this.handleJurusanChange}>
-                      {jurusans.map(jurusan => (
-                        <Option key={jurusan} value={jurusan}>
-                          {jurusan.toUpperCase()}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item label="Program Studi" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-                    <Select
-                      placeholder="Pilih Prodi"
-                      disabled={!this.state.jurusan.length || this.state.jurusan === 'semua'}
-                      value={this.state.prodi}
-                      onChange={this.handleProdiChange}
-                    >
-                      {this.state.prodies.map(prodiku => (
-                        <Option key={prodiku} value={prodiku}>
-                          {prodiku.toUpperCase()}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  {/* <Form.Item label="MataKuliah" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                    {this.state.prodies.map(prodiku => (
+                      <Option key={prodiku} value={prodiku}>
+                        {prodiku.toUpperCase()}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                {/* <Form.Item label="MataKuliah" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
                     <PilihMataKuliah
                       jurusan={this.state.jurusan}
                       prodi={this.state.prodi}
@@ -424,154 +469,202 @@ class TambahDosen extends React.Component {
                   <Form.Item label="Dosen" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
                     <PIlihDosen dosenIni={this.state.dosen} rubahState={this.handleDosenChange} />
                   </Form.Item> */}
-                  <Form.Item label="Kelas" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-                    <PilihKelas
-                      value={this.state.kelasNama}
-                      onChange={this.rubahKelas}
-                      jurusan={this.state.jurusan}
-                      prodi={this.state.prodi}
-                    />
-                  </Form.Item>{' '}
+                <Form.Item label="Kelas" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                  <PilihKelas
+                    value={this.state.kelasNama}
+                    onChange={this.rubahKelas}
+                    jurusan={this.state.jurusan}
+                    prodi={this.state.prodi}
+                  />
+                </Form.Item>{' '}
+                <Form.Item
+                  label="Waktu Pelaksanaan"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                >
+                  <DatePicker
+                    placeholder="Pilih tanggal"
+                    showTime
+                    value={this.state.waktuPelaksanaan}
+                    onChange={value => this.setState({ waktuPelaksanaan: value })}
+                  />
+                </Form.Item>{' '}
+                <Form.Item
+                  label="Durasi Pengerjaan"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                >
+                  <Input
+                    placeholder="Dalam menit"
+
+                    value={this.state.durasiPengerjaan}
+                    name="durasiPengerjaan"
+                    onChange={this.saveToState}
+                  />
+                </Form.Item>{' '}
+                <Form.Item label="Lokasi Ujian" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                  <Input
+                    value={this.state.lokasi}
+                    name="lokasi"
+                    onChange={this.saveToState}
+
+                    placeholder="tempat dilaksanakan ujian"
+                  />
+                </Form.Item>{' '}
+                <Form.Item
+                  label="Pilih Bank Soal"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                >
+                  <PilihBankSoal
+                    mataKuliah={this.state.mataKuliah}
+                    value={this.state.bankSoal}
+                    onChange={this.rubahBankSoal}
+                    setSoal={this.setSoal}
+                  />
+                </Form.Item>{' '}
+                {}
+                <Card>
+                  <h4>Detail Ketersedian Soal:</h4>
+                  <ul>
+                    <li>Total Soal Mudah: {this.state.mudah}</li>
+                    <li>Total Soal Sedang: {this.state.sedang}</li>
+                    <li>Total Soal Susah: {this.state.susah}</li>
+                    <li>
+                      <b>Total Soal yang tersedia: {this.totalSoal()}</b>
+                    </li>
+                  </ul>
+                  <br />
+                  {this.state.errorJumlahSoal && (
+                    <div
+                      style={{
+                        color: 'red',
+                        border: '2px solid pink',
+                        margin: '5px',
+                        padding: '10px',
+                      }}
+                    >
+                      <i>{this.state.errorJumlahSoal} </i>
+                    </div>
+                  )}
                   <Form.Item
-                    label="Waktu Pelaksanaan"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                  >
-                    <DatePicker
-                      placeholder="Pilih tanggal"
-                      showTime
-                      value={this.state.waktuPelaksanaan}
-                      onChange={value => this.setState({ waktuPelaksanaan: value })}
-                    />
-                  </Form.Item>{' '}
-                  <Form.Item
-                    label="Durasi Pengerjaan"
+                    label="Jumlah Soal Ujian:"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
                   >
                     <Input
-                      placeholder="Dalam menit"
-                      requried
-                      value={this.state.durasiPengerjaan}
-                      name="durasiPengerjaan"
-                      onChange={this.saveToState}
+                      placeholder="Banyak Soal yang akan diujiankan"
+                      value={this.state.totalSoalDibutuhkan}
+                      type="number"
+                      onChange={this.rubahJumlahSoal}
                     />
                   </Form.Item>{' '}
-                  <Form.Item label="Lokasi Ujian" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-                    <Input
-                      value={this.state.lokasi}
-                      name="lokasi"
-                      onChange={this.saveToState}
-                      required
-                      placeholder="tempat dilaksanakan ujian"
-                    />
-                  </Form.Item>{' '}
-                  <Form.Item
-                    label="Pilih Bank Soal"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
+
+                  {!Number(this.state.totalSoalDibutuhkan) || this.state.errorJumlahSoal ? null : (
+                    <>
+                      <h4>Tingkat Kesulitan </h4>
+                      {this.state.errorPersentasiSoal && (
+                        <div
+                          style={{
+                            color: 'red',
+                            border: '2px solid pink',
+                            margin: '5px',
+                            padding: '10px',
+                          }}
+                        >
+                          <i>{this.state.errorPersentasiSoal} </i>
+                        </div>
+                      )}
+                      <Form.Item
+                        label={`Persentasi Mudah ${this.state.mudahDibutuhkan}%`}
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                      >
+                        <Slider
+                          max={
+                            this.state.maxPersen -
+                            this.state.susahDibutuhkan -
+                            this.state.sedangDibutuhkan
+                          }
+                          onChange={this.rubahPersenMudahSoal}
+                          value={this.state.mudahDibutuhkan}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label={`Persentasi Sedang ${this.state.sedangDibutuhkan}%`}
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                      >
+                        <Slider
+                          max={
+                            this.state.maxPersen -
+                            this.state.mudahDibutuhkan -
+                            this.state.susahDibutuhkan
+                          }
+                          value={this.state.sedangDibutuhkan}
+                          onChange={this.rubahPersenSedangSoal}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label={`Persentasi Susah ${this.state.susahDibutuhkan}%`}
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                      >
+                        <Slider
+                          max={
+                            this.state.maxPersen -
+                            this.state.mudahDibutuhkan -
+                            this.state.sedangDibutuhkan
+                          }
+                          value={this.state.susahDibutuhkan}
+                          onChange={this.rubahPersenSusahSoal}
+                        />
+                      </Form.Item>
+
+                      <h4>
+                        Soal berdasarakan Presentasi yang dihasilkan dari{' '}
+                        {this.state.totalSoalDibutuhkan} soal:
+                        </h4>
+                      <ul>
+                        <li>
+                          {this.persenKeSoal(this.state.mudahDibutuhkan)} Soal dengan Tingkat
+                          Kesulitan Mudah
+                          </li>
+                        <li>
+                          {this.persenKeSoal(this.state.sedangDibutuhkan)} Soal dengan Tingkat
+                          Kesulitan Sedang
+                          </li>
+                        <li>
+                          {this.persenKeSoal(this.state.susahDibutuhkan)} Soal dengan Tingkat
+                          Kesulitan Susah
+                          </li>
+                        <li>
+                          {this.state.totalSoalDibutuhkan -
+                            this.persenKeSoal(this.state.mudahDibutuhkan) -
+                            this.persenKeSoal(this.state.sedangDibutuhkan) -
+                            this.persenKeSoal(this.state.susahDibutuhkan)}{' '}
+                          Soal dengan Tingkat Kesulitan Acak
+                          </li>
+                      </ul>
+                    </>
+                  )}
+                </Card>
+                <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={
+                      this.state.errorJumlahSoal ||
+                      this.state.errorPersentasiSoal ||
+                      !Number(this.state.totalSoalDibutuhkan)
+                    }
                   >
-                    <PilihBankSoal
-                      mataKuliah={this.state.mataKuliah}
-                      value={this.state.bankSoal}
-                      onChange={this.rubahBankSoal}
-                      setSoal={this.setSoal}
-                    />
-                  </Form.Item>{' '}
-                  {}
-                  <Card>
-                    <h4>Detail Ketersedian Soal:</h4>
-                    <ul>
-                      <li>Total Soal Mudah: {this.state.mudah}</li>
-                      <li>Total Soal Sedang: {this.state.sedang}</li>
-                      <li>Total Soal Susah: {this.state.susah}</li>
-                      <li>
-                        <b>Total Soal yang tersedia: {this.totalSoal()}</b>
-                      </li>
-                    </ul>
-                    <br />
-                    {this.state.errorJumlahSoal && (
-                      <div
-                        style={{
-                          color: 'red',
-                          border: '2px solid pink',
-                          margin: '5px',
-                          padding: '10px',
-                        }}
-                      >
-                        <i>{this.state.errorJumlahSoal} </i>
-                      </div>
-                    )}
-                    <Form.Item
-                      label="Jumlah Soal Ujian:"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Input
-                        placeholder="Banyak Soal yang akan diujiankan"
-                        value={this.state.totalSoalDibutuhkan}
-                        type="number"
-                        onChange={this.rubahJumlahSoal}
-                      />
-                    </Form.Item>{' '}
-                    <h4>Tingkat Kesulitan </h4>
-                    {this.state.errorPersentasiSoal && (
-                      <div
-                        style={{
-                          color: 'red',
-                          border: '2px solid pink',
-                          margin: '5px',
-                          padding: '10px',
-                        }}
-                      >
-                        <i>{this.state.errorPersentasiSoal} </i>
-                      </div>
-                    )}
-                    <Form.Item
-                      label="Persentasi Mudah %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        onChange={this.rubahPersenMudahSoal}
-                        value={this.state.mudahDibutuhkan}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label="Persentasi Sedang %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        value={this.state.sedangDibutuhkan}
-                        onChange={this.rubahPersenSedangSoal}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label="Persentasi Susah %"
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ span: 16 }}
-                    >
-                      <Slider
-                        value={this.state.susahDibutuhkan}
-                        onChange={this.rubahPersenSusahSoal}
-                      />
-                    </Form.Item>
-                  </Card>
-                  <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      disabled={this.state.errorJumlahSoal || this.state.errorPersentasiSoal}
-                    >
-                      Rubah Data
+                    Buat Ujian
                     </Button>
-                  </Form.Item>
-                </Form>
+                </Form.Item>
+              </Form>
+            </Card>
 
-
-              </Card>
-            </Content>
           );
         }}
       </Mutation>
@@ -585,7 +678,7 @@ const FETCH_EDIT = ({id}) => (
     {
       ({data, loading, error}) => {
         if (loading) return <p>loading</p>
-        console.log(data)
+        console.log(data, 'data dari bank soal');
         return <TambahDosen ujian={data.ujian} />
       }
     }

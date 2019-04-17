@@ -63,5 +63,4 @@ const PILIH_MATA_KULIAH = ({
     }}
   </Query>
 );
-
 export default PILIH_MATA_KULIAH;

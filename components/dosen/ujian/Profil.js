@@ -50,6 +50,10 @@ const CURRENT_QUERY = gql`
       bankSoal {
         id
         nama
+        soals {
+          id
+          tingkatKesulitan
+        }
       }
       tanggalPelaksanaan
       lokasi

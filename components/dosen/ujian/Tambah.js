@@ -137,6 +137,10 @@ class TambahDosen extends React.Component {
       mudahDibutuhkan: 0,
       susahDibutuhkan: 0,
       sedangDibutuhkan: 0,
+
+      mudah: 0,
+      sedang: 0,
+      susah: 0,
     });
   };
 
@@ -155,6 +159,10 @@ class TambahDosen extends React.Component {
       mudahDibutuhkan: 0,
       susahDibutuhkan: 0,
       sedangDibutuhkan: 0,
+
+      mudah: 0,
+      sedang: 0,
+      susah: 0,
     });
   };
 
