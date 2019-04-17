@@ -10,9 +10,8 @@ import {
   Select,
   DatePicker,
   Slider,
-  InputNumber,
-  Row,
-  Col,
+  message,
+  Spin,
 } from 'antd';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -58,7 +57,6 @@ const CREATE_KELAS_MUTATION = gql`
   presentasiSedang: $presentasiSedang
   presentasiMudah: $presentasiMudah
   durasiPengerjaan: $durasiPengerjaan
-  status: true
   prodi: {
     connect: {
       nama: $prodi
@@ -133,6 +131,7 @@ class TambahDosen extends React.Component {
       presentasiSusah,
   presentasiSedang,
   presentasiMudah,
+  id
     } = this.props.ujian;
 
 
@@ -140,6 +139,7 @@ class TambahDosen extends React.Component {
     console.log(this.props.ujian, 'dari dari props ujian oper ke sini');
 
     this.setState({
+      id,
        nama,
         waktuPelaksanaan: moment(tanggalPelaksanaan),
         durasiPengerjaan: durasiPengerjaan,
@@ -348,6 +348,7 @@ class TambahDosen extends React.Component {
 
     await mutation({
       variables: {
+        id: this.state.id,
         nama: this.state.nama,
         tanggalPelaksanaan: this.state.waktuPelaksanaan.format(),
         lokasi: this.state.lokasi,
@@ -360,8 +361,8 @@ class TambahDosen extends React.Component {
         bankSoal: this.state.bankSoal,
         kelas: this.state.kelas,
       },
-    });
-    this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
+    }).catch(() => message.error('Error koneksi jaringan!'));
+
   };
 
   render() {
@@ -409,7 +410,7 @@ class TambahDosen extends React.Component {
                 <PesanError error={error} />
                 {!error && !loading && called && (
                   <Alert
-                    message={`Buat  Ujian  ${data.createUjian.nama} berhasil`}
+                    message={`Rubah  Ujian  ${data.updateUjian.nama} berhasil`}
                     type="success"
                     showIcon
                     style={{ margin: '10px 0' }}
@@ -659,7 +660,7 @@ class TambahDosen extends React.Component {
                       !Number(this.state.totalSoalDibutuhkan)
                     }
                   >
-                    Buat Ujian
+                    Simpan Data Ujian
                     </Button>
                 </Form.Item>
               </Form>

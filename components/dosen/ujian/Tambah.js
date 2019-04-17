@@ -13,6 +13,7 @@ import {
   Row,
   Col,
   Spin,
+  message,
 } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -26,10 +27,8 @@ import PilihBankSoal from './PilihBankSoal';
 
 import moment from 'moment';
 import 'moment/locale/id';
-import { red } from 'ansi-colors';
-import { th } from 'date-fns/esm/locale';
 
-const { Content } = Layout;
+
 const { Option } = Select;
 
 const CREATE_KELAS_MUTATION = gql`
@@ -289,7 +288,7 @@ class TambahDosen extends React.Component {
         bankSoal: this.state.bankSoal,
         kelas: this.state.kelas,
       },
-    });
+    }).catch(() => message.error('Error, Koneksi Jaringan Internet!'));
     this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
   };
 
