@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Card, Select, Form, Button, Input, Alert, Spin } from 'antd';
+import { Card, message, Form, Button, Input, Alert, Spin } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -8,11 +9,10 @@ import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import PesanError from '../../PesanError';
-import DetailBankSoal from './DetailBankSoal';
 import PIlihTingkatKesulitan from './PIlihTingkatKesulitan';
-import Pertanyaan from './Pertanyaan';
-import Jawaban from './Jawaban';
+
 import PilihKunciJawaban from './PilihKunciJawaban';
+import { CURRENT_QUERY } from './Profil';
 
 const EDIT_SOAL = gql`
   mutation EDIT_SOAL(
@@ -64,29 +64,26 @@ const CURRENT_SOAL = gql`
 
 class FormEdit extends React.Component {
   state = {
-    pertanyaan: JSON.parse(this.props.soal.pertanyaan) || EditorState.createEmpty(),
-    a:
-      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'a').content) ||
-      EditorState.createEmpty(),
-    b:
-      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'b').content) ||
-      EditorState.createEmpty(),
-    c:
-      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'c').content) ||
-      EditorState.createEmpty(),
-    d:
-      JSON.parse(this.props.soal.jawaban.find(jawaban => jawaban.title === 'd').content) ||
-      EditorState.createEmpty(),
-    image: this.props.soal.image || '',
-    imageA: this.props.soal.jawaban.find(jawaban => jawaban.title === 'a').image || '',
-    imageB: this.props.soal.jawaban.find(jawaban => jawaban.title === 'b').image || '',
-    imageC: this.props.soal.jawaban.find(jawaban => jawaban.title === 'c').image || '',
-    imageD: this.props.soal.jawaban.find(jawaban => jawaban.title === 'd').image || '',
+    pertanyaan: EditorState.createEmpty(),
+    a: EditorState.createEmpty(),
+    b: EditorState.createEmpty(),
+    c: EditorState.createEmpty(),
+    d: EditorState.createEmpty(),
+    image: '',
+    imageA: '',
+    imageB: '',
+    imageC: '',
+    imageD: '',
     loading: false,
 
-    kunciJawaban: this.props.soal.kunciJawaban,
-    tingkatKesulitan: this.props.soal.tingkatKesulitan,
+    kunciJawaban: undefined,
+    tingkatKesulitan: undefined,
     renderEditor: false,
+  };
+
+  erorJaringan = () => {
+    this.setState({ loading: false });
+    message.error('Error koneksi jaringan internet buruk');
   };
 
   uploadFile = async (e) => {
@@ -101,7 +98,7 @@ class FormEdit extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -122,7 +119,7 @@ class FormEdit extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -143,7 +140,7 @@ class FormEdit extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -164,7 +161,7 @@ class FormEdit extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -185,7 +182,7 @@ class FormEdit extends React.Component {
     const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
       method: 'POST',
       body: data,
-    });
+    }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
@@ -198,11 +195,39 @@ class FormEdit extends React.Component {
     this.setState({ renderEditor: true });
   }
 
-  changePertanyaan = pertanyaan => this.setState({ pertanyaan });
-  changeA = a => this.setState({ a });
-  changeB = b => this.setState({ b });
-  changeC = c => this.setState({ c });
-  changeD = d => this.setState({ d });
+  componentWillMount() {
+    const {
+      pertanyaan, image, jawaban, tingkatKesulitan, kunciJawaban,
+    } = this.props.soal;
+
+    console.log(jawaban, 'ini jawaban apa saja');
+
+    const findJawaban = title => jawaban.find(item => item.title === title);
+
+    this.setState({
+      pertanyaan: JSON.parse(pertanyaan),
+      a: JSON.parse(findJawaban('a').content),
+      b: JSON.parse(findJawaban('b').content),
+      c: JSON.parse(findJawaban('c').content),
+      d: JSON.parse(findJawaban('d').content),
+      tingkatKesulitan,
+      kunciJawaban,
+      image,
+      imageA: findJawaban('a').image,
+      imageB: findJawaban('b').image,
+      imageC: findJawaban('c').image,
+      imageD: findJawaban('d').image,
+    });
+  }
+
+  translateContentState = editorState => convertToRaw(editorState.getCurrentContent());
+
+  changePertanyaan = pertanyaan =>
+    this.setState({ pertanyaan: this.translateContentState(pertanyaan) });
+  changeA = content => this.setState({ a: this.translateContentState(content) });
+  changeB = content => this.setState({ b: this.translateContentState(content) });
+  changeC = content => this.setState({ c: this.translateContentState(content) });
+  changeD = content => this.setState({ d: this.translateContentState(content) });
 
   saveToState = (e) => {
     this.setState({
@@ -242,9 +267,10 @@ class FormEdit extends React.Component {
     console.log('make');
 
     const soalBaru = {
+      id: this.props.id,
       pertanyaan: JSON.stringify(this.state.pertanyaan),
       kunciJawaban: this.state.kunciJawaban,
-      id: this.props.soal.id,
+      bankSoal: this.props.id,
       tingkatKesulitan: this.state.tingkatKesulitan,
       image: this.state.image,
       jawaban: [
@@ -287,21 +313,30 @@ class FormEdit extends React.Component {
       ],
     };
 
-    console.log(soalBaru);
     await mutasi({
       variables: soalBaru,
-    });
+    }).catch(() => message.error('Erorr tidak bisa membuat soal baru!'));
   };
 
   render() {
     return (
       <>
-        <Card title="Update Soal">
-          <Mutation mutation={EDIT_SOAL}>
+        <Card>
+          <Mutation
+            mutation={EDIT_SOAL}
+            refetchQueries={[
+              {
+                query: CURRENT_QUERY,
+                variables: {
+                  id: this.props.bankSoal,
+                },
+              },
+            ]}
+          >
             {(createSoal, {
  error, data, loading, called,
 }) => {
-              if (loading) return <p>loading...</p>;
+              if (loading) return <Spin tip="Loading.." />;
 
               return (
                 <Form
@@ -313,7 +348,7 @@ class FormEdit extends React.Component {
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message="Update soal berhasil"
+                      message="Buat soal berhasil"
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}
@@ -493,7 +528,7 @@ class FormEdit extends React.Component {
                   </Form.Item>
 
                   <Button type="primary" htmlType="submit">
-                    Simpan Perubahan
+                    Simpan Soal
                   </Button>
                 </Form>
               );
@@ -504,14 +539,14 @@ class FormEdit extends React.Component {
     );
   }
 }
-
 class EditDosen extends Component {
   render() {
+
     return (
-      <Query query={CURRENT_SOAL} variables={{ id: this.props.id }}>
+      <Query query={CURRENT_SOAL} variables={{ id: this.props.id }} fetchPolicy="network-only">
         {({ data, loading, error }) => (
           <Card style={{ margin: '20px' }} title="Edit  Soal" loading={loading}>
-            <FormEdit soal={data.soal} id={this.props.id} />
+            <FormEdit soal={data.soal} id={this.props.id} bankSoal={this.props.bankSoal}/>
           </Card>
         )}
       </Query>

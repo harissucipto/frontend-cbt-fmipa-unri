@@ -8,7 +8,6 @@ import { CURRENT_QUERY } from './Profil';
 const DetailBankSoal = props => (
   <Query query={CURRENT_QUERY} variables={{ id: props.id }} fetchPolicy="network-only">
     {({ data, loading }) => {
-      if (loading) return <p>Loading...</p>;
       if (!data) return <p>Loading..</p>;
       console.log(data, 'data profil');
 

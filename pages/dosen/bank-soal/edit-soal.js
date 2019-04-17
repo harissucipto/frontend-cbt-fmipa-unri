@@ -11,7 +11,7 @@ const EditPage = props => (
       <DetailBankSoal id={props.query.bankSoal} />
     </Col>
     <Col xs={24} lg={16}>
-      <Edit id={props.query.id} />
+      <Edit id={props.query.id} bankSoal={props.query.bankSoal} />
     </Col>
   </Row>
 );
