@@ -112,13 +112,6 @@ class List extends Component {
         dataIndex: 'dosen.nama',
         key: 'dosen',
       },
-      {
-        title: 'Nilai Ujian',
-        dataIndex: 'soalMahasiswas[0].id',
-        key: 'skor',
-        render: (text, record) =>
-          record.soalMahasiswas.find(item => item.ujian.id === record.id).skor,
-      },
     ];
   }
 
