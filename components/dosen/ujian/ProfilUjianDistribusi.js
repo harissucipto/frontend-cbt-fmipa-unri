@@ -82,11 +82,10 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="setting" />}
             title={<a>Tingkat Kesulitan Soal Acak</a>}
-            description={`${100 -
-              ujian.presentasiMudah -
-              ujian.presentasiSedang -
-              ujian.presentasiSusah}% (${Math.round((100 - ujian.presentasiMudah - ujian.presentasiSedang - ujian.presentasiSusah) *
-                ujian.JumlahSoal) / 100} soal)`}
+            description={`${ujian.JumlahSoal -
+              Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100) -
+              Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100) -
+              Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal`}
           />
         </List.Item>
       </List>
