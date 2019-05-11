@@ -99,6 +99,7 @@ class TambahDosen extends React.Component {
   state = {
     ...DEFAULTSTATE,
     posisi: 0,
+    soalDipilih: [],
   };
 
   setSoal = (soals) => {
@@ -109,6 +110,25 @@ class TambahDosen extends React.Component {
     const mudah = soals.filter(soal => soal.tingkatKesulitan === 'MUDAH').length;
     this.setState({ susah, sedang, mudah });
   };
+
+  pilihSoal = (id) => {
+    const { soalDipilih } = this.state;
+    const sudahAda = soalDipilih.findIndex(item => item === id) >= 0;
+    if (sudahAda) {
+      const hapusSalahSatu = soalDipilih.filter(idSoal => idSoal !== id);
+      this.setState({ soalDipilih: hapusSalahSatu });
+    } else {
+      this.setState({ soalDipilih: [...soalDipilih, id] });
+    }
+  }
+
+  pilihSemuaSoal = (idSoals) => {
+    this.setState({ soalDipilih: idSoals });
+  }
+
+  hapusSemuaPilihanSoal = () => {
+    this.setState({ soalDipilih: [] } );
+  }
 
   saveToState = (e) => {
     this.setState({
@@ -440,8 +460,19 @@ class TambahDosen extends React.Component {
                       onChange={this.rubahBankSoal}
                       setSoal={this.setSoal}
                     />
-                    <PilihSoal id={this.state.bankSoal} />
                   </Form.Item>
+                  <PilihSoal
+                    id={this.state.bankSoal}
+                    pilihSoal={this.pilihSoal}
+                    soalDipilih={this.state.soalDipilih}
+                    hapusSemua={this.hapusSemuaPilihanSoal}
+                    pilihSemua={this.pilihSemuaSoal}
+                  />
+                  <div>
+                    <Button type="dashed">Kembali</Button>
+                    <Button>Buat Ujian</Button>
+                  </div>
+
                 </Form>
               );
             }}

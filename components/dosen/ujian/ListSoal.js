@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import Link from 'next/link';
@@ -86,6 +87,7 @@ class ListKelas extends Component {
       : soals.filter(soal => soal.tingkatKesulitan === this.state.filterSoal));
 
   render() {
+    const { pilihSoal, soalDipilih } = this.props;
     return (
       <>
 
@@ -99,7 +101,14 @@ class ListKelas extends Component {
             return (
               <Card key={soal.id} style={{ border: '1px solid black', marginBottom: '10px' }}>
                 <Row gutter={40}>
-                  <Col span={1}>{i + 1}. <input type="checkbox" /></Col>
+                  <Col span={1}>
+                    {i + 1}
+                    <input
+                      type="checkbox"
+                      checked={soalDipilih.findIndex(item => item === soal.id) >= 0}
+                      onChange={() => pilihSoal(soal.id)}
+                    />
+                  </Col>
                   <Col span={18}>
                     {' '}
                     {soal.image && <img src={soal.image} width={200} alt="gambar soal" />}
@@ -173,14 +182,6 @@ class ListKelas extends Component {
           <p>Belum Ada</p>
         )}
 
-        {/* <Table
-          columns={this.columns}
-          dataSource={
-            this.props.soals.length ? this.handleTingkatKesulitanSoal(this.props.soals) : []
-          }
-          rowKey={record => record.id}
-          loading={this.props.loading}
-        /> */}
       </>
     );
   }
