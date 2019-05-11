@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Query } from 'react-apollo';
 import { Card, Button, List, Avatar } from 'antd';
