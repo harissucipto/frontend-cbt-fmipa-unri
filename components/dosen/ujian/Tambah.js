@@ -36,29 +36,23 @@ const CREATE_KELAS_MUTATION = gql`
     $nama: String!
     $tanggalPelaksanaan: DateTime!
     $lokasi: String!
-    $jumlahSoal: Int!
-    $presentasiSusah: Float!
-    $presentasiSedang: Float!
-    $presentasiMudah: Float!
     $durasiPengerjaan: Int!
     $prodi: String!
     $bankSoal: ID!
     $kelas: ID!
+    $soals: SoalCreateManyInput
   ) {
     createUjian(
       data: {
         nama: $nama
         tanggalPelaksanaan: $tanggalPelaksanaan
         lokasi: $lokasi
-        JumlahSoal: $jumlahSoal
-        presentasiSusah: $presentasiSusah
-        presentasiSedang: $presentasiSedang
-        presentasiMudah: $presentasiMudah
         durasiPengerjaan: $durasiPengerjaan
         status: true
         prodi: { connect: { nama: $prodi } }
         bankSoal: { connect: { id: $bankSoal } }
         kelas: { connect: { id: $kelas } }
+        soals: $soals
       }
     ) {
       id
@@ -75,24 +69,12 @@ const DEFAULTSTATE = {
   kelas: undefined,
   mataKuliah: '',
   bankSoal: undefined,
-  mudah: 0,
-  sedang: 0,
-  susah: 0,
-  errorJumlahSoal: '',
-  errorPersentasiSoal: '',
-
-  totalSoalDibutuhkan: 0,
-  mudahDibutuhkan: 0,
-  susahDibutuhkan: 0,
-  sedangDibutuhkan: 0,
-
   waktuPelaksanaan: null,
   durasiPengerjaan: undefined,
   lokasi: undefined,
 
-  // persen
-  maxPersen: 100,
   loading: false,
+  soalDipilih: [],
 };
 
 class TambahDosen extends React.Component {
@@ -100,15 +82,6 @@ class TambahDosen extends React.Component {
     ...DEFAULTSTATE,
     posisi: 0,
     soalDipilih: [],
-  };
-
-  setSoal = (soals) => {
-    if (!soals.length) return;
-    console.log(soals);
-    const susah = soals.filter(soal => soal.tingkatKesulitan === 'SUSAH').length;
-    const sedang = soals.filter(soal => soal.tingkatKesulitan === 'SEDANG').length;
-    const mudah = soals.filter(soal => soal.tingkatKesulitan === 'MUDAH').length;
-    this.setState({ susah, sedang, mudah });
   };
 
   pilihSoal = (id) => {
@@ -120,25 +93,20 @@ class TambahDosen extends React.Component {
     } else {
       this.setState({ soalDipilih: [...soalDipilih, id] });
     }
-  }
+  };
 
   pilihSemuaSoal = (idSoals) => {
     this.setState({ soalDipilih: idSoals });
-  }
+  };
 
   hapusSemuaPilihanSoal = () => {
-    this.setState({ soalDipilih: [] } );
-  }
+    this.setState({ soalDipilih: [] });
+  };
 
   saveToState = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  };
-
-  totalSoal = () => {
-    const { mudah, sedang, susah } = this.state;
-    return mudah + sedang + susah;
   };
 
   handleJurusanChange = (value) => {
@@ -149,18 +117,7 @@ class TambahDosen extends React.Component {
       kelas: undefined,
       kelasNama: undefined,
       bankSoal: undefined,
-
-      errorJumlahSoal: '',
-      errorPersentasiSoal: '',
-
-      totalSoalDibutuhkan: 0,
-      mudahDibutuhkan: 0,
-      susahDibutuhkan: 0,
-      sedangDibutuhkan: 0,
-
-      mudah: 0,
-      sedang: 0,
-      susah: 0,
+      soalDipilih: [],
     });
   };
 
@@ -171,18 +128,7 @@ class TambahDosen extends React.Component {
       kelas: undefined,
       kelasNama: undefined,
       bankSoal: undefined,
-
-      errorJumlahSoal: '',
-      errorPersentasiSoal: '',
-
-      totalSoalDibutuhkan: 0,
-      mudahDibutuhkan: 0,
-      susahDibutuhkan: 0,
-      sedangDibutuhkan: 0,
-
-      mudah: 0,
-      sedang: 0,
-      susah: 0,
+      soalDipilih: [],
     });
   };
 
@@ -194,99 +140,14 @@ class TambahDosen extends React.Component {
       kelasNama: value.tampilkanNilai,
       bankSoal: undefined,
 
-      errorJumlahSoal: '',
-      errorPersentasiSoal: '',
-
-      totalSoalDibutuhkan: 0,
-      mudahDibutuhkan: 0,
-      susahDibutuhkan: 0,
-      sedangDibutuhkan: 0,
+      soalDipilih: [],
     });
   };
 
   rubahBankSoal = (value) => {
     this.setState({
       bankSoal: value,
-
-      errorJumlahSoal: '',
-      errorPersentasiSoal: '',
-
-      totalSoalDibutuhkan: 0,
-      mudahDibutuhkan: 0,
-      susahDibutuhkan: 0,
-      sedangDibutuhkan: 0,
-    });
-  };
-
-  rubahJumlahSoal = (value) => {
-    const mau = value.target.value;
-
-    this.setState({
-      totalSoalDibutuhkan: mau,
-      errorJumlahSoal: '',
-    });
-    if (mau > this.totalSoal()) {
-      const errorJumlahSoal = `Error Soal Tidak Mencukupi, dibutuhkan ${Math.abs(this.totalSoal() - mau)} soal lagi`;
-      this.setState({ errorJumlahSoal });
-    }
-  };
-
-  ErrorPersen = (buatSoal, penyimpanan, persen, text) => {
-    const dibutuhkan = Math.round((buatSoal * persen) / 100);
-    const sisa = Math.round(penyimpanan - dibutuhkan);
-
-    console.log(sisa, dibutuhkan, 'hhh');
-
-    if (sisa < 0) {
-      console.log('kkk');
-      return `${text},  dibutuhkan ${Math.abs(sisa)}  soal lagi dari ${dibutuhkan} soal `;
-    } else {
-      console.log('tidak');
-      return '';
-    }
-  };
-
-  persenKeSoal = persen => Math.round((Number(this.state.totalSoalDibutuhkan) * persen) / 100);
-
-  rubahPersenMudahSoal = (value) => {
-    const mau = value;
-
-    this.setState({
-      mudahDibutuhkan: mau,
-      errorPersentasiSoal: this.ErrorPersen(
-        this.state.totalSoalDibutuhkan,
-        this.state.mudah,
-        Number(mau),
-        'Error Memberikan Presntasi tingkat Kesulitan Mudah, Dibutuhkan Beberapa Soal untuk soal tingkat Kesulitan Mudah',
-      ),
-    });
-  };
-
-  rubahPersenSedangSoal = (value) => {
-    const mau = value;
-
-    this.setState({
-      sedangDibutuhkan: mau,
-      errorPersentasiSoal: this.ErrorPersen(
-        this.state.totalSoalDibutuhkan,
-        this.state.sedang,
-        Number(mau),
-        'Error Memberikan Presntasi tingkat Kesulitan Sedang, Dibutuhkan Beberapa Soal untuk soal tingkat Kesulitan Sedang',
-      ),
-    });
-  };
-
-  rubahPersenSusahSoal = (value) => {
-    const mau = value;
-
-    this.setState({
-      susahDibutuhkan: mau,
-      errorPersentasiSoal: this.ErrorPersen(
-        this.state.totalSoalDibutuhkan,
-        this.state.susah,
-        Number(mau),
-        'Error Memberikan Presntasi tingkat Kesulitan Susah, Dibutuhkan Beberapa Soal untuk soal tingkat Kesulitan Susah',
-      ),
+      soalDipilih: [],
     });
   };
 
@@ -300,17 +161,16 @@ class TambahDosen extends React.Component {
         nama: this.state.nama,
         tanggalPelaksanaan: this.state.waktuPelaksanaan.format(),
         lokasi: this.state.lokasi,
-        jumlahSoal: this.state.totalSoalDibutuhkan,
-        presentasiSusah: this.state.susahDibutuhkan,
-        presentasiMudah: this.state.mudahDibutuhkan,
-        presentasiSedang: this.state.sedangDibutuhkan,
+        soals: {
+          connect: this.state.soalDipilih.map(item => ({ id: item })),
+        },
         durasiPengerjaan: this.state.durasiPengerjaan,
         prodi: this.state.prodi,
         bankSoal: this.state.bankSoal,
         kelas: this.state.kelas,
       },
     }).catch(() => message.error('Error, Koneksi Jaringan Internet!'));
-    this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
+    // this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
   };
 
   render() {
@@ -383,12 +243,12 @@ class TambahDosen extends React.Component {
                 onChange={value => this.setState({ waktuPelaksanaan: value })}
               />
             </Form.Item>{' '}
-            <Form.Item label="Durasi Pengerjaan" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              <Input
+            <Form.Item label="Durasi Pengerjaan (menit)" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              <InputNumber
                 placeholder="Dalam menit"
+                size="100"
                 value={this.state.durasiPengerjaan}
-                name="durasiPengerjaan"
-                onChange={this.saveToState}
+                onChange={nilai => this.setState({ durasiPengerjaan: nilai })}
               />
             </Form.Item>{' '}
             <Form.Item label="Lokasi Ujian" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
@@ -443,7 +303,7 @@ class TambahDosen extends React.Component {
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message={`Buat  Ujian  ${data.createUjian.nama} berhasil`}
+                      message="Buat  Ujian   berhasil"
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}
@@ -469,10 +329,17 @@ class TambahDosen extends React.Component {
                     pilihSemua={this.pilihSemuaSoal}
                   />
                   <div>
-                    <Button type="dashed">Kembali</Button>
-                    <Button>Buat Ujian</Button>
+                    <Button type="dashed" onClick={() => this.setState({ posisi: 0 })}>
+                      Kembali
+                    </Button>
+                    <Button
+                      htmlType="submit"
+                      type="primary"
+                      disabled={this.state.soalDipilih.length <= 0}
+                    >
+                      Buat Ujian
+                    </Button>
                   </div>
-
                 </Form>
               );
             }}

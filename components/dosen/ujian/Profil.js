@@ -52,16 +52,14 @@ const CURRENT_QUERY = gql`
         nama
         soals {
           id
-          tingkatKesulitan
         }
       }
+      durasiPengerjaan
       tanggalPelaksanaan
       lokasi
-      JumlahSoal
-      presentasiSusah
-      presentasiSedang
-      presentasiMudah
-      durasiPengerjaan
+      soals {
+        id
+      }
     }
   }
 `;
@@ -97,17 +95,6 @@ class ProfilAdmin extends React.Component {
                     </Button>
                   }
                 >
-                  {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.admin.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
-
                   <List>
                     <List.Item>
                       <List.Item.Meta
@@ -155,13 +142,6 @@ class ProfilAdmin extends React.Component {
                         description={`${data.ujian.durasiPengerjaan} menit`}
                       />
                     </List.Item>
-                    {/* <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar icon="info" />}
-                          title={<a> Mata Kuliah</a>}
-                          description={data.ujian.mataKuliah ? data.ujian.mataKuliah.nama : '-'}
-                        />
-                      </List.Item> */}
 
                     <List.Item>
                       <List.Item.Meta
@@ -209,42 +189,8 @@ class ProfilAdmin extends React.Component {
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar icon="info" style={{ backgroundColor: 'pink' }} />}
-                        title={<a>Jumlah Soal</a>}
-                        description={data.ujian.JumlahSoal}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
-                        title={<a>Tingkat Kesulitan Soal Susah</a>}
-                        description={`${data.ujian.presentasiSusah}%`}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
-                        title={<a>Tingkat Kesulitan Soal Sedang</a>}
-                        description={`${data.ujian.presentasiSedang}%`}
-                      />
-                    </List.Item>
-
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
-                        title={<a>Tingkat Kesulitan Soal Mudah</a>}
-                        description={`${data.ujian.presentasiMudah}%`}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon="setting" style={{ backgroundColor: 'green' }} />}
-                        title={<a>Tingkat Kesulitan Soal Acak</a>}
-                        description={`${100 -
-                          data.ujian.presentasiMudah -
-                          data.ujian.presentasiSedang -
-                          data.ujian.presentasiSusah}% `}
+                        title={<a>Jumlah Soal Ujian</a>}
+                        description={data.ujian.soals.length}
                       />
                     </List.Item>
                   </List>

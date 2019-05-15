@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Query } from 'react-apollo';
@@ -45,46 +46,6 @@ const DetailBankSoal = props => (
                 avatar={<Avatar icon="info" style={{ backgroundColor: 'olive' }} />}
                 title={<a>Jumlah Soal</a>}
                 description={data.bankSoal.soals.length || '0 Soal'}
-              />
-            </List.Item>
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
-                title={<a>Jumlah soal tingkat kesulitan mudah</a>}
-                description={
-                  !data.bankSoal.soals.length
-                    ? '0 Soal'
-                    : `${
-                        data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'MUDAH').length
-                      } Soal`
-                }
-              />
-            </List.Item>
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
-                title={<a>Jumlah soal tingkat kesulitan sedang</a>}
-                description={
-                  !data.bankSoal.soals.length
-                    ? '0 Soal'
-                    : `${
-                        data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG')
-                          .length
-                      } soal`
-                }
-              />
-            </List.Item>
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
-                title={<a>Jumlah soal tingkat kesulitan susah</a>}
-                description={
-                  !data.bankSoal.soals.length
-                    ? '0 Soal'
-                    : `${
-                        data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH').length
-                      } soal`
-                }
               />
             </List.Item>
           </List>

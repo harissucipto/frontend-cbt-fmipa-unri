@@ -1,3 +1,4 @@
+/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { List, Avatar } from 'antd';
 
@@ -50,42 +51,7 @@ export default class ProfilUjian extends Component {
           <List.Item.Meta
             avatar={<Avatar icon="info" style={{ backgroundColor: 'black' }} />}
             title={<a>Jumlah Soal</a>}
-            description={ujian.JumlahSoal}
-          />
-        </List.Item>
-
-        <List.Item>
-          <List.Item.Meta
-            avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
-            title={<a>Tingkat Kesulitan Soal Susah</a>}
-            description={`${ujian.presentasiSusah}% (${Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100)} soal)`}
-          />
-        </List.Item>
-
-        <List.Item>
-          <List.Item.Meta
-            avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
-            title={<a>Tingkat Kesulitan Soal Sedang</a>}
-            description={`${ujian.presentasiSedang}% (${Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal)`}
-          />
-        </List.Item>
-
-        <List.Item>
-          <List.Item.Meta
-            avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
-            title={<a>Tingkat Kesulitan Soal Mudah </a>}
-            description={`${ujian.presentasiMudah}% (${Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100)} soal)`}
-          />
-        </List.Item>
-
-        <List.Item>
-          <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
-            title={<a>Tingkat Kesulitan Soal Acak</a>}
-            description={`${ujian.JumlahSoal -
-              Math.round((ujian.presentasiMudah * ujian.JumlahSoal) / 100) -
-              Math.round((ujian.presentasiSusah * ujian.JumlahSoal) / 100) -
-              Math.round((ujian.presentasiSedang * ujian.JumlahSoal) / 100)} soal`}
+            description={ujian.soals.length}
           />
         </List.Item>
       </List>

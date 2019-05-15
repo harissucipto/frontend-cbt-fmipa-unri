@@ -1,9 +1,9 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Router from 'next/router';
-import { Card, List, Avatar, Row, Col, Button } from 'antd';
+import { Card, Row, Col } from 'antd';
 
+import LiatListSoal from './LiatListSoal';
 import ListDistribusi from './ListDistribusi';
 import ProfilUjianDistribusi from './ProfilUjianDistribusi';
 
@@ -36,33 +36,24 @@ const CURRENT_QUERY = gql`
           nim
           image
         }
-        soals {
-          id
-          tingkatKesulitan
-        }
+        urutan
       }
       bankSoal {
         id
         nama
-        soals {
+      }
+      soals {
+        image
+        id
+        pertanyaan
+        kunciJawaban
+        jawaban {
           image
           id
-          pertanyaan
-          kunciJawaban
-          tingkatKesulitan
-          jawaban {
-            image
-            id
-            title
-            content
-          }
+          title
+          content
         }
       }
-
-      JumlahSoal
-      presentasiSusah
-      presentasiSedang
-      presentasiMudah
     }
   }
 `;
@@ -100,11 +91,11 @@ class ProfilAdmin extends React.Component {
                 </Card>
 
                 <Card title="Distribusi Soal">
-                  <ListDistribusi
-                    bankSoal={ujian.bankSoal}
-                    soalMahasiswas={ujian.soalMahasiswas}
-                    loading={loading}
-                  />
+                  <ListDistribusi mahasiswas={ujian.soalMahasiswas} loading={loading} />
+                </Card>
+
+                <Card title="Soal Ujian">
+                  <LiatListSoal soals={ujian.soals} />
                 </Card>
               </Col>
             </Row>

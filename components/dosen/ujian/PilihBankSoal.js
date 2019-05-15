@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import { Select } from 'antd';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
@@ -17,15 +16,13 @@ const DOSEN_LIST = gql`
         nama
       }
       soals {
-        tingkatKesulitan
+        id
       }
     }
   }
 `;
 
-const PILIH_MATA_KULIAH = ({
-  mataKuliah, value, onChange, setSoal,
-}) => (
+const PILIH_MATA_KULIAH = ({ mataKuliah, value, onChange }) => (
   <Query
     query={DOSEN_LIST}
     variables={{
@@ -38,9 +35,8 @@ const PILIH_MATA_KULIAH = ({
         placeholder="Pilih Bank Soal"
         loading={loading}
         value={value}
-        onChange={(value) => {
-          onChange(value);
-          setSoal(data.bankSoals.filter(item => item.id === value)[0].soals);
+        onChange={(nilai) => {
+          onChange(nilai);
         }}
       >
         {data.bankSoals

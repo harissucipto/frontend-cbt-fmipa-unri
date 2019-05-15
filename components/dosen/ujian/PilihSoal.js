@@ -42,7 +42,6 @@ const SEARCH_LIST = gql`
           content
         }
         kunciJawaban
-        tingkatKesulitan
       }
     }
   }
@@ -144,7 +143,7 @@ class List extends Component {
                 <b>
                   {soalDipilih.length
                     ? mapNomorSoal.map(item => (
-                      <span>
+                      <span key={item}>
                         {item} {'  '}
                       </span>
                       ))

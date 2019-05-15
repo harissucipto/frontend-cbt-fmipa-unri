@@ -40,7 +40,6 @@ const CURRENT_QUERY = gql`
           content
         }
         kunciJawaban
-        tingkatKesulitan
       }
     }
   }
@@ -70,17 +69,6 @@ const ProfilAdmin = ({ id }) => (
         <Row type="flex" gutter={16} style={{ margin: '40px' }}>
           <Col xs={24} md={24}>
             <Card title="Informasi Bank Soal" loading={loading} style={{ marginBottom: '20px' }}>
-              {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.admin.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
-
               <List
                 grid={{
                   gutter: 16,
@@ -110,49 +98,6 @@ const ProfilAdmin = ({ id }) => (
                     description={data.bankSoal.soals.length || '0 Soal'}
                   />
                 </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'blue' }} />}
-                    title={<a>Jumlah soal tingkat kesulitan mudah</a>}
-                    description={
-                      !data.bankSoal.soals.length
-                        ? '0 Soal'
-                        : `${
-                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'MUDAH')
-                              .length
-                          } Soal`
-                    }
-                  />
-                </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'orange' }} />}
-                    title={<a>Jumlah soal tingkat kesulitan sedang</a>}
-                    description={
-                      !data.bankSoal.soals.length
-                        ? '0 Soal'
-                        : `${
-                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SEDANG')
-                              .length
-                          } soal`
-                    }
-                  />
-                </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar icon="setting" style={{ backgroundColor: 'red' }} />}
-                    title={<a>Jumlah soal tingkat kesulitan susah</a>}
-                    description={
-                      !data.bankSoal.soals.length
-                        ? '0 Soal'
-                        : `${
-                            data.bankSoal.soals.filter(soal => soal.tingkatKesulitan === 'SUSAH')
-                              .length
-                          } soal`
-                    }
-                  />
-                </List.Item>
-
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon="deployment-unit" style={{ backgroundColor: 'navy' }} />}

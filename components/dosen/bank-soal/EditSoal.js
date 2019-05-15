@@ -19,7 +19,7 @@ const EDIT_SOAL = gql`
     $pertanyaan: String!
     $kunciJawaban: String!
     $jawaban: [JawabanUpdateWithWhereUniqueWithoutSoalInput!]
-    $tingkatKesulitan: String!
+
     $id: ID!
     $image: String
   ) {
@@ -28,7 +28,7 @@ const EDIT_SOAL = gql`
         pertanyaan: $pertanyaan
         image: $image
         kunciJawaban: $kunciJawaban
-        tingkatKesulitan: $tingkatKesulitan
+
         jawaban: { update: $jawaban }
       }
       where: { id: $id }
@@ -54,7 +54,7 @@ const CURRENT_SOAL = gql`
         content
       }
       kunciJawaban
-      tingkatKesulitan
+
       bankSoal {
         id
       }
@@ -77,7 +77,7 @@ class FormEdit extends React.Component {
     loading: false,
 
     kunciJawaban: undefined,
-    tingkatKesulitan: undefined,
+
     renderEditor: false,
   };
 
@@ -354,12 +354,7 @@ class FormEdit extends React.Component {
                       style={{ margin: '10px 0' }}
                     />
                   )}
-                  <Form.Item label="Tingkat Kesulitan">
-                    <PIlihTingkatKesulitan
-                      value={this.state.tingkatKesulitan}
-                      onChange={this.changeTingkatKesulitan}
-                    />
-                  </Form.Item>
+
                   <Form.Item label="Pertanyaan">
                     <Form.Item
                       label="Gambar"

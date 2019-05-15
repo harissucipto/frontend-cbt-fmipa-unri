@@ -20,7 +20,6 @@ const CREATE_SOAL = gql`
     $pertanyaan: String!
     $kunciJawaban: String!
     $jawaban: [JawabanCreateWithoutSoalInput!]
-    $tingkatKesulitan: String!
     $bankSoal: ID!
     $image: String
   ) {
@@ -30,7 +29,6 @@ const CREATE_SOAL = gql`
         image: $image
         kunciJawaban: $kunciJawaban
         bankSoal: { connect: { id: $bankSoal } }
-        tingkatKesulitan: $tingkatKesulitan
         jawaban: { create: $jawaban }
       }
     ) {
@@ -221,7 +219,6 @@ class TambahSoal extends React.Component {
       pertanyaan: JSON.stringify(convertToRaw(this.state.pertanyaan.getCurrentContent())),
       kunciJawaban: this.state.kunciJawaban,
       bankSoal: this.props.id,
-      tingkatKesulitan: this.state.tingkatKesulitan,
       image: this.state.image,
       jawaban: [
         {
@@ -271,7 +268,6 @@ class TambahSoal extends React.Component {
         },
       ],
       kunciJawaban: undefined,
-      tingkatKesulitan: undefined,
       image: '',
       imageA: '',
       imageB: '',
@@ -316,12 +312,6 @@ class TambahSoal extends React.Component {
                       style={{ margin: '10px 0' }}
                     />
                   )}
-                  <Form.Item label="Tingkat Kesulitan">
-                    <PIlihTingkatKesulitan
-                      value={this.state.tingkatKesulitan}
-                      onChange={this.changeTingkatKesulitan}
-                    />
-                  </Form.Item>
                   <Form.Item label="Pertanyaan">
                     <Form.Item
                       label="Gambar"
