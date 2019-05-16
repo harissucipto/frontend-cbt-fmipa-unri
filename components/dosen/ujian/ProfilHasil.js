@@ -8,7 +8,6 @@ import { Card, Row, Col, Button } from 'antd';
 import TableMahasiswa from './TableMahasiswa';
 import TableBeritaAcara from './TableBeritaAcara';
 
-
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
 
@@ -60,10 +59,10 @@ const CURRENT_QUERY = gql`
       }
       tanggalPelaksanaan
       lokasi
-      JumlahSoal
-      presentasiSusah
-      presentasiSedang
-      presentasiMudah
+      soals {
+        id
+      }
+
       durasiPengerjaan
       beritaAcaraUjian {
         id
@@ -146,10 +145,7 @@ class ProfilAdmin extends React.Component {
                 </Card>
               </Col>
               <Col xs={24} style={{ marginBottom: '15px' }}>
-                <Card
-                  title="Peserta Ujian:"
-
-                >
+                <Card title="Peserta Ujian:">
                   <ListKelas
                     idUjian={id}
                     mahasiswas={data.ujian.soalMahasiswas}

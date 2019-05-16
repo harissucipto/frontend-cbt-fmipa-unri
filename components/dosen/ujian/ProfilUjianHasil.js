@@ -6,7 +6,9 @@ import 'moment/locale/id';
 
 export default class ProfilUjian extends Component {
   render() {
-    const { grid, ujian, mahasiswa } = this.props;
+    const {
+      grid, ujian, mahasiswa, benar, salah,
+    } = this.props;
 
     return (
       <Row>
@@ -104,7 +106,22 @@ export default class ProfilUjian extends Component {
               <List.Item.Meta
                 avatar={<Avatar icon="info" style={{ backgroundColor: '#987' }} />}
                 title={<a>Jumlah Soal</a>}
-                description={ujian.JumlahSoal}
+                description={ujian.soals.length}
+              />
+            </List.Item>
+
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'green' }} />}
+                title={<a>Jawaban Benar</a>}
+                description={benar || '0'}
+              />
+            </List.Item>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar icon="info" style={{ backgroundColor: 'red' }} />}
+                title={<a>Jawaban Salah</a>}
+                description={salah || '0'}
               />
             </List.Item>
           </List>

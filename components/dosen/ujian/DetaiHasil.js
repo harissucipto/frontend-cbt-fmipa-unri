@@ -15,25 +15,24 @@ const CURRENT_QUERY = gql`
     ) {
       id
       skor
-      soals {
-        id
-        image
-        pertanyaan
-        jawaban {
+      urutan
+      ujian {
+        soals {
           id
           image
-          title
-          content
+          pertanyaan
+          jawaban {
+            id
+            image
+            title
+            content
+          }
+          kunciJawaban
         }
-        kunciJawaban
-        tingkatKesulitan
-      }
-      ujian {
         id
         nama
         tanggalPelaksanaan
         lokasi
-        JumlahSoal
         durasiPengerjaan
         dosen {
           id
@@ -96,10 +95,25 @@ class ProfilAdmin extends React.Component {
           console.log(error);
 
           const {
- ujian, soals, skor, mahasiswa, jawaban,
+ ujian, skor, mahasiswa, jawaban, urutan,
 } = data.getInfosoalMahasiswa[0];
 
+          const { soals } = ujian;
           const detailSoal = soals.find(item => item.id === this.state.indexSoal);
+          const temukanNomorSoalAsli = identitas =>
+            soals.findIndex(soal => soal.id === identitas) + 1;
+          const soalDiurutkan = urutan.split(',').map((nomor) => {
+            const index = Number(nomor) - 1;
+            return soals[index];
+          });
+
+          const benar = jawaban.reduce((acc, lembarJawaban) => {
+            const { title } = lembarJawaban.jawaban;
+            const nilai =
+              soals.find(soal => soal.id === lembarJawaban.idSoal).kunciJawaban === title ? 1 : 0;
+
+            return acc + nilai;
+          }, 0);
 
           return (
             <Row type="flex" gutter={16} style={{ margin: '40px' }} justify="center">
@@ -108,6 +122,8 @@ class ProfilAdmin extends React.Component {
                   <ProfilUjian
                     mahasiswa={mahasiswa}
                     ujian={ujian}
+                    benar={benar}
+                    salah={soals.length - benar}
                     grid={{
                       gutter: 16,
                       lg: 3,
@@ -207,18 +223,6 @@ class ProfilAdmin extends React.Component {
                                   {' '}
                                   <h4>Kunci jawaban: {detailSoal.kunciJawaban}</h4>
                                 </Tag>
-                                <Tag
-                                  color={
-                                    detailSoal.tingkatKesulitan === 'MUDAH'
-                                      ? 'green'
-                                      : detailSoal.tingkatKesulitan === 'SEDANG'
-                                      ? 'orange'
-                                      : 'red'
-                                  }
-                                >
-                                  {' '}
-                                  <h4>Tingkat Kesulitan : {detailSoal.tingkatKesulitan}</h4>
-                                </Tag>
                               </div>
                             </>
                           )}
@@ -245,7 +249,7 @@ class ProfilAdmin extends React.Component {
                         render: (record, item, i) => (i < 1 ? <p>jawaban yang di pilih</p> : false),
                       },
 
-                      ...soals.map((item, i) => ({
+                      ...soalDiurutkan.map((item, i) => ({
                         title: (
                           <Popover
                             content={`id soal: ${item.id}`}
@@ -264,7 +268,7 @@ class ProfilAdmin extends React.Component {
                                     : 'red',
                               }}
                             >
-                              {i + 1} / {item.kunciJawaban}{' '}
+                              {temukanNomorSoalAsli(item.id)} / {item.kunciJawaban}{' '}
                             </Button>
                           </Popover>
                         ),
