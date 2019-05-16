@@ -39,7 +39,9 @@ const CURRENT_QUERY = gql`
 
       tanggalPelaksanaan
       lokasi
-      JumlahSoal
+      soals {
+        id
+      }
       durasiPengerjaan
     }
   }
@@ -160,7 +162,7 @@ class ProfilAdmin extends React.Component {
                       <List.Item.Meta
                         avatar={<Avatar icon="info" style={{ backgroundColor: '#643' }} />}
                         title={<a>Jumlah Soal</a>}
-                        description={data.ujian.JumlahSoal}
+                        description={data.ujian.soals.length}
                       />
                     </List.Item>
                   </List>
