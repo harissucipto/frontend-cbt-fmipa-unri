@@ -10,6 +10,7 @@ import TableBeritaAcara from './TableBeritaAcara';
 
 import ListKelas from './ListKelasHasil';
 import ProfilUjian from './ProfilUjian';
+import PrintHasilUjian from './PrintHasilUjian';
 
 const CURRENT_QUERY = gql`
   query CURRENT_QUERY($id: ID!) {
@@ -103,7 +104,7 @@ class ProfilAdmin extends React.Component {
             <Row type="flex" gutter={16} style={{ margin: '40px' }}>
               <Col xs={24}>
                 <Card
-                  title="Informasi Ujian"
+                  title="Informasi Hasil Ujian"
                   loading={loading}
                   style={{ marginBottom: '15px' }}
                   extra={
@@ -120,19 +121,20 @@ class ProfilAdmin extends React.Component {
                       >
                         Lihat Distribusi Soal
                       </Button>
+                      <Button
+                        type="dashed"
+                        onClick={() =>
+                          Router.push({
+                            pathname: '/dosen/ujian/print-hasil',
+                            query: { id: data.ujian.id },
+                          })
+                        }
+                      >
+                        Preview Cetak Hasil Ujian
+                      </Button>
                     </>
                   }
                 >
-                  {/* <HeaderAvatar>
-            <Avatar size={144} icon="user" />
-            <div>
-              <p>
-                {data.admin.permissions
-                  .filter(permission => !['USER'].includes(permission))
-                  .join(' ')}
-              </p>
-            </div>
-          </HeaderAvatar> */}
                   <ProfilUjian
                     ujian={data.ujian}
                     grid={{

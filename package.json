@@ -45,7 +45,7 @@
     "react-draft-wysiwyg": "^1.13.2",
     "react-moment": "^0.8.4",
     "react-stripe-checkout": "^2.6.3",
-    "react-to-print": "^2.1.0",
+    "react-to-print": "^2.1.2",
     "react-transition-group": "^2.5.0",
     "styled-components": "^4.2.0",
     "unstated": "^2.1.1",
