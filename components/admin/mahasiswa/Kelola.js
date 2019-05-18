@@ -44,9 +44,18 @@ class KelolaMahasiwa extends Component {
       <Card
         title="Informasi Akun Mahasiswa"
         extra={
-          <Button type="primary" onClick={() => Router.push('/admin/mahasiswa/tambah')}>
-            Tambah Akun
-          </Button>
+          <>
+            <Button
+              type="primary"
+              onClick={() => Router.push('/admin/mahasiswa/tambah')}
+              style={{ marginRight: '10px' }}
+            >
+              Tambah Akun
+            </Button>
+            <Button type="dashed" onClick={() => Router.push('/admin/mahasiswa/import-excel')}>
+              Import dari Excel
+            </Button>
+          </>
         }
       >
         <Form>

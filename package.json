@@ -20,6 +20,7 @@
     "apollo-client": "^2.4.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-styled-components": "^1.7.1",
+    "convert-excel-to-json": "^1.6.1",
     "date-fns": "^2.0.0-alpha.7",
     "downshift": "^2.2.3",
     "draft-js": "^0.10.5",
@@ -47,9 +48,11 @@
     "react-stripe-checkout": "^2.6.3",
     "react-to-print": "^2.1.2",
     "react-transition-group": "^2.5.0",
+    "simple-excel-to-json": "^2.2.0",
     "styled-components": "^4.2.0",
     "unstated": "^2.1.1",
-    "waait": "^1.0.2"
+    "waait": "^1.0.2",
+    "xlsx": "^0.14.3"
   },
   "devDependencies": {
     "babel-jest": "^23.6.0",
