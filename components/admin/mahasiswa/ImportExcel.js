@@ -14,45 +14,17 @@ const { Option } = Select;
 const SheetJSFT = ['xlsx', 'xlsb', 'xlsm', 'xls', 'xml', 'csv'].map(x => `.${x}`).join(',');
 
 const CREATE_MAHASISWA_MUTATION = gql`
-  mutation CREATE_MAHASISWA_MUTATION(
-    $email: String!
-    $password: String!
-    $passwordKasih: String!
-    $prodi: String!
-    $nama: String!
-    $nim: String!
-    $image: String
-  ) {
-    createUser(
-      data: {
-        email: $email
-        password: $password
-        passwordKasih: $passwordKasih
-        permissions: { set: [USER, MAHASISWA] }
-        mahasiswa: {
-          create: { nama: $nama, nim: $nim, image: $image, prodi: { connect: { nama: $prodi } } }
-        }
-      }
-    ) {
-      id
-      mahasiswa {
-        id
-        nama
-        nim
-      }
+  mutation CREATE_MAHASISWA_MUTATION($akunMahasiswas: [AkunMahasiswa!], $prodi: String!) {
+    importAkunMahasiswa(akunMahasiswas: $akunMahasiswas, prodi: $prodi) {
+      message
     }
   }
 `;
 
 const DEFAULTSTATE = {
-  email: '',
-  password: '',
-  nama: '',
-  nim: '',
   jurusan: '',
   prodi: '',
   prodies: [],
-  image: '',
   loading: false,
   data: [],
 };
@@ -112,12 +84,6 @@ class TambahDosen extends React.Component {
     });
   };
 
-  importExcel = () => {
-    const { prodi } = this.state;
-
-    console.log(prodi);
-  };
-
   render() {
     const mahasiswas = this.state.data;
     return (
@@ -134,16 +100,11 @@ class TambahDosen extends React.Component {
           },
         ]}
         variables={{
-          email: this.state.email.toLowerCase(),
-          password: this.state.password,
-          passwordKasih: this.state.password,
-          nama: this.state.nama.toLowerCase(),
-          nim: this.state.nim,
+          akunMahasiswas: this.state.data,
           prodi: this.state.prodi,
-          image: this.state.image,
         }}
       >
-        {(createDosen, {
+        {(mutasi, {
  data, error, loading, called,
 }) => {
           if (loading) return <Spin tip="Loading..." style={{ textAlign: 'center' }} />;
@@ -162,18 +123,17 @@ class TambahDosen extends React.Component {
                   method="post"
                   onSubmit={async (e) => {
                     e.preventDefault();
-                    this.importExcel();
-                    // await createDosen();
-                    // this.setState({
-                    //   ...DEFAULTSTATE,
-                    // });
-                    // console.log(this.state);
+                    await mutasi();
+                    this.setState({
+                      ...DEFAULTSTATE,
+                    });
+
                   }}
                 >
                   <PesanError error={error} />
                   {!error && !loading && called && (
                     <Alert
-                      message={`Buat akun  mahasiswa ${data.createUser.mahasiswa.nama} berhasil`}
+                      message={`Buat akun  mahasiswa  berhasil`}
                       type="success"
                       showIcon
                       style={{ margin: '10px 0' }}
@@ -280,7 +240,7 @@ class TambahDosen extends React.Component {
                   )}
 
                   <Form.Item>
-                    <Button type="primary" htmlType="submit" block size="large">
+                    <Button type="primary" htmlType="submit" block size="large" disabled={mahasiswas.length <= 0}>
                       Buat Akun
                     </Button>
                   </Form.Item>
