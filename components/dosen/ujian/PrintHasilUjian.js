@@ -1,3 +1,4 @@
+/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import ReactToPrint from 'react-to-print';
 import { Query } from 'react-apollo';
@@ -8,30 +9,6 @@ import moment from 'moment';
 import 'moment/locale/id';
 
 import { CURRENT_QUERY } from './ProfilHasil';
-
-const Logo = styled.div`
-  position: relative;
-  height: 64px;
-  padding-left: 24px;
-  overflow: hidden;
-  line-height: 64px;
-  background: #002140;
-  transition: all 0.3s;
-  h1 {
-    display: inline-block;
-    margin: 0 0 0 12px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 20px;
-    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-    vertical-align: middle;
-  }
-  img {
-    display: inline-block;
-    height: 32px;
-    vertical-align: middle;
-  }
-`;
 
 class ComponentToPrint extends React.Component {
   render() {
