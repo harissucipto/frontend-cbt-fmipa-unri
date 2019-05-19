@@ -144,21 +144,7 @@ class ProfilAdmin extends React.Component {
                       },
 
                       ...soalDiurutkan.map((item, i) => ({
-                        title: (
-                          <Button
-                            type="primary"
-                            style={{
-                              backgroundColor:
-                                item.tingkatKesulitan === 'MUDAH'
-                                  ? 'green'
-                                  : item.tingkatKesulitan === 'SEDANG'
-                                  ? 'orange'
-                                  : 'red',
-                            }}
-                          >
-                            {i + 1}
-                          </Button>
-                        ),
+                        title: <Button type="dashed">{i + 1}</Button>,
 
                         key: item.id,
                         width: 5,
@@ -176,7 +162,7 @@ class ProfilAdmin extends React.Component {
                               style={{
                                 textAlign: 'center',
                                 color: 'white',
-                                backgroundColor: benarTidak ? 'skyblue' : 'silver',
+                                backgroundColor: benarTidak ? 'green' : 'red',
                               }}
                             >
                               <p>{jawabanKu ? jawabanKu.jawaban.title : ''}</p>

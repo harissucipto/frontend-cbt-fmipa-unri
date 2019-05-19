@@ -257,17 +257,7 @@ class ProfilAdmin extends React.Component {
                               this.setState({ indexSoal: item.id, noSoal: i + 1 })
                             }
                           >
-                            <Button
-                              type="primary"
-                              style={{
-                                backgroundColor:
-                                  item.tingkatKesulitan === 'MUDAH'
-                                    ? 'green'
-                                    : item.tingkatKesulitan === 'SEDANG'
-                                    ? 'orange'
-                                    : 'red',
-                              }}
-                            >
+                            <Button>
                               {temukanNomorSoalAsli(item.id)} / {item.kunciJawaban}{' '}
                             </Button>
                           </Popover>
@@ -289,7 +279,7 @@ class ProfilAdmin extends React.Component {
                               style={{
                                 textAlign: 'center',
                                 color: 'white',
-                                backgroundColor: benarTidak ? 'skyblue' : 'silver',
+                                backgroundColor: benarTidak ? 'green' : 'red',
                               }}
                             >
                               <p>{jawabanKu ? jawabanKu.jawaban.title : ''}</p>

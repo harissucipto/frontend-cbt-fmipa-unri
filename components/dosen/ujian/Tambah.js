@@ -170,7 +170,7 @@ class TambahDosen extends React.Component {
         kelas: this.state.kelas,
       },
     }).catch(() => message.error('Error, Koneksi Jaringan Internet!'));
-    // this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
+    this.setState({ ...DEFAULTSTATE, kelasNama: undefined });
   };
 
   render() {
