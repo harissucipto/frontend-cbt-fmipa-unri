@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, Alert, Select, Spin, Table } from 'antd';
+import { Layout, Card, Form, Input, Button, Alert, Select, Spin, Table, Row, Col } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import XLSX from 'xlsx';
@@ -99,14 +99,176 @@ class TambahDosen extends React.Component {
           return (
             <Content>
               <Card title="Import Akun Mahasiswa dari Excel">
-                <div style={{ marginBottom: '30px' }}>
+                <Row gutter={30}>
+                  <Col md={16}>
+                    <Card
+                      title="Contoh Struktur Data Import yang Valid dari Excel atau worksheet"
+                      extra={
+                        <Button
+                          type="dashed"
+                          onClick={() => {
+                            const toggle = !this.state.tampilkanContoh;
+                            this.setState({ tampilkanContoh: toggle });
+                          }}
+                        >
+                          {this.state.tampilkanContoh ? 'Sembunyikan' : 'Tampilkan'}
+                        </Button>
+                      }
+                    >
+                      {this.state.tampilkanContoh && (
+                        <Table
+                          size="small"
+                          bordered
+                          pagination={false}
+                          rowKey={item => item.id}
+                          columns={[
+                            {
+                              title: 'A',
+                              align: 'center',
+
+                              dataIndex: 'nama',
+                            },
+                            {
+                              title: 'B',
+                              align: 'center',
+                              dataIndex: 'nim',
+                            },
+                            {
+                              title: 'C',
+                              align: 'center',
+                              dataIndex: 'email',
+                            },
+                            {
+                              title: 'D',
+                              align: 'center',
+                              dataIndex: 'password',
+                            },
+                            {
+                              title: 'E',
+                              align: 'center',
+                              dataIndex: 'prodi',
+                            },
+                          ]}
+                          dataSource={[
+                            {
+                              id: '0',
+                              nama: 'NAMA',
+                              nim: 'NIM',
+                              email: 'EMAIL',
+                              password: 'PASSWORD',
+                              prodi: 'KODE PRODI',
+                            },
+                            {
+                              id: '1',
+                              nama: 'NAMA',
+                              nim: 'NIM',
+                              email: 'EMAIL',
+                              password: 'PASSWORD',
+                              prodi: 'KODE PRODI',
+                            },
+                          ]}
+                        />
+                      )}
+                    </Card>
+                  </Col>
+                  <Col md={8}>
+                    <Card
+                      title="Daftar Kode Prodi"
+                      onClick={() => {
+                        const toggle = !this.state.tampilkanKode;
+                        this.setState({ tampilkanKode: toggle });
+                      }}
+                      extra={
+                        <Button type="dashed">
+                          {this.state.tampilkanKode ? 'Sembunyikan' : 'Tampilkan'}
+                        </Button>
+                      }
+                    >
+                      {this.state.tampilkanKode && (
+                        <Table
+                          bordered
+                          pagination={false}
+                          rowKey={item => item.kode}
+                          columns={[
+                            {
+                              title: 'Kode Prodi',
+                              dataIndex: 'kode',
+                              key: 'kode',
+                            },,
+                            {
+                              title: 'keterangan',
+                              dataIndex: 'id',
+                              key: 'id',
+                              render: text => text.toUpperCase(),
+                            },
+                          ]}
+                          size="small"
+                          dataSource={[
+                            {
+                              kode: '45201',
+                              id: 's1 fisika',
+                            },
+                            {
+                              kode: '30101',
+                              id: 's2 fisika',
+                            },
+                            {
+                              kode: '49201',
+                              id: 's1 statistika',
+                            },
+                            {
+                              kode: '44201',
+                              id: 's1 matematika',
+                            },
+                            {
+                              kode: '44101',
+                              id: 's2 matematika',
+                            },
+                            {
+                              kode: '56201',
+                              id: 's1 sistem informasi',
+                            },
+                            {
+                              kode: '57401',
+                              id: 'd3 manajemen informatika',
+                            },
+                            {
+                              kode: '47201',
+                              id: 's1 kimia',
+                            },
+                            {
+                              kode: '47101',
+                              id: 's2 kimia',
+                            },
+                            {
+                              kode: '47001',
+                              id: 's3 kimia',
+                            },
+                            {
+                              kode: '46201',
+                              id: 's1 biologi',
+                            },
+                            {
+                              kode: '46101',
+                              id: 's2 biologi',
+                            },
+                          ]}
+                        />
+                      )}
+                    </Card>
+                  </Col>
+                </Row>
+
+                <div style={{ marginBottom: '30px', marginTop: '40px' }}>
                   <h3>
                     Anda dapat mengimport data akun mahasiswa yang telah dibuat melalui excel dengan
-                    menu ini. Kolom Pada Excel terdiri dari Kolom A - E, yaitu Nama, Nim, Email,
-                    Password dan Kode Prodi. Data mahasiswa yang sudah ada tidak akan dibuat baru
-                    lagi, hanya yang belum ada yang akan dibuat akunnya.
+                    menu ini. Kolom tabel terdiri dari Kolom A - E, yaitu yang berisi Nama, NIM,
+                    Email, Password dan Kode Prodi (untuk mengetahui lebih lanjut bisa melihat
+                    contoh diatas). Silahkan mengimport data Mahasiswa dengan memilih file excel
+                    atau worksheet pada form dibawah ini.
                   </h3>
                 </div>
+
                 <Form
                   method="post"
                   onSubmit={async (e) => {
@@ -128,7 +290,8 @@ class TambahDosen extends React.Component {
                   )}
 
                   <Form.Item
-                    label="File Excel"
+                    label="Pilih File Excel Untuk Di import"
+                    style={{ fontWeight: 'bolder', fontSize: '16px' }}
                     labelCol={{ span: 6 }}
                     wrapperCol={{ span: 18, lg: 10 }}
                   >
@@ -157,9 +320,7 @@ class TambahDosen extends React.Component {
                       style={{ marginBottom: '20px' }}
                       bordered
                       title={() => (
-                        <h2 style={{ textAlign: 'center' }}>
-                          Data Import {mahasiswas.length} Akun Mahasiswa
-                        </h2>
+                        <h2 style={{ textAlign: 'center' }}>{mahasiswas.length} Data Mahasiswa</h2>
                       )}
                       pagination={false}
                       dataSource={mahasiswas}
