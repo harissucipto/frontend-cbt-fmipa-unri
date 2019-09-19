@@ -19,7 +19,6 @@ const EDIT_SOAL = gql`
     $pertanyaan: String!
     $kunciJawaban: String!
     $jawaban: [JawabanUpdateWithWhereUniqueWithoutSoalInput!]
-
     $id: ID!
     $image: String
   ) {
@@ -28,7 +27,6 @@ const EDIT_SOAL = gql`
         pertanyaan: $pertanyaan
         image: $image
         kunciJawaban: $kunciJawaban
-
         jawaban: { update: $jawaban }
       }
       where: { id: $id }
@@ -93,16 +91,15 @@ class FormEdit extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      image: file.secure_url,
+      image: file.fileUrl,
       loading: false,
     });
   };
@@ -114,16 +111,15 @@ class FormEdit extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageA: file.secure_url,
+      imageA: file.fileUrl,
       loading: false,
     });
   };
@@ -135,16 +131,15 @@ class FormEdit extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageB: file.secure_url,
+      imageB: file.fileUrl,
       loading: false,
     });
   };
@@ -156,16 +151,15 @@ class FormEdit extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageC: file.secure_url,
+      imageC: file.fileUrl,
       loading: false,
     });
   };
@@ -177,16 +171,15 @@ class FormEdit extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageD: file.secure_url,
+      imageD: file.fileUrl,
       loading: false,
     });
   };
@@ -536,12 +529,11 @@ class FormEdit extends React.Component {
 }
 class EditDosen extends Component {
   render() {
-
     return (
       <Query query={CURRENT_SOAL} variables={{ id: this.props.id }} fetchPolicy="network-only">
         {({ data, loading, error }) => (
           <Card style={{ margin: '20px' }} title="Edit  Soal" loading={loading}>
-            <FormEdit soal={data.soal} id={this.props.id} bankSoal={this.props.bankSoal}/>
+            <FormEdit soal={data.soal} id={this.props.id} bankSoal={this.props.bankSoal} />
           </Card>
         )}
       </Query>

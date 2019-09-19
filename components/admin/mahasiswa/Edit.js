@@ -56,16 +56,15 @@ class FormEdit extends Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     });
     const file = await res.json();
     console.log(file);
     this.setState({
-      image: file.secure_url,
+      image: file.fileUrl,
       loading: false,
     });
   };
@@ -230,7 +229,7 @@ class EditDosen extends Component {
     return (
       <Query query={CURRENT_QUERY} variables={{ id: this.props.id }} fetchPolicy="network-only">
         {({ data, loading, error }) => (
-          <Card title="Edit Akun Mahasiswa" loading={loading}>
+          <Card title="Edit Inofrmasi  Mahasiswa" loading={loading}>
             <FormEdit mahasiswa={data.mahasiswa} />
           </Card>
         )}

@@ -70,16 +70,15 @@ class TambahSoal extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      image: file.secure_url,
+      image: file.fileUrl,
       loading: false,
     });
   };
@@ -91,16 +90,15 @@ class TambahSoal extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageA: file.secure_url,
+      imageA: file.fileUrl,
       loading: false,
     });
   };
@@ -112,16 +110,15 @@ class TambahSoal extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageB: file.secure_url,
+      imageB: file.fileUrl,
       loading: false,
     });
   };
@@ -133,16 +130,15 @@ class TambahSoal extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageC: file.secure_url,
+      imageC: file.fileUrl,
       loading: false,
     });
   };
@@ -154,16 +150,15 @@ class TambahSoal extends React.Component {
     const data = new FormData();
     data.append('file', files[0]);
     console.log(files);
-    data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/pekonrejosari/image/upload', {
+    const res = await fetch('http://localhost:3200/api/upload', {
       method: 'POST',
       body: data,
     }).catch(this.erorJaringan);
     const file = await res.json();
     console.log(file);
     this.setState({
-      imageD: file.secure_url,
+      imageD: file.fileUrl,
       loading: false,
     });
   };
